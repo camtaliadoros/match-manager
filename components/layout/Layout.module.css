@@ -1,0 +1,41 @@
+/* 
+.main {
+    margin: 3rem auto;
+    width: 90%;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+
+
+.bottomnav {
+    background-color: #557c50;
+    color: #f4f4f4;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    z-index: 1;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px;
+}
+
+.bottomnav:hover {
+    background-color: #43603F;
+    transition: background-color 0.5s;
+}
+
+@media screen and (min-width: 600px) {
+    .topnav {
+        display: block;
+    }
+
+    .bottomnav{
+        display: none;
+    }
+} */
+

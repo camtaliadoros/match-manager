@@ -2,8 +2,9 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'proxima-nova', sans-serif;
+  font-weight: 400;
+  background-color: #f4f4f4;
 }
 
 a {
@@ -13,4 +14,89 @@ a {
 
 * {
   box-sizing: border-box;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
+
+.mobile-hidden {
+  display: none;
+}
+
+footer {
+  height: 72px;
+  background-color: #557c50;
+}
+
+@media screen and (min-width: 600px) {
+  footer {
+      display: none;
+  }
+
+  .mobile-hidden {
+    display: block;
+  }
+
+} 
+
+/* Typography */
+
+h1 {
+  font-weight: 400;
+  font-size: 30px;
+}
+
+h2 {
+  font-weight: 500;
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+
+.light-text {
+  color: #f4f4f4;
+}
+
+.dark-test {
+  color: #2e2e2e;
+}
+
+.extrabold-text {
+ font-weight: 800;
+}
+
+.bold-text {
+  font-weight: 600;
+}
+
+
+
+/* Buttons */
+
+button {
+  background-color: #557c50;
+  padding: 18px 90px;
+  border: 0;
+  color: #f4f4f4;
+  font-weight: 400;
+  font-family: 'proxima-nova', sans-serif;
+  font-size: 12px;
+}
+
+button.full-width {
+  width: 100%;
+}
+
+button:hover {
+  background-color: #43603F;
+  transition: background-color 0.5s;
+}
+
