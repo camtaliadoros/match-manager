@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import classes from "./PublicHome.module.css";
+import classes from "./PublicHome.module.scss";
 
 export default function PublicHome() {
   return (

@@ -1,5 +1,9 @@
-function Auth () {
-    return <h1>Hello</h1>
+import AuthButtons from "./AuthButtons";
+
+function Auth() {
+  return (
+    <AuthButtons />
+  );
 }
 
 export default Auth;

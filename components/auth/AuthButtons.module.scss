@@ -1,0 +1,40 @@
+@import 'styles/variables';
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    width: 400px;
+
+    h2, a {
+        color: $green50;
+        padding-bottom: 9px 0;
+    }
+}
+
+.closeButton {
+    transition: filter 0.5s;
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(75%);
+    }
+}
+
+.authButton {
+    transition: color 0.5s;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 24px;
+
+    &:hover {
+        color: $dark-green;
+    }
+
+    &:active {
+        color: $black;
+        border-bottom: solid $dark-green 3px;
+    }
+}
+

@@ -22,6 +22,21 @@ a {
   display: none;
 }
 
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5rem;
+  z-index: 1;
+  height: 54px;
+}
+
+header p {
+  font-weight: 800;
+  font-size: 36px;
+}
+
+
 footer {
   height: 72px;
   background-color: #557c50;
@@ -59,6 +74,9 @@ p {
   font-size: 14px;
   font-weight: 300;
 }
+
+// Colours
+
 
 
 .light-text {
