@@ -1,8 +1,14 @@
+import React from "react";
+import classes from "./Auth.module.scss";
 import AuthButtons from "./AuthButtons";
+import RegisterForm from "./RegisterForm";
 
 function Auth() {
   return (
-    <AuthButtons />
+    <div className={classes.wrapper}>
+      <AuthButtons />
+        <RegisterForm />
+    </div>
   );
 }
 

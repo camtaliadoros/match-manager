@@ -5,7 +5,9 @@
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    width: 400px;
+    max-width: 400px;
+    width: 80%;
+    margin: 0 auto;
 
     h2, a {
         color: $green50;
