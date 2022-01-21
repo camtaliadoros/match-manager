@@ -1,10 +1,11 @@
 import Head from "next/head";
 import "../styles/globals.scss";
+import { initializeApp, getApp, getApps, FirebaseApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 
 
 
-
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   return (
     <>
       <Head>
@@ -15,4 +16,6 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default App;
+
+

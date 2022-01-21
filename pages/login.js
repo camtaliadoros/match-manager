@@ -1,5 +1,4 @@
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import Auth from "../components/auth/Auth";
+import Auth from '../components/auth/Auth';
 import Layout from "../components/layout/Layout";
 
 export default function Login() {
