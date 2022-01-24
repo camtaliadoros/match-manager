@@ -4,16 +4,17 @@ import {
 } from "firebase/auth";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { auth } from "../../firebase/clientApp";
 import classes from "./Auth.module.scss";
 import { useRouter } from "next/router";
 
-function UserRegister() {
+function UserRegister({auth}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passVal, setPassVal] = useState("");
   const [passMatch, setPassMatch] = useState(false);
   const [passAlert, setPassAlert] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (passVal.length > 0 && passVal === password) {
@@ -26,7 +27,9 @@ function UserRegister() {
       : setPassAlert(true);
   }, [passVal, passMatch, password]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
       router.push('/profile');
@@ -44,6 +47,7 @@ function UserRegister() {
         <input
           id="email-address"
           name="emailAdress"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
           required

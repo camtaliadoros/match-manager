@@ -20,5 +20,7 @@ if (!getApps().length) {
   app = getApp();
 }
 
+export default app;
+
 // const analytics = getAnalytics(app);
-export const auth = getAuth(app);
+

@@ -1,11 +1,10 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from "react";
-import { auth } from '../../firebase/clientApp';
 import classes from "./Auth.module.scss";
 
 
 
-function UserLogin() {
+function UserLogin({auth}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

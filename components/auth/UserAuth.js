@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { useState } from "react";
+import app from '../../firebase/clientApp';
 import classes from "./AuthButtons.module.scss";
 import UserLoginForm from "./UserLoginForm";
 import UserRegisterForm from "./UserRegisterForm";
+import { getAuth } from 'firebase/auth';
 
-export default function Auth() {
+export default function UserAuth() {
   const [form, setForm] = useState('login');
+
+  const auth = getAuth(app);
 
   return (
     <>
@@ -46,7 +50,7 @@ export default function Auth() {
           Sign Up
         </a>
       </div>
-      {form === 'login' ? <UserLoginForm /> : <UserRegisterForm />}
+      {form === 'login' ? <UserLoginForm auth={auth}/> : <UserRegisterForm auth={auth}/>}
     </>
   );
 }
