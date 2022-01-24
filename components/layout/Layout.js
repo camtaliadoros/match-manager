@@ -1,7 +1,7 @@
 import classes from "./Layout.module.scss";
 import Link from "next/link";
-import { useSelector } from 'react-redux';
-import { selectLoggedIn } from '../../features/usersSlice';
+import { useSelector } from "react-redux";
+import { selectLoggedIn } from "../../features/usersSlice";
 
 function Layout(props) {
   const isLoggedIn = useSelector(selectLoggedIn);
@@ -10,7 +10,7 @@ function Layout(props) {
     <>
       <header className={classes.header}>
         <Link href="/">
-          <p className={classes.header}>FA</p>
+          <a className={`${classes.logo}`}>FA</a>
         </Link>
         <nav className={classes.topnav}>
           {isLoggedIn ? <Link href="/">Dashboard</Link> : null}

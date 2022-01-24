@@ -7,8 +7,8 @@ export default function PublicHome() {
   return (
     <div className={classes.wrapper}>
       <header className={classes.header}>
-        <Link href="/">
-          <p className={`${classes.header} light-text`}>FA</p>
+        <Link href="/" >
+          <a className={`${classes.logo} light-text`}>FA</a>
         </Link>
         <nav className={classes.topnav}>
           <Link href="/login">Register / Log In</Link>
@@ -19,7 +19,9 @@ export default function PublicHome() {
           <div className={`${classes.onboardingText} light-text`}>
             <h1>Match Manager</h1>
             <h4>Take control of your games.</h4>
-            <button className="mobile-hidden"><Link href="/login">SIGN UP NOW</Link></button>
+            <button className="mobile-hidden">
+              <Link href="/login">SIGN UP NOW</Link>
+            </button>
           </div>
         </div>
         <div className={classes.features}>
