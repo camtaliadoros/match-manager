@@ -1,18 +1,20 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from "react";
 import classes from "./Auth.module.scss";
+import { handleAuthError } from '../../utilities/authErrorHandler';
 
 
 
 function UserLogin({auth}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async () => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.log(error.message);
+      setErrorMessage(handleAuthError(error));
     }
   };
 
@@ -39,6 +41,7 @@ function UserLogin({auth}) {
         />
         <button onClick={handleSubmit} className={classes.submit}>LOGIN</button>
       </form>
+      <div className={classes.error}>{errorMessage}</div>
     </div>
   );
 }

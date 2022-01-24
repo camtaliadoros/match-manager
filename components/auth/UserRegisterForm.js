@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import classes from "./Auth.module.scss";
 import { useRouter } from "next/router";
+import { handleAuthError } from '../../utilities/authErrorHandler';
 
 function UserRegister({auth}) {
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ function UserRegister({auth}) {
   const [passVal, setPassVal] = useState("");
   const [passMatch, setPassMatch] = useState(false);
   const [passAlert, setPassAlert] = useState(false);
+  const [authError, setAuthError] = useState('');
 
   const router = useRouter();
 
@@ -35,6 +37,7 @@ function UserRegister({auth}) {
       router.push('/profile');
     } catch (error) {
       console.log(error.message);
+      setAuthError(handleAuthError(error));
     }
   };
 
@@ -89,6 +92,9 @@ function UserRegister({auth}) {
           REGISTER{" "}
         </button>
       </form>
+      <div>
+        {authError}
+      </div>
     </div>
   );
 }

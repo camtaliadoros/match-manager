@@ -62,3 +62,11 @@
 .submit:disabled {
     background-color: $grey;
 }
+
+.error {
+  display: flex;
+  justify-content: center;
+  margin: 18px;
+  font-family: 'proxima-nova';
+  color: $red;
+}
