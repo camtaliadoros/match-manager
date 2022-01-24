@@ -10,7 +10,8 @@ function UserLogin({auth}) {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {

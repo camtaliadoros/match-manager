@@ -34,14 +34,10 @@ function UserRegister({auth}) {
 
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
-      router.push('/profile');
     } catch (error) {
-      console.log(error.message);
       setAuthError(handleAuthError(error));
     }
   };
-
-  onAuthStateChanged(auth, (currentUser) => {});
 
   return (
     <div className={classes.wrapper}>
@@ -89,10 +85,10 @@ function UserRegister({auth}) {
           className={classes.submit}
           disabled={!passMatch}
         >
-          REGISTER{" "}
+          REGISTER
         </button>
       </form>
-      <div>
+      <div className={classes.error}>
         {authError}
       </div>
     </div>

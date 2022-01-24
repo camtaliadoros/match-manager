@@ -1,15 +1,29 @@
 import Link from "next/link";
 import { useState } from "react";
-import app from '../../firebase/clientApp';
+import app from "../../firebase/clientApp";
 import classes from "./AuthButtons.module.scss";
 import UserLoginForm from "./UserLoginForm";
 import UserRegisterForm from "./UserRegisterForm";
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { updateUserId, updateUserStatus } from "../../features/usersSlice";
+import { useRouter } from "next/router";
 
 export default function UserAuth() {
-  const [form, setForm] = useState('login');
-
+  const [form, setForm] = useState("login");
+  const router = useRouter();
   const auth = getAuth(app);
+  const dispatch = useDispatch();
+
+  onAuthStateChanged(auth, (currentUser) => {
+    if (currentUser) {
+        dispatch(updateUserStatus(true));
+        dispatch(updateUserId(currentUser.uid));
+    } else {
+      dispatch(updateUserStatus(false));
+      dispatch(updateUserId(''))  
+    }
+  });
 
   return (
     <>
@@ -33,8 +47,10 @@ export default function UserAuth() {
         </Link>
 
         <a
-          onClick={() => setForm('login')}
-          className={form === 'login' ? classes.authButtonActive : classes.authButton}
+          onClick={() => setForm("login")}
+          className={
+            form === "login" ? classes.authButtonActive : classes.authButton
+          }
           // className={`${form} === 'login' ? ${classes.authButtonActive} : ${classes.authButton}`}
         >
           Sign In
@@ -43,14 +59,20 @@ export default function UserAuth() {
         <h2>or</h2>
 
         <a
-          onClick={() => setForm('register')}
-          className={form === 'login' ? classes.authButton : classes.authButtonActive}
+          onClick={() => setForm("register")}
+          className={
+            form === "login" ? classes.authButton : classes.authButtonActive
+          }
           // className={`${form} === 'login' ? ${classes.authButton} : ${classes.authButtonActive}`}
         >
           Sign Up
         </a>
       </div>
-      {form === 'login' ? <UserLoginForm auth={auth}/> : <UserRegisterForm auth={auth}/>}
+      {form === "login" ? (
+        <UserLoginForm auth={auth} />
+      ) : (
+        <UserRegisterForm auth={auth} />
+      )}
     </>
   );
 }
