@@ -5,7 +5,7 @@ import UserLoginForm from "./UserLoginForm";
 import UserRegisterForm from "./UserRegisterForm";
 
 export default function Auth() {
-  const [form, setForm] = useState(<UserLoginForm />);
+  const [form, setForm] = useState('login');
 
   return (
     <>
@@ -29,8 +29,9 @@ export default function Auth() {
         </Link>
 
         <a
-          onClick={() => setForm(<UserLoginForm />)}
-          className={classes.authButton}
+          onClick={() => setForm('login')}
+          className={form === 'login' ? classes.authButtonActive : classes.authButton}
+          // className={`${form} === 'login' ? ${classes.authButtonActive} : ${classes.authButton}`}
         >
           Sign In
         </a>
@@ -38,13 +39,14 @@ export default function Auth() {
         <h2>or</h2>
 
         <a
-          onClick={() => setForm(<UserRegisterForm />)}
-          className={classes.authButton}
+          onClick={() => setForm('register')}
+          className={form === 'login' ? classes.authButton : classes.authButtonActive}
+          // className={`${form} === 'login' ? ${classes.authButton} : ${classes.authButtonActive}`}
         >
           Sign Up
         </a>
       </div>
-      {form}
+      {form === 'login' ? <UserLoginForm /> : <UserRegisterForm />}
     </>
   );
 }

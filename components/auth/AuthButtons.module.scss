@@ -1,42 +1,47 @@
-@import 'styles/variables';
+@import "styles/variables";
 
 .wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 60px;
-    max-width: 400px;
-    width: 80%;
-    margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  max-width: 400px;
+  width: 80%;
+  margin: 0 auto;
 
-    h2, a {
-        color: $green50;
-        padding-bottom: 9px 0;
-    }
+  h2 {
+      color: $green50;
+  }
+
+  h2,
+  a {
+    padding-bottom: 9px 0;
+  }
 }
 
 .closeButton {
-    transition: filter 0.5s;
-    cursor: pointer;
+  transition: filter 0.5s;
+  cursor: pointer;
 
-    &:hover {
-        filter: brightness(75%);
-    }
+  &:hover {
+    filter: brightness(75%);
+  }
 }
 
 .authButton {
-    transition: color 0.5s;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 24px;
+  transition: color 0.5s;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 24px;
+  color: $green50;
 
-    &:hover {
-        color: $dark-green;
-    }
-
-    &:active {
-        color: $black;
-        border-bottom: solid $dark-green 3px;
-    }
+  &:hover {
+    color: $dark-green;
+  }
 }
 
+.authButtonActive {
+  @extend .authButton;
+  border-bottom: solid $dark-green 3px;
+  color: $black;
+}
