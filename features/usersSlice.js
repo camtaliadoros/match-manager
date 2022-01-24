@@ -6,19 +6,15 @@ export const userSlice = createSlice({
         firstName: '',
         lastName: '',
         photo: '',
+        isLoggedIn: false
     },
     reducers: {
-        setFirstName(state, action) {
+        updateUserProfile(state, action) {
             state.firstName = action.payload;
-        },
-        setLastName(state, action) {
-            state.lastName = action.payload;
-        },
-        setPhoto(state,action) {
-            state.photo = action.payload;
         }
-
     }
 })
-export const { setFirstName, setLastName, setPhoto } = userSlice.actions;
+export const { updateUserProfile } = userSlice.actions;
+export const selectLoggedIn = state => state.user.isLoggedIn;
+export const selectUserProfile = state => state.user;
 export default userSlice.reducer;
