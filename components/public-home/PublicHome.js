@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import classes from "./PublicHome.module.scss";
+import AuthNavigation from "../layout/AuthNavigation";
 
 export default function PublicHome() {
   return (
@@ -10,9 +11,7 @@ export default function PublicHome() {
         <Link href="/" >
           <a className={`${classes.logo} light-text`}>FA</a>
         </Link>
-        <nav className={classes.topnav}>
-          <Link href="/login">Register / Log In</Link>
-        </nav>
+        <AuthNavigation />
       </header>
       <main className={classes.main}>
         <div className={classes.firstScreen}>
