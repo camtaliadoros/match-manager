@@ -1,13 +1,21 @@
 import { sendEmailVerification } from "firebase/auth";
 import { useState } from "react";
 import classes from './Auth.module.scss';
+import { auth } from '../../firebase/clientApp';
+import { handleAuthError } from "../../utilities/authErrorHandler";
 
-export default function VerificationAlert({ auth }) {
+export default function VerificationAlert() {
   const [clicked, setClicked] = useState(false);
+  const [authError, setAuthError] = useState("");
 
-  const handleClick = () => {
-    sendEmailVerification(auth.currentUser);
-    setClicked(true);
+  const handleClick = async () => {
+    try {
+      await sendEmailVerification(auth.currentUser);
+      setClicked(true);
+    } catch (error) {
+      console.log(error);
+      setAuthError(handleAuthError(error));
+    }
   };
 
   return (
@@ -19,6 +27,7 @@ export default function VerificationAlert({ auth }) {
       ) : (
         <button onClick={handleClick}>RE-SEND EMAIL VERIFICATION</button>
       )}
+      {authError ? <p className={classes.error}>{authError}</p> : null}
     </div>
   );
 }

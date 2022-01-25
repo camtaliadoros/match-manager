@@ -5,8 +5,9 @@ import {
 import React, { useState } from "react";
 import classes from "./Auth.module.scss";
 import { handleAuthError } from "../../utilities/authErrorHandler";
+import { auth } from "../../firebase/clientApp";
 
-function UserLogin({ auth }) {
+function UserLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -60,8 +61,12 @@ function UserLogin({ auth }) {
         <button className={classes.submit}>LOGIN</button>
       </form>
       <div className={classes.authMessage}>
-      {passResetRequested ? <p>Please check your email.</p> : <button onClick={handleResetPassword}>Forgot your password?</button>}
-      <p className={classes.error}>{errorMessage}</p>
+        {passResetRequested ? (
+          <p>Please check your email.</p>
+        ) : (
+          <button onClick={handleResetPassword}>Forgot your password?</button>
+        )}
+        <p className={classes.error}>{errorMessage}</p>
       </div>
     </div>
   );

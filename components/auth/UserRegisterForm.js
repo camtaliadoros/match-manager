@@ -6,8 +6,9 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import classes from "./Auth.module.scss";
 import { handleAuthError } from "../../utilities/authErrorHandler";
+import { auth } from "../../firebase/clientApp";
 
-function UserRegister({ auth }) {
+function UserRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passVal, setPassVal] = useState("");
