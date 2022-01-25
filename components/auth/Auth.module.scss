@@ -70,3 +70,62 @@
   font-family: 'proxima-nova';
   color: $red;
 }
+
+.alert {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+
+  h2 {
+    margin-bottom: 24px;
+  }
+}
+
+
+.buttonWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  max-width: 400px;
+  width: 80%;
+  margin: 0 auto;
+
+  h2 {
+      color: $green50;
+  }
+
+  h2,
+  a {
+    padding-bottom: 9px 0;
+  }
+}
+
+.closeButton {
+  transition: filter 0.5s;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(75%);
+  }
+}
+
+.authButton {
+  transition: color 0.5s;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 24px;
+  color: $green50;
+
+  &:hover {
+    color: $dark-green;
+  }
+}
+
+.authButtonActive {
+  @extend .authButton;
+  border-bottom: solid $dark-green 3px;
+  color: $black;
+}
