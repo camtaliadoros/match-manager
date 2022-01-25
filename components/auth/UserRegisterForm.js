@@ -1,20 +1,20 @@
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
+  sendEmailVerification,
 } from "firebase/auth";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import classes from "./Auth.module.scss";
 import { useRouter } from "next/router";
-import { handleAuthError } from '../../utilities/authErrorHandler';
+import { handleAuthError } from "../../utilities/authErrorHandler";
 
-function UserRegister({auth}) {
+function UserRegister({ auth }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passVal, setPassVal] = useState("");
   const [passMatch, setPassMatch] = useState(false);
   const [passAlert, setPassAlert] = useState(false);
-  const [authError, setAuthError] = useState('');
+  const [authError, setAuthError] = useState("");
 
   const router = useRouter();
 
@@ -34,6 +34,9 @@ function UserRegister({auth}) {
 
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
+      if (user) {
+        sendEmailVerification(auth.currentUser);
+      }
     } catch (error) {
       setAuthError(handleAuthError(error));
     }
@@ -88,9 +91,7 @@ function UserRegister({auth}) {
           REGISTER
         </button>
       </form>
-      <div className={classes.error}>
-        {authError}
-      </div>
+      <div className={classes.error}>{authError}</div>
     </div>
   );
 }
