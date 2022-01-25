@@ -6,7 +6,12 @@ import UserLoginForm from "./UserLoginForm";
 import UserRegisterForm from "./UserRegisterForm";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { updateUserId, updateUserStatus } from "../../features/usersSlice";
+import {
+  updateUserId,
+  updateUserStatus,
+  updateEmailVerified,
+  resetUser,
+} from "../../features/usersSlice";
 import { useRouter } from "next/router";
 import VerificationAlert from "./VerificationAlert";
 
@@ -23,12 +28,13 @@ export default function UserAuth() {
       setUser(currentUser);
       dispatch(updateUserStatus(true));
       dispatch(updateUserId(currentUser.uid));
-      if (!currentUser.emailVerified) {
+      if (currentUser.emailVerified) {
+        dispatch(updateEmailVerified(true));
+      } else {
         setAlert(true);
       }
     } else {
-      dispatch(updateUserStatus(false));
-      dispatch(updateUserId(""));
+      dispatch(resetUser());
     }
   });
 

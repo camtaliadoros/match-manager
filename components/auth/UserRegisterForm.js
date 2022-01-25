@@ -5,7 +5,6 @@ import {
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import classes from "./Auth.module.scss";
-import { useRouter } from "next/router";
 import { handleAuthError } from "../../utilities/authErrorHandler";
 
 function UserRegister({ auth }) {
@@ -15,8 +14,6 @@ function UserRegister({ auth }) {
   const [passMatch, setPassMatch] = useState(false);
   const [passAlert, setPassAlert] = useState(false);
   const [authError, setAuthError] = useState("");
-
-  const router = useRouter();
 
   useEffect(() => {
     if (passVal.length > 0 && passVal === password) {

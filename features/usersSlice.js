@@ -1,29 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+    uid: '',
+    userStatus: {
+        isLoggedIn: false,
+        isEmailVerified: false
+    },
+    profileDetails: {
+        firstName: '',
+        lastName: '',
+        photo: '',
+    }
+}
+
 export const userSlice = createSlice({
     name: 'user',
-    initialState: {
-        uid: '',
-        isLoggedIn: false,
-        profileDetails: {
-            firstName: '',
-            lastName: '',
-            photo: '',
-        }
-    },
+    initialState,
     reducers: {
         updateUserProfile(state, action) {
             state.profileDetails = action.payload;
         },
         updateUserStatus(state, action) {
-            state.isLoggedIn = action.payload;
+            state.userStatus.isLoggedIn = action.payload;
+        },
+        updateEmailVerified(state, action) {
+            state.userStatus.isEmailVerified = action.payload;
         },
         updateUserId(state, action) {
             state.uid = action.payload;
-        }
+        },
+        resetUser: () => initialState
+        
     }
 })
-export const { updateUserProfile, updateUserStatus, updateUserId } = userSlice.actions;
-export const selectLoggedIn = state => state.user.isLoggedIn;
+export const { updateUserProfile, updateUserStatus, updateUserId, updateEmailVerified, resetUser} = userSlice.actions;
+export const selectLoggedIn = state => state.user.userStatus.isLoggedIn;
+export const selectEmailVerified = state => state.user.userStatus.isEmailVerified;
 export const selectUserProfile = state => state.user;
 export default userSlice.reducer;
