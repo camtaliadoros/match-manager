@@ -129,3 +129,26 @@
   border-bottom: solid $dark-green 3px;
   color: $black;
 }
+
+
+.authMessage {
+  margin: 18px 0;
+
+  p {
+    font-weight: 400;
+  }
+
+  button {
+    background-color: transparent;
+    color: $black;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 400;
+    transition: opacity 0.5s;
+    opacity: 1;
+  }
+
+  button:hover {
+    opacity: 0.75;
+  }
+}
