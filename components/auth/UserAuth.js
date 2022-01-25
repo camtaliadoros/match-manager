@@ -12,14 +12,12 @@ import {
   updateEmailVerified,
   resetUser,
 } from "../../features/usersSlice";
-import { useRouter } from "next/router";
 import VerificationAlert from "./VerificationAlert";
 
 export default function UserAuth() {
   const [form, setForm] = useState("login");
-  const [alert, setAlert] = useState(false);
   const [user, setUser] = useState("");
-  const router = useRouter();
+
   const auth = getAuth(app);
   const dispatch = useDispatch();
 
@@ -30,9 +28,7 @@ export default function UserAuth() {
       dispatch(updateUserId(currentUser.uid));
       if (currentUser.emailVerified) {
         dispatch(updateEmailVerified(true));
-      } else {
-        setAlert(true);
-      }
+      } 
     } else {
       dispatch(resetUser());
     }
