@@ -63,19 +63,6 @@
 
 } 
 
-.bottomNav {
-  color: #f4f4f4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-  font-size: 14px;
-}
-
-.bottomNav:hover {
-  background-color: #43603F;
-  transition: background-color 0.5s;
-}
 
 @media screen and (min-width: 600px) {
   .topnav {

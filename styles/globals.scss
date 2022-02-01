@@ -37,7 +37,6 @@ header {
   padding: 18px;
   z-index: 1;
   height: 54px;
-  margin-bottom: 48px;
 }
 
 header p {
@@ -166,10 +165,28 @@ nav.top-nav {
   display: none;
 }
 
+.bottom-nav {
+  color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  font-size: 14px;
+}
+
+.bottom-nav:hover {
+  background-color: #43603F;
+  transition: background-color 0.5s;
+}
+
 
 @media only screen and (min-width: 600px) {
   nav.top-nav {
     display: block;
+  }
+
+  .bottom-nav {
+    display: none;
   }
 }
 

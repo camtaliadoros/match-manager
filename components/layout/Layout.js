@@ -6,6 +6,7 @@ import { selectLoggedIn } from '../../features/usersSlice';
 
 function Layout(props) {
   const userIsLoggedIn = useSelector(selectLoggedIn);
+  console.log(props)
   
   return (
     <>
@@ -18,9 +19,9 @@ function Layout(props) {
         </nav>
       </header>
       <main className={classes.main}>{props.children}</main>
-      {userIsLoggedIn ? <footer>
-        DASHBOARD NAV
-      </footer> : null }
+      <footer className="bottom-nav">
+        <AuthNavigation />
+      </footer>
     </>
   );
 }

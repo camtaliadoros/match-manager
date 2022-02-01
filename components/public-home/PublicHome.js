@@ -44,7 +44,7 @@ export default function PublicHome() {
           </div>
         </div>
       </main>
-      <footer className={classes.bottomNav}>
+      <footer className="bottom-nav">
         <AuthNavigation />
       </footer>
     </div>
