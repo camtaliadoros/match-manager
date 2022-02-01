@@ -8,10 +8,12 @@ export default function PublicHome() {
   return (
     <div className={classes.wrapper}>
       <header className={classes.header}>
-        <Link href="/" >
+        <Link href="/">
           <a className={`${classes.logo} light-text`}>FA</a>
         </Link>
-        <AuthNavigation />
+        <nav className="top-nav">
+          <AuthNavigation />
+        </nav>
       </header>
       <main className={classes.main}>
         <div className={classes.firstScreen}>
@@ -42,10 +44,8 @@ export default function PublicHome() {
           </div>
         </div>
       </main>
-      <footer>
-        <button className={classes.bottomNav}>
-          <Link href="/login">REGISTER / LOG IN</Link>
-        </button>
+      <footer className={classes.bottomNav}>
+        <AuthNavigation />
       </footer>
     </div>
   );

@@ -10,6 +10,7 @@ const initialState = {
         firstName: '',
         lastName: '',
         photo: '',
+        emailAddress: ''
     }
 }
 
@@ -36,5 +37,5 @@ export const userSlice = createSlice({
 export const { updateUserProfile, updateUserStatus, updateUserId, updateEmailVerified, resetUser} = userSlice.actions;
 export const selectLoggedIn = state => state.user.userStatus.isLoggedIn;
 export const selectEmailVerified = state => state.user.userStatus.isEmailVerified;
-export const selectUserProfile = state => state.user;
+export const selectUserProfile = state => state.user.profileDetails;
 export default userSlice.reducer;

@@ -15,14 +15,14 @@ export default function AuthNavigation() {
     signOut(auth);
   };
   return (
-    <nav className={classes.topnav}>
-      {isLoggedIn && isEmailVerified ? <Link href="/">Dashboard</Link> : null}
-      {isLoggedIn ? null : <Link href="/login">Register / Log In</Link>}
+    <div className={classes.navLinks}>
+      {isLoggedIn && isEmailVerified ? <Link href="/"><a>Dashboard</a></Link> : null}
+      {isLoggedIn ? null : <Link href="/login"><a>Register / Log In</a></Link>}
       {isLoggedIn ? (
         <Link href="/">
           <a onClick={handleSignOut}>Sign Out</a>
         </Link>
       ) : null}
-    </nav>
+    </div>
   );
 }

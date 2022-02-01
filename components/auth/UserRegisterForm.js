@@ -42,7 +42,7 @@ function UserRegister() {
 
   return (
     <div className={classes.wrapper}>
-      <form className={classes.form} onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="email-address">Email Address</label>
         <input
           id="email-address"
@@ -72,7 +72,7 @@ function UserRegister() {
           required
         />
         {passAlert ? <p>Your password does not match</p> : null}
-        <div className={classes.checkbox}>
+        <div className="checkbox">
           <input type="checkbox" id="tcs" name="tcs" required />
           <label htmlFor="tcs">
             I accept the{" "}

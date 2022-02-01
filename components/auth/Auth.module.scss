@@ -4,60 +4,7 @@
   margin-top: 30px;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-}
 
-.form {
-  label {
-    font-family: "proxima-nova", sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    padding-bottom: 6px;
-  }
-
-  input {
-    margin-bottom: 18px;
-  }
-
-  p {
-    margin-top: -18px;
-    font-size: 10px;
-    font-weight: 400;
-    color: $red;
-  }
-
-  a {
-    color: $green75;
-    transition: filter 0.5s;
-    &:hover {
-      filter: brightness(75%);
-    }
-    &.active {
-      display: block;
-    }
-  }
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  margin-bottom: 18px;
-
-  input {
-    padding: 9px;
-    margin-left: 0;
-    margin-right: 12px;
-    margin-bottom: 0;
-  }
-
-  &:checked {
-    background-color: $dark-green;
-    color: white;
-  }
-}
 
 .submit:disabled {
     background-color: $grey;

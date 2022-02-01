@@ -1,18 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile } from "./usersSlice";
 import { selectUserProfile } from "./usersSlice";
+import classes from "./styles/userProfile.module.scss";
+import Image from "next/image";
+
 
 export default function UserProfile() {
   const userProfile = useSelector(selectUserProfile);
 
   const [firstName, setFirstName] = useState(userProfile.firstName);
   const [lastName, setLastName] = useState(userProfile.lastName);
-  //   const [photo, setPhoto] = useState("");
+  const [imgDisplay, setImgDisplay] = useState(userProfile.photo);
+
+  useEffect(() => {
+    if (!userProfile.photo) {
+      if (firstName && lastName) {
+        const firstInitial = firstName[0];
+
+        const lastInitial = lastName[0];
+
+        setImgDisplay(`${firstInitial}${lastInitial}`)
+        console.log(firstInitial + lastInitial)
+      } else if (userProfile.emailAddress) {
+        const emailInitial = userProfile.emailAddress[0].toUpperCase();
+        console.log('email initial' + emailInitial)
+        setImgDisplay(emailInitial);
+      } else {
+        setImgDisplay('?');
+      }
+    }
+  }, [userProfile.photo]);
+  
 
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     dispatch(
       updateUserProfile({
         firstName,
@@ -25,13 +50,18 @@ export default function UserProfile() {
   return (
     <>
       <h1>Create your profile</h1>
+      <div className={classes.profilePhoto}>
+         {userProfile.photo ? <Image src={imgDisplay} layout="fill" /> : <p>{imgDisplay}</p>}
+      </div>
+      <input
+        className={classes.fileInput}
+        type="file"
+        id="avatar"
+        name="avatar"
+        accept="image/png, image/jpeg"
+        onChange={(e) => setImgDisplay(e.target.value)}
+      />
       <form>
-        <input
-          type="file"
-          id="avatar"
-          name="avatar"
-          accept="image/png, image/jpeg"
-        />
         <label htmlFor="firstName">First Name</label>
         <input
           type="text"
@@ -46,7 +76,7 @@ export default function UserProfile() {
           id="lastName"
           onChange={(e) => setLastName(e.target.value)}
         />
-        <button onClick={handleSubmit}>Save</button>
+        <button className="full-width" onClick={handleSubmit}>Save</button>
       </form>
     </>
   );

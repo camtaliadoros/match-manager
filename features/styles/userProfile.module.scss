@@ -1,0 +1,54 @@
+@import "styles/variables";
+
+.fileInput {
+  color: transparent;
+  background-color: $dark-green;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  width: 180px;
+
+  &::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+
+  &::before {
+    content: "CHANGE PHOTO";
+    background-color: #557c50;
+    border: 0;
+    color: #f4f4f4;
+    font-weight: 400;
+    font-family: "proxima-nova", sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: filter 0.5s;
+    text-align: center;
+    padding-top: 3px;
+  }
+  &:hover::before {
+    filter: brightness(75%);
+  }
+  &:active::before {
+    filter: brightness(75%);
+  }
+}
+
+
+.profilePhoto {
+    background-color: $green25;
+    height: 180px;
+    width: 180px; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 36px;
+
+    p {
+        font-size: 120px;
+        font-weight: 600;
+        color: $dark-green;
+    }
+}

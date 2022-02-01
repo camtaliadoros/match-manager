@@ -19,9 +19,6 @@ a {
   }
 }
 
-button {
-  cursor: pointer;
-}
 
 * {
   box-sizing: border-box;
@@ -37,9 +34,10 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0.5rem;
+  padding: 18px;
   z-index: 1;
   height: 54px;
+  margin-bottom: 48px;
 }
 
 header p {
@@ -49,8 +47,11 @@ header p {
 
 
 footer {
-  height: 72px;
+  height: 120px;
   background-color: #557c50;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 input {
@@ -76,13 +77,14 @@ input {
 /* Typography */
 
 h1 {
-  font-weight: 400;
-  font-size: 30px;
+  font-weight: 500;
+  font-size: 24px;
+  margin-bottom: 48px;
 }
 
 h2 {
   font-weight: 500;
-  font-size: 24px;
+  font-size: 18px;
 }
 
 h4 {
@@ -91,9 +93,28 @@ h4 {
 }
 
 p {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 300;
 }
+
+@media only screen and (min-width: 600px) {
+  h1 {
+    font-size: 30px;
+  }
+  
+  h2 {
+    font-size: 24px;
+  }
+  
+  h4 {
+    font-size: 14px;
+  }
+  
+  p {
+    font-size: 14px;
+  }
+  
+} 
 
 // Colours
 
@@ -127,6 +148,8 @@ button {
   font-weight: 400;
   font-family: 'proxima-nova', sans-serif;
   font-size: 12px;
+  cursor: pointer;
+  transition: filter 0.5s;
 }
 
 button.full-width {
@@ -134,7 +157,78 @@ button.full-width {
 }
 
 button:hover {
-  background-color: #43603F;
-  transition: background-color 0.5s;
+  filter: brightness(75%);
 }
 
+
+// Navigation
+nav.top-nav {
+  display: none;
+}
+
+
+@media only screen and (min-width: 600px) {
+  nav.top-nav {
+    display: block;
+  }
+}
+
+
+// Forms
+
+
+form {
+
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  max-width: 540px;
+  width: 100%;
+
+  label {
+    font-family: "proxima-nova", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding-bottom: 6px;
+  }
+
+  input {
+    margin-bottom: 18px;
+  }
+
+  p {
+    margin-top: -18px;
+    font-size: 10px;
+    font-weight: 400;
+    color: $red;
+  }
+
+  a {
+    color: $green75;
+    transition: filter 0.5s;
+    &:hover {
+      filter: brightness(75%);
+    }
+    &.active {
+      display: block;
+    }
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+
+  input {
+    padding: 9px;
+    margin-left: 0;
+    margin-right: 12px;
+    margin-bottom: 0;
+  }
+
+  &:checked {
+    background-color: $dark-green;
+    color: white;
+  }
+}
