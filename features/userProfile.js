@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile } from "./usersSlice";
 import { selectUserProfile } from "./usersSlice";
@@ -16,14 +16,11 @@ export default function UserProfile() {
   useEffect(() => {
     if (!userProfile.photo) {
       if (firstName && lastName) {
-        const firstInitial = firstName[0];
+        const initials = firstName[0] + lastName[0]
+        setImgDisplay(initials);
 
-        const lastInitial = lastName[0];
-
-        setImgDisplay(`${firstInitial}${lastInitial}`)
-        console.log(firstInitial + lastInitial)
       } else if (userProfile.emailAddress) {
-        const emailInitial = userProfile.emailAddress[0].toUpperCase();
+        const emailInitial = userProfile.emailAddress[0];
         console.log('email initial' + emailInitial)
         setImgDisplay(emailInitial);
       } else {

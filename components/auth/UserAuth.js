@@ -1,12 +1,12 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { onAuthStateChanged } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
 import {
+  resetUser,
+  updateEmailVerified,
   updateUserId,
   updateUserStatus,
-  updateEmailVerified,
-  resetUser,
-} from "../../features/usersSlice";
-import { auth } from "../../firebase/clientApp";
+} from '../../features/usersSlice';
+import { auth } from '../../firebase/clientApp';
 
 export default function UserAuth() {
   const dispatch = useDispatch();
@@ -15,6 +15,7 @@ export default function UserAuth() {
     if (currentUser) {
       dispatch(updateUserStatus(true));
       dispatch(updateUserId(currentUser.uid));
+
       if (currentUser.emailVerified) {
         dispatch(updateEmailVerified(true));
       }

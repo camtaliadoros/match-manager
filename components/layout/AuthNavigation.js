@@ -1,28 +1,31 @@
-import { useSelector } from "react-redux";
-import { selectLoggedIn, selectEmailVerified } from "../../features/usersSlice";
-import { signOut, getAuth } from "firebase/auth";
-import app from "../../firebase/clientApp";
-import classes from "./Layout.module.scss";
-import Link from "next/link";
+import { signOut } from 'firebase/auth';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { selectEmailVerified, selectLoggedIn } from '../../features/usersSlice';
+import { auth } from '../../firebase/clientApp';
 
-export default function AuthNavigation() {
-  const auth = getAuth(app);
+export default function AuthNavigation({ authClass }) {
+  const router = useRouter();
 
   const isLoggedIn = useSelector(selectLoggedIn);
   const isEmailVerified = useSelector(selectEmailVerified);
 
   const handleSignOut = async () => {
-    signOut(auth);
+    await signOut(auth);
+    router.push('/');
   };
+
   return (
-    <div className={classes.navLinks}>
-      {isLoggedIn && isEmailVerified ? <Link href="/"><a>Dashboard</a></Link> : null}
-      {isLoggedIn ? null : <Link href="/login"><a>Register / Log In</a></Link>}
+    <div className={authClass}>
+      {isLoggedIn && isEmailVerified ? <Link href='/'>Dashboard</Link> : null}
       {isLoggedIn ? (
-        <Link href="/">
-          <a onClick={handleSignOut}>Sign Out</a>
-        </Link>
-      ) : null}
+        <button className='link-style' onClick={handleSignOut}>
+          SIGN OUT
+        </button>
+      ) : (
+        <Link href='/login'>REGISTER / LOG IN</Link>
+      )}
     </div>
   );
 }

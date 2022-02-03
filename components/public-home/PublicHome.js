@@ -1,38 +1,32 @@
-import Link from "next/link";
-import React from "react";
-import Image from "next/image";
-import classes from "./PublicHome.module.scss";
-import AuthNavigation from "../layout/AuthNavigation";
+import Link from 'next/link';
+import React from 'react';
+import Image from 'next/image';
+import classes from './PublicHome.module.scss';
+import AuthNavigation from '../layout/AuthNavigation';
+import Header from '../layout/Header';
 
 export default function PublicHome() {
   return (
-    <div className={classes.wrapper}>
-      <header className={classes.header}>
-        <Link href="/">
-          <a className={`${classes.logo} light-text`}>FA</a>
-        </Link>
-        <nav className="top-nav">
-          <AuthNavigation />
-        </nav>
-      </header>
+    <div className='wrapper'>
+      <Header classes={classes} />
       <main className={classes.main}>
-        <div className={classes.firstScreen}>
+        <div className={classes.heroScreen}>
           <div className={`${classes.onboardingText} light-text`}>
             <h1>Match Manager</h1>
             <h4>Take control of your games.</h4>
-            <button className="mobile-hidden">
-              <Link href="/login">SIGN UP NOW</Link>
+            <button className='mobile-hidden'>
+              <Link href='/login'>SIGN UP NOW</Link>
             </button>
           </div>
         </div>
         <div className={classes.features}>
           <div className={classes.featureImage}>
             <Image
-              src="/app-feature-1.png"
-              alt="App Feature Example"
-              width="528"
-              height="610"
-              layout="intrinsic"
+              src='/app-feature-1.png'
+              alt='App Feature Example'
+              width='528'
+              height='610'
+              layout='intrinsic'
             />
           </div>
           <div className={classes.featuresText}>

@@ -1,28 +1,16 @@
-import classes from "./Layout.module.scss";
-import Link from "next/link";
-import AuthNavigation from "./AuthNavigation";
-import { useSelector } from 'react-redux';
-import { selectLoggedIn } from '../../features/usersSlice';
+import classes from './Layout.module.scss';
+import AuthNavigation from './AuthNavigation';
+import Header from '../layout/Header';
 
 function Layout(props) {
-  const userIsLoggedIn = useSelector(selectLoggedIn);
-  console.log(props)
-  
   return (
-    <>
-      <header className={classes.header}>
-        <Link href="/">
-          <a className={`${classes.logo}`}>FA</a>
-        </Link>
-        <nav className="top-nav">
-          <AuthNavigation />
-        </nav>
-      </header>
+    <div className='wrapper'>
+      <Header classes={classes} />
       <main className={classes.main}>{props.children}</main>
-      <footer className="bottom-nav">
+      <footer className='bottom-nav'>
         <AuthNavigation />
       </footer>
-    </>
+    </div>
   );
 }
 

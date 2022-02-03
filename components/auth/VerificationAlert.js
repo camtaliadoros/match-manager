@@ -1,12 +1,12 @@
-import { sendEmailVerification } from "firebase/auth";
-import { useState } from "react";
+import { sendEmailVerification } from 'firebase/auth';
+import { useState } from 'react';
 import classes from './Auth.module.scss';
 import { auth } from '../../firebase/clientApp';
-import { handleAuthError } from "../../utilities/authErrorHandler";
+import { handleAuthError } from '../../utilities/authErrorHandler';
 
 export default function VerificationAlert() {
   const [clicked, setClicked] = useState(false);
-  const [authError, setAuthError] = useState("");
+  const [authError, setAuthError] = useState('');
 
   const handleClick = async () => {
     try {

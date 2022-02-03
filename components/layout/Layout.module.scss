@@ -1,18 +1,18 @@
-@import "styles/variables";
+@import 'styles/variables';
 
 .main {
-  margin: auto;
-  width: 90%;
-  max-width: 40rem;
+  padding: $spacing-xsm;
+  padding-top: $spacing-lg;
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
+  overflow-y: auto;
 }
 
 .header {
   color: $dark-green;
-  margin-bottom: 48px;
+  align-self: stretch;
 }
 
 .logo {
@@ -21,15 +21,21 @@
 }
 
 .navLinks {
-    a {
-        filter: brightness(100%);
-        transition: filter 0.5s;
-        font-weight: 400;
-        padding: 0 12px;
+  color: $dark-green;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
 
-        &:hover{
-            filter: brightness(75%);
-        }
+  a {
+    filter: brightness(100%);
+    transition: filter 0.5s;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 0 $spacing-xsm;
 
+    &:hover {
+      filter: brightness(75%);
     }
+  }
 }

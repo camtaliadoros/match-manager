@@ -1,10 +1,10 @@
-@import "variables";
+@import 'variables';
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "proxima-nova", sans-serif;
+  font-family: 'proxima-nova', sans-serif;
   font-weight: 400;
   background-color: #f4f4f4;
 }
@@ -12,17 +12,10 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-  cursor: pointer;
-
-  &.active {
-    display: block;
-  }
 }
 
 * {
   box-sizing: border-box;
-  margin-block-start: 0;
-  margin-block-end: 0;
 }
 
 .mobile-hidden {
@@ -33,9 +26,9 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px;
+  padding: 0 $spacing-sm;
   z-index: 1;
-  height: 54px;
+  flex: 0 0 54px;
 }
 
 header p {
@@ -43,12 +36,23 @@ header p {
   font-size: 36px;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+
 footer {
-  height: 120px;
+  flex: 0 0 60px;
   background-color: #557c50;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  box-shadow: 0 -3px 36px rgba(0, 0, 0, 0.12);
+  z-index: 1;
+  width: 100%;
+  padding: $spacing-xsm;
 }
 
 input {
@@ -57,10 +61,10 @@ input {
   font-size: 14px;
   color: $dark-green;
   font-weight: 500;
-  padding: 12px 6px;
+  padding: $spacing-xsm 6px;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: $screen-sm) {
   footer {
     display: none;
   }
@@ -75,12 +79,12 @@ input {
 h1 {
   font-weight: 500;
   font-size: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 0;
 }
 
 h2 {
   font-weight: 500;
-  font-size: 18px;
+  font-size: 24px;
 }
 
 h4 {
@@ -93,7 +97,12 @@ p {
   font-weight: 300;
 }
 
-@media only screen and (min-width: 600px) {
+.logo {
+  font-size: 36px;
+  font-weight: 800;
+}
+
+@media only screen and (min-width: $screen-sm) {
   h1 {
     font-size: 30px;
   }
@@ -133,22 +142,26 @@ p {
 
 button {
   background-color: #557c50;
-  padding: 18px 90px;
+  padding: $spacing-xsm 90px;
   border: 0;
   color: #f4f4f4;
   font-weight: 400;
-  font-family: "proxima-nova", sans-serif;
+  font-family: 'proxima-nova', sans-serif;
   font-size: 12px;
-  cursor: pointer;
   transition: filter 0.5s;
-}
 
-button.full-width {
-  width: 100%;
-}
+  .full-width {
+    width: 100%;
+  }
 
-button:hover {
-  filter: brightness(75%);
+  &:hover {
+    filter: brightness(75%);
+  }
+
+  &.link-style {
+    background-color: transparent;
+    padding: 0;
+  }
 }
 
 // Forms
@@ -156,26 +169,18 @@ button:hover {
 form {
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
-  max-width: 540px;
+  margin-top: $spacing-md;
   width: 100%;
 
   label {
-    font-family: "proxima-nova", sans-serif;
+    font-family: 'proxima-nova', sans-serif;
     font-size: 14px;
     font-weight: 300;
     padding-bottom: 6px;
   }
 
   input {
-    margin-bottom: 18px;
-  }
-
-  p {
-    margin-top: -18px;
-    font-size: 10px;
-    font-weight: 400;
-    color: $red;
+    margin-bottom: $spacing-sm;
   }
 
   a {
@@ -184,16 +189,13 @@ form {
     &:hover {
       filter: brightness(75%);
     }
-    &.active {
-      display: block;
-    }
   }
 }
 
 .checkbox {
   display: flex;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: $spacing-sm;
 
   input {
     padding: 9px;
@@ -205,17 +207,5 @@ form {
   &:checked {
     background-color: $dark-green;
     color: white;
-  }
-}
-
-// Navigation
-
-.top-nav {
-  display: none;
-}
-
-@media only screen and (min-width: 600px) {
-  .top-nav {
-    display: block;
   }
 }

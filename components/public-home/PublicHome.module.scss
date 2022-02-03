@@ -1,20 +1,28 @@
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
-} 
-
-.logo {
-  font-size: 36px;
-  font-weight: 800;
-}
+@import 'styles/variables';
 
 .header {
   color: #f4f4f4;
 }
 
+.navLinks {
+  color: $chalk;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
 
+  a {
+    filter: brightness(100%);
+    transition: filter 0.5s;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 0 $spacing-xsm;
+
+    &:hover {
+      filter: brightness(75%);
+    }
+  }
+}
 
 .onboardingText {
   display: flex;
@@ -23,12 +31,11 @@
   justify-content: flex-end;
   height: 100%;
   padding-bottom: 102px;
-  text-shadow: 0 3px 6px rgba(0, 0 , 0, 0.3);
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
-
 .onboardingText h4 {
-  margin-bottom: 60px;
+  margin-bottom: $spacing-xlg;
 }
 
 .main {
@@ -38,43 +45,41 @@
   overflow-y: auto;
 }
 
-.firstScreen {
-  background-image: url("../../public/background.png");
+.heroScreen {
+  background-image: url('../../public/background.png');
   background-size: cover;
   background-position: top;
   height: 100vh;
   flex-shrink: 0;
 }
 
-@media screen and (min-width: 600px) {
-  .firstScreen {
+@media screen and (min-width: $screen-sm) {
+  .heroScreen {
     background-position: center;
   }
-
-} 
-
+}
 
 .features {
-  padding: 36px;
-  margin-top: 48px;
+  padding: $spacing-md;
+  margin-top: $spacing-lg;
   display: flex;
   flex-direction: column;
 }
 
 .featuresText {
-  margin: 36px 0;
+  margin: $spacing-lg 0;
 }
 
 .featuresText h2 {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: $spacing-sm;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: $screen-sm) {
   .features {
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: space-around;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-around;
   }
 
   .featuresText {
@@ -86,11 +91,6 @@
   }
 
   .featureImage {
-    width: 30%;
+    width: 30%; //C seems random but ok - transform to grid
   }
-
-} 
-
-
-// Navigation
-
+}
