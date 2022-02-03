@@ -7,7 +7,7 @@ import Header from '../layout/Header';
 
 export default function PublicHome() {
   return (
-    <div className='wrapper'>
+    <div className='outter-wrapper'>
       <Header classes={classes} />
       <main className={classes.main}>
         <div className={classes.heroScreen}>

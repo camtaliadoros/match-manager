@@ -2,7 +2,10 @@ import classes from './Layout.module.scss';
 import AuthNavigation from './AuthNavigation';
 import Header from '../layout/Header';
 import { useSelector } from 'react-redux';
-import { selectEmailVerified, selectLoggedIn } from '../../features/usersSlice';
+import {
+  selectEmailVerified,
+  selectLoggedIn,
+} from '../../features/userProfile/usersSlice';
 import VerificationAlert from '../auth/VerificationAlert';
 
 function Layout(props) {
@@ -10,7 +13,7 @@ function Layout(props) {
   const isLoggedIn = useSelector(selectLoggedIn);
 
   return (
-    <div className='wrapper'>
+    <div className='outter-wrapper'>
       <Header classes={classes} />
       {isLoggedIn && !isEmailVerified ? (
         <VerificationAlert />

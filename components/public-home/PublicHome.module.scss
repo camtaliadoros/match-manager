@@ -65,10 +65,12 @@
 }
 
 .features {
-  padding: $spacing-md;
+  padding: $spacing-md $spacing-xlg;
   margin-top: $spacing-lg;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  margin: 0 auto;
+  max-width: 1200px;
+  grid-template-columns: 1fr;
 }
 
 .featuresText {
@@ -82,20 +84,19 @@
 
 @media screen and (min-width: $screen-sm) {
   .features {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-around;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: $spacing-lg;
   }
 
   .featuresText {
     max-width: 520px;
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 
   .featuresText h2 {
     text-align: left;
-  }
-
-  .featureImage {
-    width: 30%; //C seems random but ok - transform to grid
   }
 }

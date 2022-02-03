@@ -5,7 +5,7 @@ import {
   updateEmailVerified,
   updateUserId,
   updateUserStatus,
-} from '../../features/usersSlice';
+} from '../../features/userProfile/usersSlice';
 import { auth } from '../../firebase/clientApp';
 
 export default function UserAuth() {
