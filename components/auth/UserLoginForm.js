@@ -57,14 +57,16 @@ function UserLogin() {
           minLength='8'
           required
         />
+        {passResetRequested ? (
+          <p className={classes.passwordReset}>Please check your email.</p>
+        ) : (
+          <button className={classes.linkStyle} onClick={handleResetPassword}>
+            Forgot your password?
+          </button>
+        )}
         <button className={classes.submit}>LOGIN</button>
       </form>
       <div className={classes.authMessage}>
-        {passResetRequested ? (
-          <p>Please check your email.</p>
-        ) : (
-          <button onClick={handleResetPassword}>Forgot your password?</button>
-        )}
         <p className={classes.error}>{errorMessage}</p>
       </div>
     </div>

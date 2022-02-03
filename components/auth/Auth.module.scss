@@ -6,6 +6,24 @@
   flex-direction: column;
   align-items: center;
   max-width: 540px;
+
+  button {
+    &.linkStyle {
+      align-self: flex-start;
+      color: #557c50;
+      margin-bottom: 12px;
+      margin-top: -18px;
+      background-color: transparent;
+      padding: 0;
+    }
+  }
+}
+
+.passwordReset {
+  font-weight: 400;
+  margin-bottom: 12px;
+  margin-top: -18px;
+  font-size: 12px;
 }
 
 .submit:disabled {
@@ -80,7 +98,6 @@
 
 .authMessage {
   margin: $spacing-sm 0;
-  align-self: flex-start;
 
   p {
     font-weight: 400;
