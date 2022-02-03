@@ -57,15 +57,11 @@ export default function UserAuthContainer() {
       </>
     );
   } else {
-    if (!isEmailVerified) {
-      return <VerificationAlert />;
-    } else {
-      return (
-        <div className={classes.alert}>
-          <h2>You are already signed in.</h2>
-          <button>GO TO DASHBOARD</button>
-        </div>
-      );
-    }
+    return (
+      <div className={classes.alert}>
+        <h2>You are already signed in.</h2>
+        <button>GO TO DASHBOARD</button>
+      </div>
+    );
   }
 }

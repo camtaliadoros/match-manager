@@ -26,16 +26,22 @@
   width: 100%;
   justify-content: space-around;
   align-items: center;
+  padding-right: $spacing-sm;
 
   a {
     filter: brightness(100%);
     transition: filter 0.5s;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
     padding: 0 $spacing-xsm;
 
     &:hover {
       filter: brightness(75%);
     }
+  }
+
+  button {
+    font-size: 14px;
+    color: $dark-green;
   }
 }
