@@ -36,12 +36,13 @@ function UserRegister() {
 
   return (
     <div className={classes.wrapper}>
-      <form onSubmit={handleSubmit}>
+      <form aria-label='form'>
         <label htmlFor='email-address'>Email Address</label>
         <input
           id='email-address'
           name='emailAdress'
           type='email'
+          aria-label='email-adress'
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
           required
@@ -51,6 +52,7 @@ function UserRegister() {
           id='password'
           type='password'
           name='password'
+          aria-label='password'
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
           minLength='8'
@@ -61,6 +63,7 @@ function UserRegister() {
           id='passval'
           type='password'
           name='passVal'
+          aria-label='password-validation'
           value={passVal}
           onChange={(e) => setPassVal(e.currentTarget.value)}
           required
@@ -75,7 +78,11 @@ function UserRegister() {
             </Link>
           </label>
         </div>
-        <button className={classes.submit} disabled={!passMatch}>
+        <button
+          className={classes.submit}
+          disabled={!passMatch}
+          onClick={handleSubmit}
+        >
           REGISTER
         </button>
       </form>
