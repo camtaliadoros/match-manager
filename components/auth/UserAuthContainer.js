@@ -3,11 +3,8 @@ import { useState } from 'react';
 import classes from './Auth.module.scss';
 import UserLoginForm from './UserLoginForm';
 import UserRegisterForm from './UserRegisterForm';
-import { useSelector } from 'react-redux';
-import {
-  selectEmailVerified,
-  selectLoggedIn,
-} from '../../features/userProfile/usersSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectEmailVerified, selectLoggedIn } from '../../features/usersSlice';
 
 export default function UserAuthContainer() {
   const [form, setForm] = useState('login');

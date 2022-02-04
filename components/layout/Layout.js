@@ -2,10 +2,7 @@ import classes from './Layout.module.scss';
 import AuthNavigation from './AuthNavigation';
 import Header from '../layout/Header';
 import { useSelector } from 'react-redux';
-import {
-  selectEmailVerified,
-  selectLoggedIn,
-} from '../../features/userProfile/usersSlice';
+import { selectEmailVerified, selectLoggedIn } from '../../features/usersSlice';
 import VerificationAlert from '../auth/VerificationAlert';
 
 function Layout(props) {

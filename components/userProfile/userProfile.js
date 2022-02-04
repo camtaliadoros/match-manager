@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserProfile } from './usersSlice';
-import { selectUserProfile } from './usersSlice';
+import { updateUserProfile } from '../../features/usersSlice';
+import { selectUserProfile } from '../../features/usersSlice';
 import classes from './styles/userProfile.module.scss';
 import Image from 'next/image';
 
@@ -67,7 +67,7 @@ export default function UserProfile() {
           id='firstName'
           onChange={(e) => setFirstName(e.target.value)}
         />
-        <label htmlFor='lastName'>First Name</label>
+        <label htmlFor='lastName'>Last Name</label>
         <input
           type='text'
           name='lastName'
