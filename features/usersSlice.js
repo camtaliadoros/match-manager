@@ -2,15 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   uid: '',
+  emailAddress: '',
   userStatus: {
     isLoggedIn: false,
     isEmailVerified: false,
   },
   profileDetails: {
-    firstName: '',
-    lastName: '',
+    displayName: '',
     photo: '',
-    emailAddress: '',
   },
 };
 
@@ -30,8 +29,11 @@ export const userSlice = createSlice({
     updateUserId(state, action) {
       state.uid = action.payload;
     },
-    resetUser(state) {
-      state = initialState;
+    updateEmailAddress(state, action) {
+      state.emailAddress = action.payload;
+    },
+    resetUser() {
+      return initialState;
     },
   },
 });
@@ -40,10 +42,11 @@ export const {
   updateUserStatus,
   updateUserId,
   updateEmailVerified,
+  updateEmailAddress,
   resetUser,
 } = userSlice.actions;
 export const selectLoggedIn = (state) => state.user.userStatus.isLoggedIn;
 export const selectEmailVerified = (state) =>
   state.user.userStatus.isEmailVerified;
-export const selectUserProfile = (state) => state.user.profileDetails;
+export const selectCurrentUser = (state) => state.user;
 export default userSlice.reducer;

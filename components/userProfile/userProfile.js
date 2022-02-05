@@ -1,31 +1,40 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserProfile } from '../../features/usersSlice';
-import { selectUserProfile } from '../../features/usersSlice';
+import {
+  updateUserProfile,
+  selectCurrentUser,
+} from '../../features/usersSlice';
 import classes from './styles/userProfile.module.scss';
 import Image from 'next/image';
 
-export default function UserProfile() {
-  const userProfile = useSelector(selectUserProfile);
+// To Do
+// - Connect to database
+// - Photo upload functionality
+// - Check if username is already taken
 
-  const [firstName, setFirstName] = useState(userProfile.firstName);
-  const [lastName, setLastName] = useState(userProfile.lastName);
-  const [imgDisplay, setImgDisplay] = useState(userProfile.photo);
+export default function UserProfile() {
+  const currentUser = useSelector(selectCurrentUser);
+  const userPhoto = currentUser.profileDetails.photo;
+  const userAddress = currentUser.emailAddress;
+  const emailUsername = userAddress.split('@')[0];
+
+  const [username, setUsername] = useState(
+    currentUser.profileDetails.displayName
+      ? currentUser.profileDetails.displayName
+      : emailUsername
+  );
+  const [imgDisplay, setImgDisplay] = useState(userPhoto);
 
   useEffect(() => {
-    if (!userProfile.photo) {
-      if (firstName && lastName) {
-        const initials = firstName[0] + lastName[0];
+    if (!userPhoto) {
+      if (username) {
+        const initials = username[0];
         setImgDisplay(initials);
-      } else if (userProfile.emailAddress) {
-        const emailInitial = userProfile.emailAddress[0];
-        console.log('email initial' + emailInitial);
-        setImgDisplay(emailInitial);
       } else {
         setImgDisplay('?');
       }
     }
-  }, [userProfile.photo]);
+  }, [userPhoto][username]);
 
   const dispatch = useDispatch();
 
@@ -34,8 +43,7 @@ export default function UserProfile() {
 
     dispatch(
       updateUserProfile({
-        firstName,
-        lastName,
+        username,
         // photo
       })
     );
@@ -45,7 +53,7 @@ export default function UserProfile() {
     <div className='wrapper'>
       <h1>Create your profile</h1>
       <div className={classes.profilePhoto}>
-        {userProfile.photo ? (
+        {userPhoto ? (
           <Image src={imgDisplay} layout='fill' />
         ) : (
           <p>{imgDisplay}</p>
@@ -59,24 +67,17 @@ export default function UserProfile() {
         accept='image/png, image/jpeg'
         onChange={(e) => setImgDisplay(e.target.value)}
       />
-      <form>
-        <label htmlFor='firstName'>First Name</label>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor='display-name'>Username</label>
         <input
           type='text'
-          name='firstName'
-          id='firstName'
-          onChange={(e) => setFirstName(e.target.value)}
+          name='display-name'
+          id='display-name'
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
         />
-        <label htmlFor='lastName'>Last Name</label>
-        <input
-          type='text'
-          name='lastName'
-          id='lastName'
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <button className='full-width' onClick={handleSubmit}>
-          Save
-        </button>
+        <button className='full-width'>Save</button>
       </form>
     </div>
   );

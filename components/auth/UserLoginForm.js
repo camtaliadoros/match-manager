@@ -39,7 +39,7 @@ function UserLogin() {
 
   return (
     <div className={classes.wrapper}>
-      <form className={classes.form} onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label htmlFor='email-address'>Email Address</label>
         <input
           id='email-address'
@@ -60,7 +60,11 @@ function UserLogin() {
         {passResetRequested ? (
           <p className={classes.passwordReset}>Please check your email.</p>
         ) : (
-          <button className={classes.linkStyle} onClick={handleResetPassword}>
+          <button
+            type='button'
+            className={classes.linkStyle}
+            onClick={handleResetPassword}
+          >
             Forgot your password?
           </button>
         )}

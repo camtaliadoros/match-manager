@@ -36,7 +36,7 @@ function UserRegister() {
 
   return (
     <div className={classes.wrapper}>
-      <form aria-label='form'>
+      <form aria-label='form' onSubmit={handleSubmit}>
         <label htmlFor='email-address'>Email Address</label>
         <input
           id='email-address'
@@ -78,11 +78,7 @@ function UserRegister() {
             </Link>
           </label>
         </div>
-        <button
-          className={classes.submit}
-          disabled={!passMatch}
-          onClick={handleSubmit}
-        >
+        <button className={classes.submit} disabled={!passMatch}>
           REGISTER
         </button>
       </form>

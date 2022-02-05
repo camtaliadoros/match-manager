@@ -3,6 +3,7 @@ import {
   updateUserStatus,
   updateUserId,
   updateEmailVerified,
+  updateEmailAddress,
   resetUser,
 } from '../features/usersSlice';
 import { auth } from './clientApp';
@@ -17,6 +18,7 @@ export default function AuthState() {
       if (currentUser) {
         dispatch(updateUserStatus(true));
         dispatch(updateUserId(currentUser.uid));
+        dispatch(updateEmailAddress(currentUser.email));
 
         if (currentUser.emailVerified) {
           dispatch(updateEmailVerified(true));
