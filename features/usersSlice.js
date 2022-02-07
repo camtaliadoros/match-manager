@@ -7,8 +7,8 @@ const initialState = {
     isLoggedIn: false,
     isEmailVerified: false,
   },
-  profileDetails: {
-    profileName: '',
+  profile: {
+    name: '',
     photo: '',
   },
 };
@@ -25,8 +25,8 @@ export const userSlice = createSlice({
       state.emailAddress = action.payload.email;
       state.userStatus.isLoggedIn = true;
       state.userStatus.isEmailVerified = action.payload.emailVerified;
-      state.profileDetails.profileName = action.payload.displayName;
-      state.profileDetails.photo = action.payload.photoURL;
+      state.profile.name = action.payload.displayName;
+      state.profile.photo = action.payload.photoURL;
     },
     resetUser() {
       return initialState;

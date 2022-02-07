@@ -6,7 +6,7 @@ import {
 } from '../../features/usersSlice';
 import classes from './styles/userProfile.module.scss';
 import Image from 'next/image';
-import { auth } from '../../firebase/AuthState';
+import { auth } from '../../firebase/clientApp';
 import { updateProfile } from 'firebase/auth';
 
 // To Do
@@ -16,15 +16,11 @@ import { updateProfile } from 'firebase/auth';
 
 export default function UserProfile() {
   const currentUser = useSelector(selectCurrentUser);
-  const userPhoto = currentUser.profileDetails.photo;
+  const userPhoto = currentUser.profile.photo;
   const userAddress = currentUser.emailAddress;
-  const emailUsername = userAddress.split('@')[0];
+  const userDisplayName = currentUser.profile.name;
 
-  const [username, setUsername] = useState(
-    currentUser.profileDetails.displayName
-      ? currentUser.profileDetails.displayName
-      : emailUsername
-  );
+  const [username, setUsername] = useState(userDisplayName);
   const [imgDisplay, setImgDisplay] = useState(userPhoto);
 
   useEffect(() => {
@@ -36,19 +32,21 @@ export default function UserProfile() {
         setImgDisplay('?');
       }
     }
+    if (!userDisplayName) {
+      const emailUsername = userAddress.split('@')[0];
+      setUsername(emailUsername);
+    }
   }, [userPhoto][username]);
 
-  const dispatch = useDispatch();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await updateProfile(auth.currentUser, {
+      displayName: username,
+    });
+  };
 
-    dispatch(
-      updateUserProfile({
-        username,
-        // photo
-      })
-    );
+  const handlePhotoChange = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -67,7 +65,7 @@ export default function UserProfile() {
         id='avatar'
         name='avatar'
         accept='image/png, image/jpeg'
-        onChange={(e) => setImgDisplay(e.target.value)}
+        onChange={(e) => handlePhotoChange(e.target.value)}
       />
       <form onSubmit={handleSubmit}>
         <label htmlFor='display-name'>Username</label>
