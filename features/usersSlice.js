@@ -17,34 +17,23 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateUserProfile(state, action) {
-      state.profileDetails = action.payload;
-    },
     updateUserStatus(state, action) {
       state.userStatus.isLoggedIn = action.payload;
     },
-    updateEmailVerified(state, action) {
-      state.userStatus.isEmailVerified = action.payload;
-    },
-    updateUserId(state, action) {
-      state.uid = action.payload;
-    },
-    updateEmailAddress(state, action) {
-      state.emailAddress = action.payload;
+    setUser(state, action) {
+      state.uid = action.payload.uid;
+      state.emailAddress = action.payload.email;
+      state.userStatus.isLoggedIn = true;
+      state.userStatus.isEmailVerified = action.payload.emailVerified;
+      state.profileDetails.profileName = action.payload.displayName;
+      state.profileDetails.photo = action.payload.photoURL;
     },
     resetUser() {
       return initialState;
     },
   },
 });
-export const {
-  updateUserProfile,
-  updateUserStatus,
-  updateUserId,
-  updateEmailVerified,
-  updateEmailAddress,
-  resetUser,
-} = userSlice.actions;
+export const { updateUserStatus, resetUser, setUser } = userSlice.actions;
 export const selectLoggedIn = (state) => state.user.userStatus.isLoggedIn;
 export const selectEmailVerified = (state) =>
   state.user.userStatus.isEmailVerified;

@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import classes from './Auth.module.scss';
 import { handleAuthError } from '../../utilities/authErrorHandler';
 import { auth } from '../../firebase/clientApp';
+import { useDispatch } from 'react-redux';
 
 function UserRegister() {
   const [email, setEmail] = useState('');
@@ -20,6 +21,7 @@ function UserRegister() {
     setPassMatch(passVal.length > 0 && passVal === password);
     setPassAlert(!(passMatch || passVal.length === 0));
   }, [passVal, passMatch, password]);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
