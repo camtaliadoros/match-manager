@@ -20,23 +20,18 @@ export default function UserProfile() {
   const userAddress = currentUser.emailAddress;
   const userDisplayName = currentUser.profile.name;
 
-  const [username, setUsername] = useState(userDisplayName);
-  const [imgDisplay, setImgDisplay] = useState(userPhoto);
+  const [username, setUsername] = useState(
+    userDisplayName ? userDisplayName : userAddress.split('@')[0]
+  );
+  const [photo, setPhoto] = useState(userPhoto);
+  const [letterDisplay, setLetterDisplay] = useState(userDisplayName[0]);
 
   useEffect(() => {
-    if (!userPhoto) {
-      if (username) {
-        const initials = username[0];
-        setImgDisplay(initials);
-      } else {
-        setImgDisplay('?');
-      }
+    setLetterDisplay(username[0]);
+    if (!username) {
+      setLetterDisplay('?');
     }
-    if (!userDisplayName) {
-      const emailUsername = userAddress.split('@')[0];
-      setUsername(emailUsername);
-    }
-  }, [userPhoto][username]);
+  }, [username]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,18 +40,25 @@ export default function UserProfile() {
     });
   };
 
-  const handlePhotoChange = (e) => {
-    e.preventDefault();
+  const handlePhotoChange = (file) => {
+    const reader = new FileReader();
+    reader.onload = function () {
+      setPhoto(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
     <div className='wrapper'>
       <h1>Create your profile</h1>
-      <div className={classes.profilePhoto}>
-        {userPhoto ? (
-          <Image src={imgDisplay} layout='fill' />
+      <div className={classes.imageContainer}>
+        {photo ? (
+          <div
+            className={classes.profilePhoto}
+            style={{ backgroundImage: `url('${photo}')` }}
+          ></div>
         ) : (
-          <p>{imgDisplay}</p>
+          <p>{letterDisplay}</p>
         )}
       </div>
       <input
@@ -65,7 +67,7 @@ export default function UserProfile() {
         id='avatar'
         name='avatar'
         accept='image/png, image/jpeg'
-        onChange={(e) => handlePhotoChange(e.target.value)}
+        onChange={(e) => handlePhotoChange(e.target.files[0])}
       />
       <form onSubmit={handleSubmit}>
         <label htmlFor='display-name'>Username</label>
