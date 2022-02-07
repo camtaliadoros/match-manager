@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   uid: '',
@@ -8,7 +8,7 @@ const initialState = {
     isEmailVerified: false,
   },
   profileDetails: {
-    displayName: '',
+    profileName: '',
     photo: '',
   },
 };

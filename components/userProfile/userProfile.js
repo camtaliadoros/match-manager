@@ -6,6 +6,8 @@ import {
 } from '../../features/usersSlice';
 import classes from './styles/userProfile.module.scss';
 import Image from 'next/image';
+import { auth } from '../../firebase/AuthState';
+import { updateProfile } from 'firebase/auth';
 
 // To Do
 // - Connect to database
