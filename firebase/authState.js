@@ -16,6 +16,7 @@ export default function AuthState() {
           displayName: auth.currentUser.displayName,
           emailVerified: auth.currentUser.emailVerified,
           photoURL: auth.currentUser.photoURL,
+          uid: auth.currentUser.uid,
         };
         dispatch(setUser(userDetails));
       } else {
