@@ -8,13 +8,13 @@ import classes from './styles/userProfile.module.scss';
 import { auth } from '../../firebase/clientApp';
 import { updateProfile } from 'firebase/auth';
 import { storage } from '../../firebase/clientApp';
-import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import {
+  ref,
+  uploadString,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
 import { getImageExtension } from '../../utilities/helpers';
-
-// To Do
-// - Connect to database
-// - Photo upload functionality
-// - Check if username is already taken
 
 export default function UserProfile() {
   const user = useSelector(selectCurrentUser);
@@ -27,8 +27,10 @@ export default function UserProfile() {
     userDisplayName ? userDisplayName : userAddress.split('@')[0]
   );
   const [photo, setPhoto] = useState();
-  const [letterDisplay, setLetterDisplay] = useState(userDisplayName[0]);
+  const [letterDisplay, setLetterDisplay] = useState(username[0]);
   const [isUpdated, setIsUpdated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
     if (userPhoto) {
@@ -49,6 +51,7 @@ export default function UserProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const updatedDetails = {};
 
     if (username !== userDisplayName) {
@@ -56,6 +59,12 @@ export default function UserProfile() {
     }
 
     if (photo !== userPhoto) {
+      if (userPhoto) {
+        const currentPhotoRef = ref(storage, userPhoto);
+        deleteObject(currentPhotoRef).catch((error) => {
+          setErrorMessage('Something went wrong. Please try again!');
+        });
+      }
       const imgType = getImageExtension(photo);
       const storagePath = `profile-photo/${uid}.${imgType}`;
       const profilePhotoRef = ref(storage, storagePath);
@@ -67,7 +76,7 @@ export default function UserProfile() {
     if (username !== userDisplayName || photo !== userPhoto) {
       await updateProfile(auth.currentUser, updatedDetails);
     }
-
+    setIsLoading(false);
     setIsUpdated(true);
   };
 
@@ -113,10 +122,17 @@ export default function UserProfile() {
           required
         />
         {isUpdated ? (
-          <p>Updated</p>
+          <p className='success-message'>Updated</p>
+        ) : isLoading ? (
+          <div className='spinner-container'>
+            <div className='spinner'></div>
+          </div>
         ) : (
-          <button className='full-width'>Save</button>
+          <button className='full-width' disabled={isLoading}>
+            Save
+          </button>
         )}
+        {errorMessage ? <p>{errorMessage}</p> : null}
       </form>
     </div>
   );

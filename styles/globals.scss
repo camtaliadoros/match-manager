@@ -173,6 +173,30 @@ button {
   }
 }
 
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  border: $dark-green solid 3px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border-right: $chalk solid 3px;
+  animation: spinner 1s cubic-bezier(0.6, 0.3, 0.3, 0.6) infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(365deg);
+  }
+}
+
 // Forms
 
 form {
@@ -217,4 +241,10 @@ form {
     background-color: $dark-green;
     color: white;
   }
+}
+
+.success-message {
+  font-weight: 400;
+  color: $dark-green;
+  text-align: center;
 }
