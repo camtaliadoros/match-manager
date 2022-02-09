@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { updateProfile } from 'firebase/auth';
+import { auth } from '../firebase/clientApp';
 
 const initialState = {
   uid: '',
@@ -11,7 +13,25 @@ const initialState = {
     name: '',
     photo: '',
   },
+  status: {
+    isLoading: false,
+    failedToLoad: false,
+  },
 };
+
+export const updateUserProfile = createAsyncThunk(
+  'user/updateUserProfile',
+  async (updatedDetails) => {
+    const updated = await updateProfile(auth.currentUser, {
+      displayName: updatedDetails.displayName,
+      photoURL: updatedDetails.photoURL,
+    });
+    return {
+      name: auth.currentUser.displayName,
+      photo: auth.currentUser.photoURL,
+    };
+  }
+);
 
 export const userSlice = createSlice({
   name: 'user',
@@ -31,6 +51,22 @@ export const userSlice = createSlice({
     resetUser() {
       return initialState;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.profile = action.payload;
+        state.status.isLoading = false;
+        state.status.failedToLoad = false;
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.status.isLoading = true;
+        state.status.failedToLoad = false;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.status.isLoading = false;
+        state.status.failedToLoad = true;
+      });
   },
 });
 export const { updateUserStatus, resetUser, setUser } = userSlice.actions;

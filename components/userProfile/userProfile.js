@@ -23,6 +23,8 @@ export default function UserProfile() {
   const userDisplayName = user.profile.name;
   const uid = user.uid;
 
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState(
     userDisplayName ? userDisplayName : userAddress.split('@')[0]
   );
@@ -58,7 +60,7 @@ export default function UserProfile() {
       updatedDetails.displayName = username;
     }
 
-    if (photo !== userPhoto) {
+    if (photo && photo !== userPhoto) {
       if (userPhoto) {
         const currentPhotoRef = ref(storage, userPhoto);
         deleteObject(currentPhotoRef).catch((error) => {
@@ -74,7 +76,7 @@ export default function UserProfile() {
       updatedDetails.photoURL = storagePath;
     }
     if (username !== userDisplayName || photo !== userPhoto) {
-      await updateProfile(auth.currentUser, updatedDetails);
+      dispatch(updateUserProfile(updatedDetails));
     }
     setIsLoading(false);
     setIsUpdated(true);
