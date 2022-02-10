@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { updateProfile } from 'firebase/auth';
+import { updateEmail, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/clientApp';
 
 const initialState = {
@@ -17,6 +17,7 @@ const initialState = {
     isLoading: false,
     failedToLoad: false,
   },
+  errorMessage: '',
 };
 
 export const updateUserProfile = createAsyncThunk(
@@ -30,6 +31,18 @@ export const updateUserProfile = createAsyncThunk(
       name: auth.currentUser.displayName,
       photo: auth.currentUser.photoURL,
     };
+  }
+);
+
+export const updateUserEmail = createAsyncThunk(
+  'user/updateUserEmail',
+  async (newEmailAddress) => {
+    try {
+      await updateEmail(auth.currentUser, newEmailAddress);
+      return auth.currentUser.email;
+    } catch (error) {
+      state.errorMessage = error;
+    }
   }
 );
 
@@ -63,10 +76,24 @@ export const userSlice = createSlice({
         state.status.isLoading = true;
         state.status.failedToLoad = false;
       })
-      .addCase(updateUserProfile.rejected, (state, action) => {
+      .addCase(updateUserProfile.rejected, (state) => {
         state.status.isLoading = false;
         state.status.failedToLoad = true;
-      });
+      })
+      .addCase(updateUserEmail.fulfilled, (state, action) => {
+        state.emailAddress = action.payload;
+        state.status.isLoading = false;
+        state.status.failedToLoad = false;
+      })
+      .addCase(updateUserEmail.pending, (state) => {
+        state.status.isLoading = true;
+        state.status.failedToLoad = false;
+      })
+      .addCase(updateUserEmail.rejected),
+      (state) => {
+        state.status.isLoading = false;
+        state.status.failedToLoad = true;
+      };
   },
 });
 export const { updateUserStatus, resetUser, setUser } = userSlice.actions;

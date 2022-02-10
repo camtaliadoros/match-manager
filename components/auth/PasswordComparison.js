@@ -8,9 +8,10 @@ export default function PasswordComparison({ pwd, match, label, required }) {
   const [passAlert, setPassAlert] = useState(false);
 
   useEffect(() => {
-    setPassMatch(passVal.length > 0 && passVal === password);
+    setPassMatch(passVal === password);
     setPassAlert(!(passMatch || passVal.length === 0));
     password ? pwd(password) : null;
+    !password ? setPassVal('') : null;
     match(passMatch);
   }, [passVal, passMatch, password]);
 

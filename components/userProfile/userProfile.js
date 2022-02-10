@@ -1,21 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
-  updateUserProfile,
-  selectCurrentUser,
-} from '../../features/usersSlice';
-import classes from './styles/userProfile.module.scss';
-import { auth } from '../../firebase/clientApp';
-import { updateProfile } from 'firebase/auth';
-import { storage } from '../../firebase/clientApp';
-import {
+  deleteObject,
+  getDownloadURL,
   ref,
   uploadString,
-  getDownloadURL,
-  deleteObject,
 } from 'firebase/storage';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCurrentUser,
+  updateUserEmail,
+  updateUserProfile,
+} from '../../features/usersSlice';
+import { storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
 import PasswordComparison from '../auth/PasswordComparison';
+import classes from './styles/userProfile.module.scss';
 
 export default function UserProfile() {
   const user = useSelector(selectCurrentUser);
@@ -31,7 +30,7 @@ export default function UserProfile() {
   );
   const [email, setEmail] = useState(userAddress);
   const [password, setPassword] = useState('');
-  const [passMatch, setPassMatch] = useState();
+  const [passMatch, setPassMatch] = useState(true);
   const [photo, setPhoto] = useState();
   const [letterDisplay, setLetterDisplay] = useState(username[0]);
   const [isUpdated, setIsUpdated] = useState(false);
@@ -50,10 +49,14 @@ export default function UserProfile() {
       setLetterDisplay('?');
     }
 
-    if (photo !== userPhoto || username !== userDisplayName) {
+    if (
+      photo !== userPhoto ||
+      username !== userDisplayName ||
+      email !== userAddress
+    ) {
       setIsUpdated(false);
     }
-  }, [username, photo]);
+  }, [username, photo, email, password]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,6 +84,10 @@ export default function UserProfile() {
     }
     if (username !== userDisplayName || photo !== userPhoto) {
       dispatch(updateUserProfile(updatedDetails));
+    }
+
+    if (email !== userAddress) {
+      dispatch(updateUserEmail(email));
     }
     setIsLoading(false);
     setIsUpdated(true);
@@ -150,7 +157,7 @@ export default function UserProfile() {
             <div className='spinner'></div>
           </div>
         ) : (
-          <button className='full-width' disabled={isLoading || !passMatch}>
+          <button className='full-width' disabled={!passMatch}>
             Save
           </button>
         )}

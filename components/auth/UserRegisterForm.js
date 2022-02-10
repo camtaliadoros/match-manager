@@ -56,7 +56,7 @@ function UserRegister() {
             </Link>
           </label>
         </div>
-        <button className={classes.submit} disabled={!passMatch}>
+        <button className='submit' disabled={!passMatch}>
           REGISTER
         </button>
       </form>
