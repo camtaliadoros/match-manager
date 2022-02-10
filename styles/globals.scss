@@ -248,3 +248,13 @@ form {
   color: $dark-green;
   text-align: center;
 }
+
+.error-message {
+  font-weight: 400;
+  color: $red;
+}
+
+form .error-message {
+  font-size: 12px;
+  margin-top: -12px;
+}

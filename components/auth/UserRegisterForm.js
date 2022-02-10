@@ -3,25 +3,17 @@ import {
   sendEmailVerification,
 } from 'firebase/auth';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import classes from './Auth.module.scss';
-import { handleAuthError } from '../../utilities/authErrorHandler';
+import React, { useState } from 'react';
 import { auth } from '../../firebase/clientApp';
-import { useDispatch } from 'react-redux';
+import { handleAuthError } from '../../utilities/authErrorHandler';
+import classes from './Auth.module.scss';
+import PasswordComparison from './PasswordComparison';
 
 function UserRegister() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passVal, setPassVal] = useState('');
-  const [passMatch, setPassMatch] = useState(false);
-  const [passAlert, setPassAlert] = useState(false);
   const [authError, setAuthError] = useState('');
-
-  useEffect(() => {
-    setPassMatch(passVal.length > 0 && passVal === password);
-    setPassAlert(!(passMatch || passVal.length === 0));
-  }, [passVal, passMatch, password]);
-  const dispatch = useDispatch();
+  const [password, setPassword] = useState('');
+  const [passMatch, setPassMatch] = useState(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,28 +41,12 @@ function UserRegister() {
           onChange={(e) => setEmail(e.currentTarget.value)}
           required
         />
-        <label htmlFor='password'>Password</label>
-        <input
-          id='password'
-          type='password'
-          name='password'
-          aria-label='password'
-          value={password}
-          onChange={(e) => setPassword(e.currentTarget.value)}
-          minLength='8'
-          required
+        <PasswordComparison
+          pwd={setPassword}
+          match={setPassMatch}
+          label={'Password'}
+          required={true}
         />
-        <label htmlFor='passval'>Confirm Password</label>
-        <input
-          id='passval'
-          type='password'
-          name='passVal'
-          aria-label='password-validation'
-          value={passVal}
-          onChange={(e) => setPassVal(e.currentTarget.value)}
-          required
-        />
-        {passAlert ? <p>Your password does not match</p> : null}
         <div className='checkbox'>
           <input type='checkbox' id='tcs' name='tcs' required />
           <label htmlFor='tcs'>

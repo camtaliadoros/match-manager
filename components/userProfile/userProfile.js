@@ -15,6 +15,7 @@ import {
   deleteObject,
 } from 'firebase/storage';
 import { getImageExtension } from '../../utilities/helpers';
+import PasswordComparison from '../auth/PasswordComparison';
 
 export default function UserProfile() {
   const user = useSelector(selectCurrentUser);
@@ -28,6 +29,9 @@ export default function UserProfile() {
   const [username, setUsername] = useState(
     userDisplayName ? userDisplayName : userAddress.split('@')[0]
   );
+  const [email, setEmail] = useState(userAddress);
+  const [password, setPassword] = useState('');
+  const [passMatch, setPassMatch] = useState();
   const [photo, setPhoto] = useState();
   const [letterDisplay, setLetterDisplay] = useState(username[0]);
   const [isUpdated, setIsUpdated] = useState(false);
@@ -123,6 +127,22 @@ export default function UserProfile() {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
+        <label htmlFor='email-address'>Email Address</label>
+        <input
+          type='email'
+          name='email-address'
+          id='email-address'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <PasswordComparison
+          pwd={setPassword}
+          match={setPassMatch}
+          label={'Change Password'}
+          required={false}
+        />
+
         {isUpdated ? (
           <p className='success-message'>Updated</p>
         ) : isLoading ? (
@@ -130,7 +150,7 @@ export default function UserProfile() {
             <div className='spinner'></div>
           </div>
         ) : (
-          <button className='full-width' disabled={isLoading}>
+          <button className='full-width' disabled={isLoading || !passMatch}>
             Save
           </button>
         )}
