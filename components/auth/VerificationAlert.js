@@ -27,7 +27,7 @@ export default function VerificationAlert() {
       ) : (
         <button onClick={handleClick}>RE-SEND EMAIL VERIFICATION</button>
       )}
-      {authError ? <p className={classes.error}>{authError}</p> : null}
+      {authError ? <p className='error'>{authError}</p> : null}
     </div>
   );
 }

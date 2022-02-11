@@ -8,7 +8,7 @@ export default function PasswordComparison({ pwd, match, label, required }) {
   const [passAlert, setPassAlert] = useState(false);
 
   useEffect(() => {
-    setPassMatch(passVal === password);
+    setPassMatch(password.length > 0 && passVal === password);
     setPassAlert(!(passMatch || passVal.length === 0));
     password ? pwd(password) : null;
     !password ? setPassVal('') : null;
@@ -19,7 +19,7 @@ export default function PasswordComparison({ pwd, match, label, required }) {
     <>
       <label htmlFor='password'>{label}</label>
       <input
-        id='password'
+        id='new-password'
         type='password'
         name='password'
         aria-label='password'

@@ -1,10 +1,10 @@
 import Layout from '../components/layout/Layout';
-import UserProfile from '../components/userProfile/userProfile';
+import UserContainer from '../components/userProfile/UserContainer';
 
 export default function Profile() {
   return (
     <Layout>
-      <UserProfile />
+      <UserContainer />
     </Layout>
   );
 }

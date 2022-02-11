@@ -8,12 +8,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentUser,
-  updateUserEmail,
   updateUserProfile,
 } from '../../features/usersSlice';
 import { storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
-import PasswordComparison from '../auth/PasswordComparison';
 import classes from './styles/userProfile.module.scss';
 
 export default function UserProfile() {
@@ -29,8 +27,7 @@ export default function UserProfile() {
     userDisplayName ? userDisplayName : userAddress.split('@')[0]
   );
   const [email, setEmail] = useState(userAddress);
-  const [password, setPassword] = useState('');
-  const [passMatch, setPassMatch] = useState(true);
+
   const [photo, setPhoto] = useState();
   const [letterDisplay, setLetterDisplay] = useState(username[0]);
   const [isUpdated, setIsUpdated] = useState(false);
@@ -49,14 +46,10 @@ export default function UserProfile() {
       setLetterDisplay('?');
     }
 
-    if (
-      photo !== userPhoto ||
-      username !== userDisplayName ||
-      email !== userAddress
-    ) {
+    if (photo !== userPhoto || username !== userDisplayName) {
       setIsUpdated(false);
     }
-  }, [username, photo, email, password]);
+  }, [username, photo]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,9 +79,6 @@ export default function UserProfile() {
       dispatch(updateUserProfile(updatedDetails));
     }
 
-    if (email !== userAddress) {
-      dispatch(updateUserEmail(email));
-    }
     setIsLoading(false);
     setIsUpdated(true);
   };
@@ -134,21 +124,6 @@ export default function UserProfile() {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-        <label htmlFor='email-address'>Email Address</label>
-        <input
-          type='email'
-          name='email-address'
-          id='email-address'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <PasswordComparison
-          pwd={setPassword}
-          match={setPassMatch}
-          label={'Change Password'}
-          required={false}
-        />
 
         {isUpdated ? (
           <p className='success-message'>Updated</p>
@@ -157,7 +132,7 @@ export default function UserProfile() {
             <div className='spinner'></div>
           </div>
         ) : (
-          <button className='full-width' disabled={!passMatch}>
+          <button className='full-width' disabled={isLoading}>
             Save
           </button>
         )}

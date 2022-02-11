@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import classes from './Auth.module.scss';
-import UserLoginForm from './UserLoginForm';
+import UserLogin from './UserLogin';
 import UserRegisterForm from './UserRegisterForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectEmailVerified, selectLoggedIn } from '../../features/usersSlice';
@@ -52,7 +52,11 @@ export default function UserAuthContainer() {
             Sign Up
           </button>
         </div>
-        {form === 'login' ? <UserLoginForm /> : <UserRegisterForm />}
+        {form === 'login' ? (
+          <UserLogin submitCTA={'LOGIN'} />
+        ) : (
+          <UserRegisterForm />
+        )}
       </>
     );
   } else {

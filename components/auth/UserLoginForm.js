@@ -1,27 +1,19 @@
-import {
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from 'firebase/auth';
-import React, { useState } from 'react';
-import classes from './Auth.module.scss';
-import { handleAuthError } from '../../utilities/authErrorHandler';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
 import { auth } from '../../firebase/clientApp';
+import { handleAuthError } from '../../utilities/authErrorHandler';
+import classes from './Auth.module.scss';
 
-function UserLogin() {
+function UserLoginForm({ loginEmail, loginPwd, error }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [passResetRequested, setPassResetRequested] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      setErrorMessage(handleAuthError(error));
-    }
-  };
+  useEffect(() => {
+    loginEmail(email);
+    loginPwd(password);
+  }, [email, password]);
 
   const handleResetPassword = async () => {
     setErrorMessage('');
@@ -38,43 +30,38 @@ function UserLogin() {
   };
 
   return (
-    <div className={classes.wrapper}>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='email-address'>Email Address</label>
-        <input
-          id='email-address'
-          type='email'
-          value={email}
-          onChange={(e) => setEmail(e.currentTarget.value)}
-          required
-        />
-        <label htmlFor='password'>Password</label>
-        <input
-          id='password'
-          type='password'
-          value={password}
-          onChange={(e) => setPassword(e.currentTarget.value)}
-          minLength='8'
-          required
-        />
-        {passResetRequested ? (
-          <p className={classes.passwordReset}>Please check your email.</p>
-        ) : (
-          <button
-            type='button'
-            className={classes.linkStyle}
-            onClick={handleResetPassword}
-          >
-            Forgot your password?
-          </button>
-        )}
-        <button className={classes.submit}>LOGIN</button>
-      </form>
-      <div className={classes.authMessage}>
-        <p className={classes.error}>{errorMessage}</p>
-      </div>
-    </div>
+    <>
+      <label htmlFor='email-address'>Email Address</label>
+      <input
+        id='email-address'
+        type='email'
+        value={email}
+        onChange={(e) => setEmail(e.currentTarget.value)}
+        required
+      />
+      <label htmlFor='password'>Password</label>
+      <input
+        id='password'
+        type='password'
+        value={password}
+        onChange={(e) => setPassword(e.currentTarget.value)}
+        minLength='8'
+        required
+      />
+      {passResetRequested ? (
+        <p className={classes.passwordReset}>Please check your email.</p>
+      ) : (
+        <button
+          type='button'
+          className='linkStyle'
+          onClick={handleResetPassword}
+        >
+          Forgot your password?
+        </button>
+      )}
+      {errorMessage ? <p>{errorMessage}</p> : null}
+    </>
   );
 }
 
-export default UserLogin;
+export default UserLoginForm;

@@ -60,7 +60,7 @@ function UserRegister() {
           REGISTER
         </button>
       </form>
-      <div className={classes.error}>{authError}</div>
+      <div className='error'>{authError}</div>
     </div>
   );
 }
