@@ -7,6 +7,7 @@ export default function Reauth({ isAuth }) {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isReauth, setIsReauth] = useState();
+  const [isLoading, setIsLoading] = useState();
 
   useEffect(() => {
     isAuth(isReauth);
@@ -14,6 +15,7 @@ export default function Reauth({ isAuth }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const credential = EmailAuthProvider.credential(
       auth.currentUser.email,
       password
@@ -22,6 +24,7 @@ export default function Reauth({ isAuth }) {
     try {
       await reauthenticateWithCredential(auth.currentUser, credential);
       setIsReauth(true);
+      setIsLoading(false);
     } catch (error) {
       setErrorMessage(handleAuthError(error));
       setIsReauth(false);
@@ -42,7 +45,13 @@ export default function Reauth({ isAuth }) {
           minLength='8'
           required
         />
-        <button>NEXT</button>
+        {isLoading ? (
+          <div className='spinner-container'>
+            <div className='spinner'></div>
+          </div>
+        ) : (
+          <button>NEXT</button>
+        )}
       </form>
 
       {errorMessage ? <p>{errorMessage}</p> : null}
