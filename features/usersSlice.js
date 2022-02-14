@@ -34,17 +34,13 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
-export const updateUserEmail = createAsyncThunk(
-  'user/updateUserEmail',
-  async (newEmailAddress) => {
-    try {
-      await updateEmail(auth.currentUser, newEmailAddress);
-      return auth.currentUser.email;
-    } catch (error) {
-      state.errorMessage = error;
-    }
-  }
-);
+// export const updateUserEmail = createAsyncThunk(
+//   'user/updateUserEmail',
+//   async (newEmailAddress) => {
+//     await updateEmail(auth.currentUser, newEmailAddress);
+//     return auth.currentUser.email;
+//   }
+// );
 
 export const userSlice = createSlice({
   name: 'user',
@@ -52,6 +48,9 @@ export const userSlice = createSlice({
   reducers: {
     updateUserStatus(state, action) {
       state.userStatus.isLoggedIn = action.payload;
+    },
+    updateUserEmail(state, action) {
+      state.emailAddress = action.payload;
     },
     setUser(state, action) {
       state.uid = action.payload.uid;
@@ -79,26 +78,30 @@ export const userSlice = createSlice({
       .addCase(updateUserProfile.rejected, (state) => {
         state.status.isLoading = false;
         state.status.failedToLoad = true;
-      })
-      .addCase(updateUserEmail.fulfilled, (state, action) => {
-        state.emailAddress = action.payload;
-        state.status.isLoading = false;
-        state.status.failedToLoad = false;
-      })
-      .addCase(updateUserEmail.pending, (state) => {
-        state.status.isLoading = true;
-        state.status.failedToLoad = false;
-      })
-      .addCase(updateUserEmail.rejected),
-      (state) => {
-        state.status.isLoading = false;
-        state.status.failedToLoad = true;
-      };
+      });
+    // .addCase(updateUserEmail.fulfilled, (state, action) => {
+    //   state.emailAddress = action.payload;
+    //   state.status.isLoading = false;
+    //   state.status.failedToLoad = false;
+    // })
+    // .addCase(updateUserEmail.pending, (state) => {
+    //   state.status.isLoading = true;
+    //   state.status.failedToLoad = false;
+    // })
+    // .addCase(updateUserEmail.rejected),
+    // (state, action) => {
+    //   state.status.isLoading = false;
+    //   state.status.failedToLoad = true;
+    //   state.errorMessage = action.payload.code;
+    // };
   },
 });
-export const { updateUserStatus, resetUser, setUser } = userSlice.actions;
+export const { updateUserStatus, updateUserEmail, resetUser, setUser } =
+  userSlice.actions;
 export const selectLoggedIn = (state) => state.user.userStatus.isLoggedIn;
 export const selectEmailVerified = (state) =>
   state.user.userStatus.isEmailVerified;
+export const selectLoading = (state) => state.user.status.isLoading;
 export const selectCurrentUser = (state) => state.user;
+export const selectError = (state) => state.user.errorMessage;
 export default userSlice.reducer;

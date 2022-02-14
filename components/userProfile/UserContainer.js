@@ -1,5 +1,6 @@
 import UserProfile from './userProfile';
 import UserSettings from './UserSettings/userSettings';
+import classes from './styles/userProfile.module.scss';
 import { useState } from 'react';
 
 export default function UserContainer() {
@@ -9,17 +10,19 @@ export default function UserContainer() {
     <div>
       <button
         onClick={() => setClicked(false)}
-        className={clicked ? null : 'active'}
+        className={(clicked ? '' : 'active') + ' tab'}
       >
         Profile
       </button>
       <button
         onClick={() => setClicked(true)}
-        className={clicked ? 'active' : null}
+        className={(clicked ? 'active' : '') + ' tab'}
       >
         Settings
       </button>
-      {clicked ? <UserSettings /> : <UserProfile />}
+      <div className={classes.profileCard}>
+        {clicked ? <UserSettings /> : <UserProfile />}
+      </div>
     </div>
   );
 }

@@ -3,15 +3,15 @@ import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 import { auth } from '../../../firebase/clientApp';
 import { handleAuthError } from '../../../utilities/authErrorHandler';
 
-export default function Reauth({ isAuth }) {
+export default function Reauth({ reAuth }) {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isReauth, setIsReauth] = useState();
   const [isLoading, setIsLoading] = useState();
 
   useEffect(() => {
-    isAuth(isReauth);
-  });
+    reAuth(isReauth);
+  }, [isReauth]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

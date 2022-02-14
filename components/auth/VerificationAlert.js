@@ -13,7 +13,6 @@ export default function VerificationAlert() {
       await sendEmailVerification(auth.currentUser);
       setClicked(true);
     } catch (error) {
-      console.log(error);
       setAuthError(handleAuthError(error));
     }
   };

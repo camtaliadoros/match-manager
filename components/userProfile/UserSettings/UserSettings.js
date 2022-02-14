@@ -1,18 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Reauth from './Reauth';
 import ChangePassword from './ChangePassword';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCurrentUser,
+  selectLoading,
+  selectError,
+} from '../../../features/usersSlice';
+import { updateUserEmail } from '../../../features/usersSlice';
+import { updateEmail } from 'firebase/auth';
+import { auth } from '../../../firebase/clientApp';
+import ChangeEmail from './ChangeEmail';
 
 export default function UserSettings() {
-  const [isAuth, setIsAuth] = useState();
-
-  //   if (email !== userAddress) {
-  //     dispatch(updateUserEmail(email));
-  //   }
-
   return (
     <>
-      <h2>Change your password</h2>
-      {isAuth ? <ChangePassword /> : <Reauth isAuth={setIsAuth} />}
+      <ChangePassword />
+      <ChangeEmail />
     </>
   );
 }
