@@ -42,14 +42,16 @@ export default function ChangePassword() {
     setIsLoading(false);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     handleUpdatePassword();
   };
 
   return (
     <>
-      {needsReauth ? <Reauth reAuth={setIsAuth} /> : null}
+      {needsReauth ? (
+        <Reauth reAuth={setIsAuth} enabled={setNeedsReauth} />
+      ) : null}
       <h2>Change your password</h2>
       <form>
         <PasswordComparison

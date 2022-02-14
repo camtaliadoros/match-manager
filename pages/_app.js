@@ -1,8 +1,9 @@
 import Head from 'next/head';
-import '../styles/globals.scss';
 import { Provider } from 'react-redux';
-import store from '../store/store';
+import '../components/shared/dialogBox.scss';
 import AuthState from '../firebase/authState';
+import store from '../store/store';
+import '../styles/globals.scss';
 
 function App({ Component, pageProps }) {
   return (

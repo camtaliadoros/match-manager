@@ -59,9 +59,11 @@ export default function ChangeEmail() {
 
   return (
     <>
-      {needsReauth ? <Reauth reAuth={setIsAuth} /> : null}
+      {needsReauth ? (
+        <Reauth reAuth={setIsAuth} enabled={setNeedsReauth} />
+      ) : null}
       <h2>Update your email address</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label htmlFor='email-address'>New email address</label>
         <input
           id='email-address'
@@ -76,7 +78,7 @@ export default function ChangeEmail() {
             <p className='success-message'>Please check your email.</p>
           </>
         ) : (
-          <button onClick={handleSubmit} disabled={isLoading}>
+          <button disabled={isLoading}>
             {isLoading ? (
               <div className='spinner-container'>
                 <div className='spinner'></div>
