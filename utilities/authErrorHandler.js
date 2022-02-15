@@ -1,5 +1,4 @@
 import { AuthErrorCodes } from 'firebase/auth';
-console.log(AuthErrorCodes);
 export const handleAuthError = (error) => {
   switch (error.code) {
     case AuthErrorCodes.EMAIL_EXISTS:

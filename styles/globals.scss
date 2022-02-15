@@ -125,19 +125,19 @@ p {
 
 @media only screen and (min-width: $screen-sm) {
   h1 {
-    font-size: 30px;
+    font-size: $font-xlg;
   }
 
   h2 {
-    font-size: 24px;
+    font-size: $font-lg;
   }
 
   h4 {
-    font-size: 14px;
+    font-size: $font-sm;
   }
 
   p {
-    font-size: 14px;
+    font-size: $font-sm;
   }
 }
 
@@ -197,6 +197,12 @@ button {
   &:disabled {
     background-color: $grey;
   }
+}
+
+.title {
+  font-size: $font-lg;
+  color: $dark-green;
+  font-weight: 700;
 }
 
 // .tab {
@@ -296,4 +302,9 @@ form {
 form .error-message {
   font-size: 12px;
   margin-top: -12px;
+}
+
+.card {
+  background-color: $light-green;
+  padding: 12px;
 }

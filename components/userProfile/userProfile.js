@@ -70,9 +70,7 @@ export default function UserProfile() {
       const imgType = getImageExtension(photo);
       const storagePath = `profile-photo/${uid}.${imgType}`;
       const profilePhotoRef = ref(storage, storagePath);
-      uploadString(profilePhotoRef, photo, 'data_url').then((snapshot) => {
-        console.log(snapshot);
-      });
+      uploadString(profilePhotoRef, photo, 'data_url').then((snapshot) => {});
       updatedDetails.photoURL = storagePath;
     }
     if (username !== userDisplayName || photo !== userPhoto) {
