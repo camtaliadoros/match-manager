@@ -306,5 +306,9 @@ form .error-message {
 
 .card {
   background-color: $light-green;
-  padding: 12px;
+  padding: $spacing-sm;
+}
+
+.icon {
+  color: $dark-green;
 }

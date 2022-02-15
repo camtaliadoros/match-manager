@@ -7,15 +7,6 @@
   max-width: 360px;
 }
 
-.matchData {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  div {
-    display: flex;
-  }
-}
-
 .waitlistText {
   color: $black;
   font-style: italic;
@@ -23,10 +14,29 @@
   margin: 0 0 $spacing-xsm 0;
 }
 
+.matchDataWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 18px;
+}
+
 .matchData {
-  div {
-    color: $black;
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-xsm;
+  overflow-wrap: break-word;
+
+  p {
     font-size: $font-sm;
-    margin-bottom: $spacing-xsm;
+    color: $black;
+    font-weight: 500;
+    margin: 0;
   }
+}
+
+.iconContainer {
+  width: 18px;
+  display: flex;
+  align-items: center;
+  margin-right: 6px;
 }
