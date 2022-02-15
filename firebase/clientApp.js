@@ -2,6 +2,7 @@ import { getAnalytics } from 'firebase/analytics';
 import { getApp, getApps, initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
+import { getDatabase } from 'firebase/database';
 
 let app;
 
@@ -23,5 +24,6 @@ if (!getApps().length) {
 
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+export const database = getDatabase(app);
 
 // const analytics = getAnalytics(app);
