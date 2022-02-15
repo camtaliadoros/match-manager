@@ -312,3 +312,13 @@ form .error-message {
 .icon {
   color: $dark-green;
 }
+
+.next-icon {
+  color: $dark-green;
+  height: $font-lg;
+  margin: 0 $spacing-sm;
+
+  &:hover {
+    filter: brightness(75%);
+  }
+}

@@ -7,6 +7,20 @@
   max-width: 360px;
 }
 
+.matchListingTitle {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+
+  svg {
+    transition: transform 0.5s;
+  }
+
+  &:hover svg {
+    transform: translate(18px);
+  }
+}
+
 .waitlistText {
   color: $black;
   font-style: italic;

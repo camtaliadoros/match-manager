@@ -8,8 +8,11 @@ export default function UpcomingMatchesListing({ display }) {
   return (
     <div className={classes.listingWrapper}>
       {/* <Link href='./upcoming-matches'> */}
-      <a className='title'>Upcoming Matches</a>
-      <FontAwesomeIcon icon={faAngleRight} className='icon' />
+      <div className={classes.matchListingTitle}>
+        <a className='title'>Upcoming Matches </a>
+        <FontAwesomeIcon icon={faAngleRight} className='next-icon' />
+      </div>
+
       {/* </Link> */}
       <MatchCard />
     </div>
