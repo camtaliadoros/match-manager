@@ -1,10 +1,10 @@
 import Layout from '../../components/layout/Layout';
-import MatchListing from '../../features/matches/MatchListing';
+import MatchHome from '../../features/matches/MatchHome';
 
 export default function Dashboard() {
   return (
     <Layout>
-      <MatchListing />
+      <MatchHome />
     </Layout>
   );
 }
