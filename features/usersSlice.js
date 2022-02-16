@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { updateEmail, updatePassword, updateProfile } from 'firebase/auth';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { updateProfile } from 'firebase/auth';
 import { auth } from '../firebase/clientApp';
 
 const initialState = {
@@ -33,14 +33,6 @@ export const updateUserProfile = createAsyncThunk(
     };
   }
 );
-
-// export const updateUserEmail = createAsyncThunk(
-//   'user/updateUserEmail',
-//   async (newEmailAddress) => {
-//     await updateEmail(auth.currentUser, newEmailAddress);
-//     return auth.currentUser.email;
-//   }
-// );
 
 export const userSlice = createSlice({
   name: 'user',
@@ -79,21 +71,6 @@ export const userSlice = createSlice({
         state.status.isLoading = false;
         state.status.failedToLoad = true;
       });
-    // .addCase(updateUserEmail.fulfilled, (state, action) => {
-    //   state.emailAddress = action.payload;
-    //   state.status.isLoading = false;
-    //   state.status.failedToLoad = false;
-    // })
-    // .addCase(updateUserEmail.pending, (state) => {
-    //   state.status.isLoading = true;
-    //   state.status.failedToLoad = false;
-    // })
-    // .addCase(updateUserEmail.rejected),
-    // (state, action) => {
-    //   state.status.isLoading = false;
-    //   state.status.failedToLoad = true;
-    //   state.errorMessage = action.payload.code;
-    // };
   },
 });
 export const { updateUserStatus, updateUserEmail, resetUser, setUser } =
