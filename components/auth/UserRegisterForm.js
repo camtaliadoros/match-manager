@@ -4,10 +4,11 @@ import {
 } from 'firebase/auth';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { auth } from '../../firebase/clientApp';
+import { auth, db } from '../../firebase/clientApp';
 import { handleAuthError } from '../../utilities/authErrorHandler';
 import classes from './Auth.module.scss';
 import PasswordComparison from './PasswordComparison';
+import { doc, setDoc } from 'firebase/firestore';
 
 function UserRegister() {
   const [email, setEmail] = useState('');
@@ -20,8 +21,16 @@ function UserRegister() {
 
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
-      if (user) {
+      if (auth.currentUser) {
+        const userID = auth.currentUser.uid;
         sendEmailVerification(auth.currentUser);
+        try {
+          await setDoc(doc(db, 'users', userID), {
+            id: userID,
+          });
+        } catch (error) {
+          console.log(error);
+        }
       }
     } catch (error) {
       setAuthError(handleAuthError(error));

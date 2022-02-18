@@ -9,6 +9,8 @@ export default function Header({ classes }) {
       </Link>
       <nav className='mobile-hidden'>
         <AuthNavigation authClass={classes.navLinks} />
+        <Link href='/profile'>Profile</Link>
+        <Link href='/dashboard'>Dashboard</Link>
       </nav>
     </header>
   );

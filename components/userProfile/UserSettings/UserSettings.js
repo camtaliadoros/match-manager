@@ -1,4 +1,4 @@
-import ChangeEmail from './ChangeEmail.jsx';
+import ChangeEmail from './ChangeEmail.js';
 import ChangePassword from './ChangePassword';
 
 export default function UserSettings() {

@@ -1,6 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { updateProfile } from 'firebase/auth';
-import { auth } from '../firebase/clientApp';
+import { auth, db } from '../firebase/clientApp';
+import {
+  doc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 
 const initialState = {
   uid: '',
@@ -10,7 +18,7 @@ const initialState = {
     isEmailVerified: false,
   },
   profile: {
-    name: '',
+    displayName: '',
     photo: '',
   },
   status: {
@@ -22,15 +30,34 @@ const initialState = {
 
 export const updateUserProfile = createAsyncThunk(
   'user/updateUserProfile',
+
   async (updatedDetails) => {
-    const updated = await updateProfile(auth.currentUser, {
-      displayName: updatedDetails.displayName,
-      photoURL: updatedDetails.photoURL,
-    });
+    const userID = auth.currentUser.uid;
+    await updateDoc(doc(db, 'users', userID), updatedDetails);
+
     return {
-      name: auth.currentUser.displayName,
-      photo: auth.currentUser.photoURL,
+      username: updatedDetails.displayName,
+      photo: updatedDetails.photoURL,
     };
+  }
+);
+
+export const getUserProfile = createAsyncThunk(
+  'user/getUserProfile',
+  async (userId) => {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('id', '==', userId));
+    const queryResult = await getDocs(q);
+    let result;
+
+    console.log(queryResult);
+    queryResult.forEach((doc) => {
+      result = doc.data();
+    });
+
+    console.log(result);
+
+    return result;
   }
 );
 
@@ -68,6 +95,19 @@ export const userSlice = createSlice({
         state.status.failedToLoad = false;
       })
       .addCase(updateUserProfile.rejected, (state) => {
+        state.status.isLoading = false;
+        state.status.failedToLoad = true;
+      })
+      .addCase(getUserProfile.fulfilled, (state, action) => {
+        state.profile = action.payload;
+        state.status.isLoading = false;
+        state.status.failedToLoad = false;
+      })
+      .addCase(getUserProfile.pending, (state) => {
+        state.status.isLoading = true;
+        state.status.failedToLoad = false;
+      })
+      .addCase(getUserProfile.rejected, (state) => {
         state.status.isLoading = false;
         state.status.failedToLoad = true;
       });
