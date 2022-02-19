@@ -14,19 +14,20 @@ import { storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
 import classes from './styles/userProfile.module.scss';
 
+// To be replaced with database data
+
 export default function UserProfile() {
   const user = useSelector(selectCurrentUser);
-  const userPhoto = user.profile.photo;
+  const currentPhoto = user.profile.photo;
+  const currentUsername = user.profile.name;
   const userAddress = user.emailAddress;
-  const userDisplayName = user.profile.name;
   const uid = user.uid;
 
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState(
-    userDisplayName ? userDisplayName : userAddress.split('@')[0]
+    currentUsername ? currentUsername : userAddress.split('@')[0]
   );
-  const [email, setEmail] = useState(userAddress);
 
   const [photo, setPhoto] = useState();
   const [letterDisplay, setLetterDisplay] = useState(username[0]);
@@ -35,8 +36,8 @@ export default function UserProfile() {
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
-    if (userPhoto) {
-      getDownloadURL(ref(storage, userPhoto)).then((url) => setPhoto(url));
+    if (currentPhoto) {
+      getDownloadURL(ref(storage, currentPhoto)).then((url) => setPhoto(url));
     }
   }, []);
 
@@ -46,7 +47,7 @@ export default function UserProfile() {
       setLetterDisplay('?');
     }
 
-    if (photo !== userPhoto || username !== userDisplayName) {
+    if (photo !== currentPhoto || username !== currentUsername) {
       setIsUpdated(false);
     }
   }, [username, photo]);
@@ -56,13 +57,13 @@ export default function UserProfile() {
     setIsLoading(true);
     const updatedDetails = {};
 
-    if (username !== userDisplayName) {
+    if (username !== currentUsername) {
       updatedDetails.displayName = username;
     }
 
-    if (photo && photo !== userPhoto) {
-      if (userPhoto) {
-        const currentPhotoRef = ref(storage, userPhoto);
+    if (photo && photo !== currentPhoto) {
+      if (currentPhoto) {
+        const currentPhotoRef = ref(storage, currentPhoto);
         deleteObject(currentPhotoRef).catch((error) => {
           setErrorMessage('Something went wrong. Please try again!');
         });
@@ -73,7 +74,7 @@ export default function UserProfile() {
       uploadString(profilePhotoRef, photo, 'data_url').then((snapshot) => {});
       updatedDetails.photoURL = storagePath;
     }
-    if (username !== userDisplayName || photo !== userPhoto) {
+    if (username !== currentUsername || photo !== currentPhoto) {
       dispatch(updateUserProfile(updatedDetails));
     }
 

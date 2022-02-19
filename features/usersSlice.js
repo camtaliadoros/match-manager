@@ -50,12 +50,9 @@ export const getUserProfile = createAsyncThunk(
     const queryResult = await getDocs(q);
     let result;
 
-    console.log(queryResult);
     queryResult.forEach((doc) => {
       result = doc.data();
     });
-
-    console.log(result);
 
     return result;
   }
