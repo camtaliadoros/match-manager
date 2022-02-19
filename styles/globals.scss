@@ -259,6 +259,7 @@ form {
   flex-direction: column;
   margin-top: $spacing-md;
   width: 100%;
+  max-width: 540px;
 
   label {
     font-family: 'proxima-nova', sans-serif;

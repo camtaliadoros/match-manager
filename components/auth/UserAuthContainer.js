@@ -17,6 +17,7 @@ export default function UserAuthContainer() {
       <>
         <div className={classes.buttonWrapper}>
           <Link href='/'>
+            {/* Swap for font awesome */}
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='18'
