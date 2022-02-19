@@ -16,12 +16,29 @@ const initialState = {
     name: 'Group 1',
     id: 'group1',
     status: 'admin',
+    players: {
+      core: [
+        'p2',
+        'p3',
+        'p4',
+        'p5',
+        'p6',
+        'p7',
+        'p8',
+        'p9',
+        'p10',
+        'p11',
+        'p12',
+      ],
+      reserve: ['p13', 'p14', 'p15', 'p16'],
+      admin: 'p1',
+    },
   },
   isLoading: false,
   failedToLoad: false,
 };
 
-const groupsSlice = createSlice({
+export const groupsSlice = createSlice({
   name: 'groups',
   initialState,
   reducers: {},
