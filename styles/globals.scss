@@ -180,6 +180,12 @@ button {
     padding: 0;
   }
 
+  &.delete-btn {
+    width: 100%;
+    background-color: $red;
+    margin: $spacing-lg 0;
+  }
+
   .full-width {
     width: 100%;
   }
