@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import classes from './Auth.module.scss';
 
 export default function PasswordComparison({ pwd, match, label, required }) {
   const [password, setPassword] = useState('');
@@ -10,8 +9,13 @@ export default function PasswordComparison({ pwd, match, label, required }) {
   useEffect(() => {
     setPassMatch(password.length > 0 && passVal === password);
     setPassAlert(!(passMatch || passVal.length === 0));
-    password ? pwd(password) : null;
-    !password ? setPassVal('') : null;
+
+    if (password) {
+      pwd(password);
+    } else {
+      setPassVal('');
+    }
+
     match(passMatch);
   }, [passVal, passMatch, password]);
 

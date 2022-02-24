@@ -4,7 +4,6 @@ import Header from '../layout/Header';
 import { useSelector } from 'react-redux';
 import { selectEmailVerified, selectLoggedIn } from '../../features/usersSlice';
 import VerificationAlert from '../auth/VerificationAlert';
-import { auth } from '../../firebase/clientApp';
 import Link from 'next/link';
 
 function Layout(props) {

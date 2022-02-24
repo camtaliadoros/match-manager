@@ -53,7 +53,7 @@ function UserRegister() {
         <PasswordComparison
           pwd={setPassword}
           match={setPassMatch}
-          label={'Password'}
+          label='Password'
           required={true}
         />
         <div className='checkbox'>

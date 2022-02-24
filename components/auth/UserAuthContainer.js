@@ -3,7 +3,7 @@ import { useState } from 'react';
 import classes from './Auth.module.scss';
 import UserLogin from './UserLogin';
 import UserRegisterForm from './UserRegisterForm';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectEmailVerified, selectLoggedIn } from '../../features/usersSlice';
 
 export default function UserAuthContainer() {
@@ -64,7 +64,9 @@ export default function UserAuthContainer() {
     return (
       <div className={classes.alert}>
         <h2>You are already signed in.</h2>
-        <button>GO TO DASHBOARD</button>
+        <Link href='/dashboard'>
+          <a className='button-style'>GO TO DASHBOARD</a>
+        </Link>
       </div>
     );
   }

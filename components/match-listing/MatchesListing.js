@@ -5,27 +5,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function MatchesListing({ display, type }) {
-  let title;
-  switch (type) {
-    case 'upcoming-matches':
-      title = 'Upcoming Matches';
-      break;
-    case 'match-invites':
-      title = 'Match Invites';
-      break;
-    case 'pending-payment':
-      title = 'Matches Pending Payment';
-      break;
-    case 'match-requests':
-      title = 'Match Requests';
-      break;
-    default:
-      title = 'Matches';
-  }
+  const typeMap = {
+    upcomingMatches: {
+      title: 'Upcoming Matches',
+      link: '/upcoming-matches',
+    },
+    matchInvites: {
+      title: 'Match Invites',
+      link: '/match-invites',
+    },
+    pendingPayment: {
+      title: 'Pending Payment',
+      link: '/pending-payment',
+    },
+    matchRequests: {
+      title: 'Match Requests',
+      link: 'match-requests',
+    },
+  };
+
+  const title = typeMap[type].title;
+  const path = typeMap[type].link;
 
   return (
     <div className={classes.listingWrapper}>
-      {/* <Link href=`./${type}`> */}
+      {/* <Link href=`./${path}`> */}
       <div className={classes.matchListingTitle}>
         <a className='title'>{title}</a>
         <FontAwesomeIcon icon={faAngleRight} className='next-icon' />

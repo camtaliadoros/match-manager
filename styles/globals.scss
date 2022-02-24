@@ -206,12 +206,13 @@ button {
     right: $spacing-md;
     top: $spacing-sm;
     padding: 0;
-
-    svg {
-      width: 18px;
-      fill: $dark-green;
-    }
+    color: $dark-green;
+    font-size: $font-lg;
   }
+}
+
+.button-style {
+  @extend button;
 }
 
 .title {

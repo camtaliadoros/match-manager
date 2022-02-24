@@ -39,32 +39,32 @@ export default function Reauth({ reAuth, enabled }) {
 
   return (
     <>
-      <DialogBox action={handleCloseButton} />
-      <div className='form-wrapper'>
-        <form onSubmit={handleSubmit}>
-          <h2>Please enter your current password</h2>
-          <input
-            id='new-password'
-            type='password'
-            name='password'
-            aria-label='password'
-            value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
-            minLength='8'
-            required
-          />
-          {isLoading ? (
-            <div className='spinner-container'>
-              <div className='spinner'></div>
-            </div>
-          ) : (
-            <button>NEXT</button>
-          )}
-        </form>
+      <DialogBox close={handleCloseButton}>
+        <div className='form-wrapper'>
+          <form onSubmit={handleSubmit}>
+            <h2>Please enter your current password</h2>
+            <input
+              id='new-password'
+              type='password'
+              name='password'
+              aria-label='password'
+              value={password}
+              onChange={(e) => setPassword(e.currentTarget.value)}
+              minLength='8'
+              required
+            />
+            {isLoading ? (
+              <div className='spinner-container'>
+                <div className='spinner'></div>
+              </div>
+            ) : (
+              <button>NEXT</button>
+            )}
+          </form>
 
-        {errorMessage ? <p>{errorMessage}</p> : null}
-      </div>
-      <DialogBox />
+          {errorMessage ? <p>{errorMessage}</p> : null}
+        </div>
+      </DialogBox>
     </>
   );
 }

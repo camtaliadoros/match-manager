@@ -23,11 +23,7 @@ function UserLogin() {
   return (
     <div className={classes.wrapper}>
       <form onSubmit={handleSubmit}>
-        <UserLoginForm
-          loginEmail={setEmail}
-          loginPwd={setPassword}
-          error={setErrorMessage}
-        />
+        <UserLoginForm loginEmail={setEmail} loginPwd={setPassword} />
         <button className={classes.submit}>LOGIN</button>
       </form>
       {errorMessage ? errorMessage : null}

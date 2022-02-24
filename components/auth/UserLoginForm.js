@@ -4,7 +4,7 @@ import { auth } from '../../firebase/clientApp';
 import { handleAuthError } from '../../utilities/authErrorHandler';
 import classes from './Auth.module.scss';
 
-function UserLoginForm({ loginEmail, loginPwd, error }) {
+function UserLoginForm({ loginEmail, loginPwd }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
