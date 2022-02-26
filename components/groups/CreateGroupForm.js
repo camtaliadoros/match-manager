@@ -16,30 +16,29 @@ export default function CreateGroupForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // let nameExists;
-    // const groupsRef = collection(db, 'groups');
-    // const q = query(groupsRef, where('name', '==', groupName));
-    // const querySnapshot = await getDocs(q);
-    // console.log(querySnapshot);
+    let nameExists;
+    const groupsRef = collection(db, 'groups');
+    const q = query(groupsRef, where('name', '==', groupName));
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
 
-    // querySnapshot.forEach((doc) => {
-    //   nameExists = doc.data();
-    //   console.log(nameExists);
-    // });
+    querySnapshot.forEach((doc) => {
+      nameExists = doc.data();
+    });
 
-    // if (nameExists) {
-    //   setErrorMessage('This group name already exists');
-    // } else {
-    // }
-    const groupId = uuidv4();
+    if (nameExists) {
+      setErrorMessage('This group name already exists');
+    } else {
+      const groupId = uuidv4();
 
-    const groupData = {
-      id: groupId,
-      name: groupName,
-    };
-    dispatch(createGroup(groupData));
-    // Redirect to group page
-    setErrorMessage('Group created');
+      const groupData = {
+        id: groupId,
+        name: groupName,
+      };
+      dispatch(createGroup(groupData));
+      // Redirect to group page
+      setErrorMessage('Group created');
+    }
   };
 
   return (
