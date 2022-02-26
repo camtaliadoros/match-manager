@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { createGroup, selectIsLoading } from '../../features/group/groupsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { createGroup, selectIsLoading } from '../../features/group/groupsSlice';
 import { selectCurrentUser } from '../../features/usersSlice';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase/clientApp';
 
 export default function CreateGroupForm() {
   const dispatch = useDispatch();
@@ -9,17 +12,34 @@ export default function CreateGroupForm() {
   const isLoading = useSelector(selectIsLoading);
 
   const [groupName, setGroupName] = useState();
+  const [errorMessage, setErrorMessage] = useState();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Sub with real data
+    // let nameExists;
+    // const groupsRef = collection(db, 'groups');
+    // const q = query(groupsRef, where('name', '==', groupName));
+    // const querySnapshot = await getDocs(q);
+    // console.log(querySnapshot);
+
+    // querySnapshot.forEach((doc) => {
+    //   nameExists = doc.data();
+    //   console.log(nameExists);
+    // });
+
+    // if (nameExists) {
+    //   setErrorMessage('This group name already exists');
+    // } else {
+    // }
+    const groupId = uuidv4();
+
     const groupData = {
-      id: 'group1',
-      status: 'admin',
+      id: groupId,
       name: groupName,
     };
     dispatch(createGroup(groupData));
     // Redirect to group page
+    setErrorMessage('Group created');
   };
 
   return (
@@ -42,6 +62,7 @@ export default function CreateGroupForm() {
           <button>CREATE GROUP</button>
         )}
       </form>
+      <p className='error-message'>{errorMessage}</p>
     </>
   );
 }

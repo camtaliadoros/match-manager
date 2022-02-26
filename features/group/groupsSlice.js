@@ -1,10 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { startAfter } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase/clientApp';
 
 export const createGroup = createAsyncThunk(
   'groups/createGroup',
   async (groupData) => {
+    const id = groupData.id;
+    await setDoc(doc(db, 'groups', id), groupData);
     // Create new group on database
     // Create new user_group - set as admin
     return groupData;
@@ -45,6 +48,8 @@ export const groupsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(createGroup.fulfilled, (state, action) => {
       state.byId = action.payload;
+      state.isLoading = false;
+      state.failedToLoad = false;
     });
     builder.addCase(createGroup.pending, (state) => {
       state.isLoading = true;
