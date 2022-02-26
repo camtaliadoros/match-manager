@@ -11,7 +11,7 @@ export default function CreateGroupForm() {
   const currentUser = useSelector(selectCurrentUser);
   const isLoading = useSelector(selectIsLoading);
 
-  const [groupName, setGroupName] = useState();
+  const [groupName, setGroupName] = useState('');
   const [errorMessage, setErrorMessage] = useState();
 
   const handleSubmit = async (e) => {
@@ -20,7 +20,6 @@ export default function CreateGroupForm() {
     const groupsRef = collection(db, 'groups');
     const q = query(groupsRef, where('name', '==', groupName));
     const querySnapshot = await getDocs(q);
-    console.log(querySnapshot);
 
     querySnapshot.forEach((doc) => {
       nameExists = doc.data();
