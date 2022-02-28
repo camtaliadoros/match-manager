@@ -8,17 +8,26 @@ export const createGroup = createAsyncThunk(
   async (groupData) => {
     const id = groupData.id;
     await setDoc(doc(db, 'groups', id), groupData);
-    // Create new group on database
-    // Create new user_group - set as admin
+
     return groupData;
+  }
+);
+
+export const setGroupPlayer = createAsyncThunk(
+  'groups/setGroupPlayer',
+  async (playerData) => {
+    const group = playerData.groupId;
+    const user = playerData.userId;
+    const docId = `${group}_${user}`;
+    await setDoc(doc(db, 'group_users', docId), playerData);
+    return playerData;
   }
 );
 
 const initialState = {
   byId: {
-    name: 'Group 1',
-    id: 'group1',
-    status: 'admin',
+    name: '',
+    id: '',
     players: {
       core: [
         'p2',
@@ -34,11 +43,12 @@ const initialState = {
         'p12',
       ],
       reserve: ['p13', 'p14', 'p15', 'p16'],
-      admin: 'p1',
+      admin: [],
     },
   },
   isLoading: false,
   failedToLoad: false,
+  errorMessage: '',
 };
 
 export const groupsSlice = createSlice({
@@ -58,6 +68,21 @@ export const groupsSlice = createSlice({
     builder.addCase(createGroup.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
+    });
+    builder.addCase(setGroupPlayer.fulfilled, (state, action) => {
+      const playerStatus = action.payload.userStatus;
+      state.byId.players[playerStatus].push = action.payload.userId;
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(setGroupPlayer.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(setGroupPlayer.rejected, (state, action) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+      state.errorMessage = action.payload;
     });
   },
 });

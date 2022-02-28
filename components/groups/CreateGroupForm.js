@@ -1,15 +1,21 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { createGroup, selectIsLoading } from '../../features/group/groupsSlice';
+import {
+  createGroup,
+  selectIsLoading,
+  setGroupPlayer,
+} from '../../features/group/groupsSlice';
 import { selectCurrentUser } from '../../features/usersSlice';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
+import { useRouter } from 'next/router';
 
 export default function CreateGroupForm() {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const isLoading = useSelector(selectIsLoading);
+  const router = useRouter();
 
   const [groupName, setGroupName] = useState('');
   const [errorMessage, setErrorMessage] = useState();
@@ -29,14 +35,24 @@ export default function CreateGroupForm() {
       setErrorMessage('This group name already exists');
     } else {
       const groupId = uuidv4();
+      const path = groupName.toLowerCase().replace(' ', '-');
 
       const groupData = {
         id: groupId,
         name: groupName,
+        path: path,
       };
+
+      const userData = {
+        groupId: groupId,
+        userId: currentUser.uid,
+        userStatus: 'admin',
+      };
+
       dispatch(createGroup(groupData));
-      // Redirect to group page
-      setErrorMessage('Group created');
+      dispatch(setGroupPlayer(userData));
+
+      router.push(`/dashboard/${path}`);
     }
   };
 

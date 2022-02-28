@@ -29,7 +29,7 @@ function UserRegister() {
             id: userID,
           });
         } catch (error) {
-          console.log(error);
+          setAuthError('Something went wrong');
         }
       }
     } catch (error) {

@@ -8,6 +8,7 @@ export default function GroupContainer() {
   const isAdmin = currentGroup.status === 'admin';
   const groupName = currentGroup.name;
   const players = currentGroup.players;
+  console.log(players);
 
   return (
     <>
