@@ -23,8 +23,9 @@ export default function CreateGroupForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let nameExists;
+    const path = groupName.toLowerCase().replace(' ', '-');
     const groupsRef = collection(db, 'groups');
-    const q = query(groupsRef, where('name', '==', groupName));
+    const q = query(groupsRef, where('path', '==', path));
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((doc) => {
@@ -45,11 +46,12 @@ export default function CreateGroupForm() {
 
       const userData = {
         groupId: groupId,
+        groupPath: path,
         userId: currentUser.uid,
         userStatus: 'admin',
       };
 
-      await dispatch(createGroup(groupData));
+      dispatch(createGroup(groupData));
       dispatch(setGroupPlayer(userData));
 
       router.push(`/dashboard/${path}`);

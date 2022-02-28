@@ -25,7 +25,7 @@ export const setGroupPlayer = createAsyncThunk(
 );
 
 const initialState = {
-  byId: {
+  byPath: {
     // name: '',
     // id: '',
     // matches: [],
@@ -58,7 +58,7 @@ export const groupsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(createGroup.fulfilled, (state, action) => {
-      state.byId[action.payload.id] = {
+      state.byPath[action.payload.path] = {
         ...action.payload,
         matches: [],
         players: {
@@ -80,9 +80,9 @@ export const groupsSlice = createSlice({
     });
     builder.addCase(setGroupPlayer.fulfilled, (state, action) => {
       const playerStatus = action.payload.userStatus;
-      const gId = action.payload.groupId;
+      const gPath = action.payload.groupPath;
       const uId = action.payload.userId;
-      const playerStatusArr = state.byId[gId].players[playerStatus];
+      const playerStatusArr = state.byPath[gPath].players[playerStatus];
       playerStatusArr.push(uId);
       state.isLoading = false;
       state.failedToLoad = false;
@@ -102,6 +102,6 @@ export const groupsSlice = createSlice({
 export const {} = groupsSlice.actions;
 export const selectIsLoading = (state) => state.groups.isLoading;
 export const selectFailedToLoad = (state) => state.groups.failedToLoad;
-export const selectGroup = (state) => state.groups.byId;
+export const selectGroupsByPath = (state) => state.groups.byPath;
 
 export default groupsSlice.reducer;
