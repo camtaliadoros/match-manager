@@ -26,25 +26,26 @@ export const setGroupPlayer = createAsyncThunk(
 
 const initialState = {
   byId: {
-    name: '',
-    id: '',
-    players: {
-      core: [
-        'p2',
-        'p3',
-        'p4',
-        'p5',
-        'p6',
-        'p7',
-        'p8',
-        'p9',
-        'p10',
-        'p11',
-        'p12',
-      ],
-      reserve: ['p13', 'p14', 'p15', 'p16'],
-      admin: [],
-    },
+    // name: '',
+    // id: '',
+    // matches: [],
+    // players: {
+    //   core: [
+    //     'p2',
+    //     'p3',
+    //     'p4',
+    //     'p5',
+    //     'p6',
+    //     'p7',
+    //     'p8',
+    //     'p9',
+    //     'p10',
+    //     'p11',
+    //     'p12',
+    //   ],
+    //   reserve: ['p13', 'p14', 'p15', 'p16'],
+    //   admin: '',
+    // },
   },
   isLoading: false,
   failedToLoad: false,
@@ -57,7 +58,15 @@ export const groupsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(createGroup.fulfilled, (state, action) => {
-      state.byId = action.payload;
+      state.byId[action.payload.id] = {
+        ...action.payload,
+        matches: [],
+        players: {
+          core: [],
+          reserve: [],
+          admin: [],
+        },
+      };
       state.isLoading = false;
       state.failedToLoad = false;
     });
@@ -71,7 +80,10 @@ export const groupsSlice = createSlice({
     });
     builder.addCase(setGroupPlayer.fulfilled, (state, action) => {
       const playerStatus = action.payload.userStatus;
-      state.byId.players[playerStatus].push = action.payload.userId;
+      const gId = action.payload.groupId;
+      const uId = action.payload.userId;
+      const playerStatusArr = state.byId[gId].players[playerStatus];
+      playerStatusArr.push(uId);
       state.isLoading = false;
       state.failedToLoad = false;
     });

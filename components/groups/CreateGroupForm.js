@@ -49,7 +49,7 @@ export default function CreateGroupForm() {
         userStatus: 'admin',
       };
 
-      dispatch(createGroup(groupData));
+      await dispatch(createGroup(groupData));
       dispatch(setGroupPlayer(userData));
 
       router.push(`/dashboard/${path}`);

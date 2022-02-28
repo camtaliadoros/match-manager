@@ -16,7 +16,6 @@ export default function Player({ id, status }) {
 
       querySnapshot.forEach((doc) => {
         playerData = doc.data();
-        console.log(playerData.username);
       });
     } catch (error) {
       setErrorMessage('Something wrong happened.');
