@@ -13,48 +13,37 @@ import {
 import { storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
 import classes from './styles/userProfile.module.scss';
+import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
 
 // To be replaced with database data
 
 export default function UserProfile() {
+  const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
-  const currentPhoto = user.profile.photo;
-  const currentUsername = user.profile.name;
-  const userAddress = user.emailAddress;
+  const currentPhoto = user.photo;
   const uid = user.uid;
 
-  const dispatch = useDispatch();
+  const [username, setUsername] = useState();
 
-  const [username, setUsername] = useState(
-    currentUsername ? currentUsername : userAddress.split('@')[0]
-  );
+  useEffect(() => {
+    setUsername(user.username);
+  }, [user.username]);
 
   const [photo, setPhoto] = useState();
-  const [letterDisplay, setLetterDisplay] = useState(username[0]);
   const [isUpdated, setIsUpdated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
-  useEffect(() => {
-    if (currentPhoto) {
-      getDownloadURL(ref(storage, currentPhoto)).then((url) => setPhoto(url));
-    }
-  }, []);
+  // useEffect(() => {
 
-  useEffect(() => {
-    setLetterDisplay(username[0]);
-    if (!username) {
-      setLetterDisplay('?');
-    }
-
-    if (photo !== currentPhoto || username !== currentUsername) {
-      setIsUpdated(false);
-    }
-  }, [username, photo]);
+  //   if (photo !== currentPhoto || username !== currentUsername) {
+  //     setIsUpdated(false);
+  //   }
+  // }, [ photo]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+
     const updatedDetails = {};
 
     if (username !== currentUsername) {
@@ -95,16 +84,7 @@ export default function UserProfile() {
   return (
     <div className='wrapper'>
       <h1>Create your profile</h1>
-      <div className={classes.imageContainer}>
-        {photo ? (
-          <div
-            className={classes.profilePhoto}
-            style={{ backgroundImage: `url('${photo}')` }}
-          ></div>
-        ) : (
-          <p>{letterDisplay}</p>
-        )}
-      </div>
+      <ProfilePhoto username={username} />
       <input
         className={classes.fileInput}
         type='file'

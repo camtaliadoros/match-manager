@@ -34,33 +34,6 @@
   }
 }
 
-.imageContainer {
-  background-color: $green25;
-  height: 180px;
-  width: 180px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: $spacing-md;
-  overflow: hidden;
-
-  .profilePhoto {
-    height: 100%;
-    width: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  p {
-    font-size: 120px;
-    font-weight: 600;
-    color: $dark-green;
-    text-transform: uppercase;
-  }
-}
-
 .authModal {
   display: flex;
   position: absolute;
