@@ -6,12 +6,33 @@ import {
   getDoc,
   getDocs,
   query,
-  setDoc,
   where,
+  setDoc,
 } from 'firebase/firestore';
 
+export const createGroup = createAsyncThunk(
+  'group/createGroup',
+  async (groupData) => {
+    const id = groupData.path;
+    await setDoc(doc(db, 'groups', id), groupData);
+
+    return groupData;
+  }
+);
+
+export const setGroupPlayer = createAsyncThunk(
+  'group/setGroupPlayer',
+  async (playerData) => {
+    const group = playerData.groupId;
+    const user = playerData.userId;
+    const docId = `${group}_${user}`;
+    await setDoc(doc(db, 'group_users', docId), playerData);
+    return playerData;
+  }
+);
+
 export const getCurrentGroup = createAsyncThunk(
-  'groups/getCurrentGroup',
+  'group/getCurrentGroup',
   async (groupPath) => {
     let currentGroupState = {
       id: '',
@@ -103,6 +124,44 @@ export const groupSlice = createSlice({
     builder.addCase(getCurrentGroup.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
+    });
+    builder.addCase(createGroup.fulfilled, (state, action) => {
+      state.data = {
+        ...action.payload,
+        matches: [],
+        players: {
+          core: [],
+          reserve: [],
+          admin: [],
+        },
+      };
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(createGroup.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(createGroup.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(setGroupPlayer.fulfilled, (state, action) => {
+      const playerStatus = action.payload.userStatus;
+      const uId = action.payload.userId;
+      const playerStatusArr = state.data.players[playerStatus];
+      playerStatusArr.push(uId);
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(setGroupPlayer.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(setGroupPlayer.rejected, (state, action) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+      state.errorMessage = action.payload;
     });
   },
 });

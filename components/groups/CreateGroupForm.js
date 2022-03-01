@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import {
   createGroup,
-  selectIsLoading,
+  groupIsLoading,
   setGroupPlayer,
-} from '../../features/group/groupsSlice';
+} from '../../features/group/groupSlice';
 import { selectCurrentUser } from '../../features/usersSlice';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 export default function CreateGroupForm() {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
-  const isLoading = useSelector(selectIsLoading);
+  const isLoading = useSelector(groupIsLoading);
   const router = useRouter();
 
   const [groupName, setGroupName] = useState('');
