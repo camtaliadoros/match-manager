@@ -17,18 +17,18 @@ export default function GroupDetail() {
   const dispatch = useDispatch();
   let currentPath = router.query.groupDetail;
 
+  const isLoading = useSelector(groupIsLoading);
+  const currentGroup = useSelector(selectGroup);
+  const currentUser = useSelector(selectCurrentUser);
+
   useEffect(() => {
-    if (currentPath) {
+    if (currentPath && currentGroup.path !== currentPath) {
       dispatch(getCurrentGroup(currentPath));
       // dispatch(getGroupPlayers(currentPath));
     }
   }, [router]);
 
   // get group matches
-
-  const isLoading = useSelector(groupIsLoading);
-  const currentGroup = useSelector(selectGroup);
-  const currentUser = useSelector(selectCurrentUser);
 
   const adminArr = currentGroup.players.admin;
   const isAdmin = adminArr.includes(currentUser.uid);

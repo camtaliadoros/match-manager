@@ -103,6 +103,7 @@ const initialState = {
       admin: [],
     },
   },
+  isFulfilled: false,
   isLoading: false,
   failedToLoad: false,
 };
@@ -116,14 +117,17 @@ export const groupSlice = createSlice({
       state.data = action.payload;
       state.failedToLoad = false;
       state.isLoading = false;
+      state.isFulfilled = true;
     });
     builder.addCase(getCurrentGroup.pending, (state) => {
       state.isLoading = true;
       state.failedToLoad = false;
+      state.isFulfilled = false;
     });
     builder.addCase(getCurrentGroup.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
+      state.isFulfilled = false;
     });
     builder.addCase(createGroup.fulfilled, (state, action) => {
       state.data = {
@@ -137,14 +141,17 @@ export const groupSlice = createSlice({
       };
       state.isLoading = false;
       state.failedToLoad = false;
+      state.isFulfilled = true;
     });
     builder.addCase(createGroup.pending, (state) => {
       state.isLoading = true;
       state.failedToLoad = false;
+      state.isFulfilled = false;
     });
     builder.addCase(createGroup.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
+      state.isFulfilled = false;
     });
     builder.addCase(setGroupPlayer.fulfilled, (state, action) => {
       const playerStatus = action.payload.userStatus;
@@ -153,15 +160,17 @@ export const groupSlice = createSlice({
       playerStatusArr.push(uId);
       state.isLoading = false;
       state.failedToLoad = false;
+      state.isFulfilled = true;
     });
     builder.addCase(setGroupPlayer.pending, (state) => {
       state.isLoading = true;
       state.failedToLoad = false;
+      state.isFulfilled = false;
     });
     builder.addCase(setGroupPlayer.rejected, (state, action) => {
       state.isLoading = false;
       state.failedToLoad = true;
-      state.errorMessage = action.payload;
+      state.isFulfilled = false;
     });
   },
 });
@@ -170,5 +179,6 @@ export const {} = groupSlice.actions;
 export const selectGroup = (state) => state.group.data;
 export const groupIsLoading = (state) => state.group.isLoading;
 export const groupFailedToLoad = (state) => state.group.failedToLoad;
+export const groupIsFulfilled = (state) => state.group.isFulfilled;
 
 export default groupSlice.reducer;

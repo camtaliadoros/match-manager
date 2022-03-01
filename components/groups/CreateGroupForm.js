@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import {
   createGroup,
+  groupFailedToLoad,
+  groupIsFulfilled,
   groupIsLoading,
   setGroupPlayer,
 } from '../../features/group/groupSlice';
@@ -15,10 +17,21 @@ export default function CreateGroupForm() {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const isLoading = useSelector(groupIsLoading);
+  const isFulfilled = useSelector(groupIsFulfilled);
+  const failedToLoad = useSelector(groupFailedToLoad);
   const router = useRouter();
 
   const [groupName, setGroupName] = useState('');
+  const [groupPath, setGroupPath] = useState('/');
   const [errorMessage, setErrorMessage] = useState();
+
+  if (isFulfilled) {
+    router.push(`/dashboard/${groupPath}`);
+  }
+
+  if (failedToLoad) {
+    setErrorMessage('Something went wrong, please try again.');
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +67,7 @@ export default function CreateGroupForm() {
       dispatch(createGroup(groupData));
       dispatch(setGroupPlayer(userData));
 
-      router.push(`/dashboard/${path}`);
+      setGroupPath(path);
     }
   };
 
