@@ -1,14 +1,11 @@
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadString,
-} from 'firebase/storage';
+import { deleteObject, ref, uploadString } from 'firebase/storage';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentUser,
   updateUserProfile,
+  userFailedToLoad,
+  userIsLoading,
 } from '../../features/usersSlice';
 import { storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
@@ -20,34 +17,28 @@ import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
 export default function UserProfile() {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
+  const dataIsLoading = useSelector(userIsLoading);
+  const failedToLoad = useSelector(userFailedToLoad);
   const currentPhoto = user.photo;
-  const uid = user.uid;
+  const uid = user.id;
 
   const [username, setUsername] = useState();
-
-  useEffect(() => {
-    setUsername(user.username);
-  }, [user.username]);
-
   const [photo, setPhoto] = useState();
   const [isUpdated, setIsUpdated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
-  // useEffect(() => {
-
-  //   if (photo !== currentPhoto || username !== currentUsername) {
-  //     setIsUpdated(false);
-  //   }
-  // }, [ photo]);
+  useEffect(() => {
+    setUsername(user.username);
+  }, [user.username]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const updatedDetails = {};
 
-    if (username !== currentUsername) {
-      updatedDetails.displayName = username;
+    if (username !== user.username) {
+      updatedDetails.username = username;
     }
 
     if (photo && photo !== currentPhoto) {
@@ -60,10 +51,10 @@ export default function UserProfile() {
       const imgType = getImageExtension(photo);
       const storagePath = `profile-photo/${uid}.${imgType}`;
       const profilePhotoRef = ref(storage, storagePath);
-      uploadString(profilePhotoRef, photo, 'data_url').then((snapshot) => {});
-      updatedDetails.photoURL = storagePath;
+      uploadString(profilePhotoRef, photo, 'data_url');
+      updatedDetails.photo = storagePath;
     }
-    if (username !== currentUsername || photo !== currentPhoto) {
+    if (username !== user.username || photo !== currentPhoto) {
       dispatch(updateUserProfile(updatedDetails));
     }
 
@@ -81,10 +72,13 @@ export default function UserProfile() {
     }
   };
 
+  if (dataIsLoading) {
+    return <h1>Loading</h1>;
+  }
   return (
     <div className='wrapper'>
       <h1>Create your profile</h1>
-      <ProfilePhoto username={username} />
+      <ProfilePhoto username={username} formPhoto={photo} />
       <input
         className={classes.fileInput}
         type='file'

@@ -23,6 +23,7 @@ const initialState = {
   },
   isLoading: false,
   failedToLoad: false,
+  isFulfilled: false,
 };
 
 export const updateUserProfile = createAsyncThunk(
@@ -76,11 +77,8 @@ export const userSlice = createSlice({
     setUser(state, action) {
       state.data.id = action.payload.uid;
       state.data.emailAddress = action.payload.email;
-      // state.userStatus.isLoggedIn = true;
       state.status.isEmailVerified = action.payload.emailVerified;
-      // state.profile.name = action.payload.displayName;
-      // state.profile.photo = action.payload.photoURL;
-    }, // to check
+    },
     resetUser() {
       return initialState;
     },
@@ -92,14 +90,17 @@ export const userSlice = createSlice({
         state.data.photo = action.payload.photo;
         state.isLoading = false;
         state.failedToLoad = false;
+        state.isFulfilled = true;
       })
       .addCase(updateUserProfile.pending, (state) => {
         state.isLoading = true;
         state.failedToLoad = false;
+        state.isFulfilled = false;
       })
       .addCase(updateUserProfile.rejected, (state) => {
         state.isLoading = false;
         state.failedToLoad = true;
+        state.isFulfilled = false;
       })
       .addCase(getUserProfile.fulfilled, (state, action) => {
         state.data = {
@@ -108,14 +109,17 @@ export const userSlice = createSlice({
         };
         state.isLoading = false;
         state.failedToLoad = false;
+        state.isFulfilled = true;
       })
       .addCase(getUserProfile.pending, (state) => {
         state.isLoading = true;
         state.failedToLoad = false;
+        state.isFulfilled = false;
       })
       .addCase(getUserProfile.rejected, (state) => {
         state.isLoading = false;
         state.failedToLoad = true;
+        state.isFulfilled = false;
       })
       .addCase(createUser.fulfilled, (state, action) => {
         state.data = {
@@ -124,14 +128,17 @@ export const userSlice = createSlice({
         };
         state.isLoading = false;
         state.failedToLoad = false;
+        state.isFulfilled = true;
       })
       .addCase(createUser.pending, (state) => {
         state.isLoading = true;
         state.failedToLoad = false;
+        state.isFulfilled = false;
       })
       .addCase(createUser.rejected, (state) => {
         state.isLoading = false;
         state.failedToLoad = true;
+        state.isFulfilled = false;
       });
   },
 });
@@ -139,7 +146,8 @@ export const { updateUserLoggedIn, updateUserEmail, resetUser, setUser } =
   userSlice.actions;
 export const selectLoggedIn = (state) => state.user.status.isLoggedIn;
 export const selectEmailVerified = (state) => state.user.status.isEmailVerified;
-export const UserIsLoading = (state) => state.user.isLoading;
+export const userIsLoading = (state) => state.user.isLoading;
 export const selectCurrentUser = (state) => state.user.data;
 export const userFailedToLoad = (state) => state.user.failedToLoad;
+export const userIfFulfilled = (state) => state.user.isFulfilled;
 export default userSlice.reducer;
