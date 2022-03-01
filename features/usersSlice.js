@@ -11,21 +11,18 @@ import {
 } from 'firebase/firestore';
 
 const initialState = {
-  uid: '',
-  emailAddress: '',
-  userStatus: {
-    isLoggedIn: false,
-    isEmailVerified: false,
-  },
-  profile: {
+  data: {
+    uid: '',
+    emailAddress: '',
     displayName: '',
     photo: '',
   },
   status: {
-    isLoading: false,
-    failedToLoad: false,
+    isLoggedIn: false,
+    isEmailVerified: false,
   },
-  errorMessage: '',
+  isLoading: false,
+  failedToLoad: false,
 };
 
 export const updateUserProfile = createAsyncThunk(
@@ -62,20 +59,20 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateUserStatus(state, action) {
-      state.userStatus.isLoggedIn = action.payload;
+    updateUserLoggedIn(state, action) {
+      state.status.isLoggedIn = action.payload;
     },
     updateUserEmail(state, action) {
-      state.emailAddress = action.payload;
+      state.data.emailAddress = action.payload;
     },
     setUser(state, action) {
       state.uid = action.payload.uid;
       state.emailAddress = action.payload.email;
-      state.userStatus.isLoggedIn = true;
-      state.userStatus.isEmailVerified = action.payload.emailVerified;
-      state.profile.name = action.payload.displayName;
-      state.profile.photo = action.payload.photoURL;
-    },
+      // state.userStatus.isLoggedIn = true;
+      state.status.isEmailVerified = action.payload.emailVerified;
+      // state.profile.name = action.payload.displayName;
+      // state.profile.photo = action.payload.photoURL;
+    }, // to check
     resetUser() {
       return initialState;
     },
@@ -83,39 +80,42 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(updateUserProfile.fulfilled, (state, action) => {
-        state.profile = action.payload;
-        state.status.isLoading = false;
-        state.status.failedToLoad = false;
+        state.data.displayName = action.payload.username;
+        state.data.photo = action.payload.photo;
+        state.isLoading = false;
+        state.failedToLoad = false;
       })
       .addCase(updateUserProfile.pending, (state) => {
-        state.status.isLoading = true;
-        state.status.failedToLoad = false;
+        state.isLoading = true;
+        state.failedToLoad = false;
       })
       .addCase(updateUserProfile.rejected, (state) => {
-        state.status.isLoading = false;
-        state.status.failedToLoad = true;
+        state.isLoading = false;
+        state.failedToLoad = true;
       })
       .addCase(getUserProfile.fulfilled, (state, action) => {
-        state.profile = action.payload;
-        state.status.isLoading = false;
-        state.status.failedToLoad = false;
+        state.data = {
+          ...state.data,
+          ...action.payload,
+        };
+        state.isLoading = false;
+        state.failedToLoad = false;
       })
       .addCase(getUserProfile.pending, (state) => {
-        state.status.isLoading = true;
-        state.status.failedToLoad = false;
+        state.isLoading = true;
+        state.failedToLoad = false;
       })
       .addCase(getUserProfile.rejected, (state) => {
-        state.status.isLoading = false;
-        state.status.failedToLoad = true;
+        state.isLoading = false;
+        state.failedToLoad = true;
       });
   },
 });
-export const { updateUserStatus, updateUserEmail, resetUser, setUser } =
+export const { updateUserLoggedIn, updateUserEmail, resetUser, setUser } =
   userSlice.actions;
-export const selectLoggedIn = (state) => state.user.userStatus.isLoggedIn;
-export const selectEmailVerified = (state) =>
-  state.user.userStatus.isEmailVerified;
-export const selectLoading = (state) => state.user.status.isLoading;
-export const selectCurrentUser = (state) => state.user;
-export const selectError = (state) => state.user.errorMessage;
+export const selectLoggedIn = (state) => state.user.status.isLoggedIn;
+export const selectEmailVerified = (state) => state.user.status.isEmailVerified;
+export const UserIsLoading = (state) => state.user.isLoading;
+export const selectCurrentUser = (state) => state.user.data;
+export const userFailedToLoad = (state) => state.user.failedToLoad;
 export default userSlice.reducer;
