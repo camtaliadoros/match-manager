@@ -20,7 +20,7 @@ export default function GroupDetail() {
   useEffect(() => {
     if (currentPath) {
       dispatch(getCurrentGroup(currentPath));
-      dispatch(getGroupPlayers(currentPath));
+      // dispatch(getGroupPlayers(currentPath));
     }
   }, [router]);
 

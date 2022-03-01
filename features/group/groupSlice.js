@@ -13,23 +13,26 @@ import {
 export const getCurrentGroup = createAsyncThunk(
   'groups/getCurrentGroup',
   async (groupPath) => {
-    const docRef = doc(db, 'groups', groupPath);
-    const docSnap = await getDoc(docRef);
-    return docSnap.data();
-  }
-);
-
-export const getGroupPlayers = createAsyncThunk(
-  'groups/getGroupPlayers',
-  async (groupPath) => {
-    const groupPlayers = {
-      path: groupPath,
+    let currentGroupState = {
+      id: '',
+      name: '',
+      path: '',
+      matches: [],
       players: {
         core: [],
         reserve: [],
         admin: [],
       },
     };
+
+    const groupDocRef = doc(db, 'groups', groupPath);
+    const groupDocSnap = await getDoc(groupDocRef);
+    const response = groupDocSnap.data();
+    currentGroupState = {
+      ...currentGroupState,
+      ...response,
+    };
+
     const groupsRef = collection(db, 'group_users');
     const queryCore = query(
       groupsRef,
@@ -39,7 +42,7 @@ export const getGroupPlayers = createAsyncThunk(
     const querySnapshotCore = await getDocs(queryCore);
     querySnapshotCore.forEach((doc) => {
       const data = doc.data();
-      groupPlayers.players.core.push(data.userId);
+      currentGroupState.players.core.push(data.userId);
     });
 
     const queryReserve = query(
@@ -50,7 +53,7 @@ export const getGroupPlayers = createAsyncThunk(
     const querySnapshotReserve = await getDocs(queryReserve);
     querySnapshotReserve.forEach((doc) => {
       const data = doc.data();
-      groupPlayers.players.reserve.push(data.userId);
+      currentGroupState.players.reserve.push(data.userId);
     });
 
     const queryAdmin = query(
@@ -61,10 +64,9 @@ export const getGroupPlayers = createAsyncThunk(
     const querySnapshotAdmin = await getDocs(queryAdmin);
     querySnapshotAdmin.forEach((doc) => {
       const data = doc.data();
-      groupPlayers.players.admin.push(data.userId);
+      currentGroupState.players.admin.push(data.userId);
     });
-
-    return groupPlayers;
+    return currentGroupState;
   }
 );
 
@@ -90,15 +92,7 @@ export const groupSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getCurrentGroup.fulfilled, (state, action) => {
-      state.data = {
-        ...action.payload,
-        matches: [],
-        players: {
-          core: [],
-          reserve: [],
-          admin: [],
-        },
-      };
+      state.data = action.payload;
       state.failedToLoad = false;
       state.isLoading = false;
     });
@@ -109,20 +103,6 @@ export const groupSlice = createSlice({
     builder.addCase(getCurrentGroup.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
-    });
-    builder.addCase(getGroupPlayers.fulfilled, (state, action) => {
-      state.data.players = action.payload.players;
-      state.isLoading = false;
-      state.failedToLoad = false;
-    });
-    builder.addCase(getGroupPlayers.pending, (state) => {
-      state.isLoading = true;
-      state.failedToLoad = false;
-    });
-    builder.addCase(getGroupPlayers.rejected, (state, action) => {
-      state.isLoading = false;
-      state.failedToLoad = true;
-      // state.errorMessage = action.payload;
     });
   },
 });
