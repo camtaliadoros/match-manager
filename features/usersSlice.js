@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   data: {
-    uid: '',
+    id: '',
     emailAddress: '',
     displayName: '',
     photo: '',
@@ -66,8 +66,8 @@ export const userSlice = createSlice({
       state.data.emailAddress = action.payload;
     },
     setUser(state, action) {
-      state.uid = action.payload.uid;
-      state.emailAddress = action.payload.email;
+      state.data.id = action.payload.uid;
+      state.data.emailAddress = action.payload.email;
       // state.userStatus.isLoggedIn = true;
       state.status.isEmailVerified = action.payload.emailVerified;
       // state.profile.name = action.payload.displayName;
