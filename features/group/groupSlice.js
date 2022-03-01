@@ -111,7 +111,11 @@ const initialState = {
 export const groupSlice = createSlice({
   name: 'group',
   initialState,
-  reducers: {},
+  reducers: {
+    resetGroup() {
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getCurrentGroup.fulfilled, (state, action) => {
       state.data = action.payload;
@@ -175,7 +179,7 @@ export const groupSlice = createSlice({
   },
 });
 
-export const {} = groupSlice.actions;
+export const { resetGroup } = groupSlice.actions;
 export const selectGroup = (state) => state.group.data;
 export const groupIsLoading = (state) => state.group.isLoading;
 export const groupFailedToLoad = (state) => state.group.failedToLoad;

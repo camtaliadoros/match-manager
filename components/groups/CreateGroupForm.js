@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -7,6 +7,7 @@ import {
   groupIsFulfilled,
   groupIsLoading,
   setGroupPlayer,
+  resetGroup,
 } from '../../features/group/groupSlice';
 import { selectCurrentUser } from '../../features/usersSlice';
 import { collection, query, where, getDocs } from 'firebase/firestore';
@@ -15,6 +16,7 @@ import { useRouter } from 'next/router';
 
 export default function CreateGroupForm() {
   const dispatch = useDispatch();
+
   const currentUser = useSelector(selectCurrentUser);
   const isLoading = useSelector(groupIsLoading);
   const isFulfilled = useSelector(groupIsFulfilled);
@@ -22,12 +24,14 @@ export default function CreateGroupForm() {
   const router = useRouter();
 
   const [groupName, setGroupName] = useState('');
-  const [groupPath, setGroupPath] = useState('/');
+  const [groupPath, setGroupPath] = useState();
   const [errorMessage, setErrorMessage] = useState();
 
-  if (isFulfilled) {
-    router.push(`/dashboard/${groupPath}`);
-  }
+  useEffect(() => {
+    if (groupPath) {
+      router.push(`/dashboard/${groupPath}`);
+    }
+  }, [isFulfilled]);
 
   if (failedToLoad) {
     setErrorMessage('Something went wrong, please try again.');
