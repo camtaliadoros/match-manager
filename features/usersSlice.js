@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { updateProfile } from 'firebase/auth';
 import { auth, db } from '../firebase/clientApp';
 import {
   doc,
+  setDoc,
   updateDoc,
   collection,
   query,
@@ -14,7 +14,7 @@ const initialState = {
   data: {
     id: '',
     emailAddress: '',
-    displayName: '',
+    username: '',
     photo: '',
   },
   status: {
@@ -55,6 +55,14 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
+export const createUser = createAsyncThunk(
+  'user/createUser',
+  async (userData) => {
+    await setDoc(doc(db, 'users', userData.id), userData);
+    return userData;
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -80,7 +88,7 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(updateUserProfile.fulfilled, (state, action) => {
-        state.data.displayName = action.payload.username;
+        state.data.username = action.payload.username;
         state.data.photo = action.payload.photo;
         state.isLoading = false;
         state.failedToLoad = false;
@@ -106,6 +114,22 @@ export const userSlice = createSlice({
         state.failedToLoad = false;
       })
       .addCase(getUserProfile.rejected, (state) => {
+        state.isLoading = false;
+        state.failedToLoad = true;
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.data = {
+          ...state.data,
+          ...action.payload,
+        };
+        state.isLoading = false;
+        state.failedToLoad = false;
+      })
+      .addCase(createUser.pending, (state) => {
+        state.isLoading = true;
+        state.failedToLoad = false;
+      })
+      .addCase(createUser.rejected, (state) => {
         state.isLoading = false;
         state.failedToLoad = true;
       });

@@ -4,33 +4,32 @@ import {
 } from 'firebase/auth';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { auth, db } from '../../firebase/clientApp';
+import { auth } from '../../firebase/clientApp';
 import { handleAuthError } from '../../utilities/authErrorHandler';
 import classes from './Auth.module.scss';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../../features/usersSlice';
 import PasswordComparison from './PasswordComparison';
-import { doc, setDoc } from 'firebase/firestore';
 
 function UserRegister() {
   const [email, setEmail] = useState('');
   const [authError, setAuthError] = useState('');
   const [password, setPassword] = useState('');
   const [passMatch, setPassMatch] = useState(true);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const username = email.split('@')[0];
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       if (auth.currentUser) {
-        const userID = auth.currentUser.uid;
+        const userData = {
+          id: auth.currentUser.uid,
+          username: username,
+        };
         sendEmailVerification(auth.currentUser);
-        try {
-          await setDoc(doc(db, 'users', userID), {
-            id: userID,
-          });
-        } catch (error) {
-          setAuthError('Something went wrong');
-        }
+        dispatch(createUser(userData));
       }
     } catch (error) {
       setAuthError(handleAuthError(error));
