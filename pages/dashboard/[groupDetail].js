@@ -1,28 +1,16 @@
 import Layout from '../../components/layout/Layout';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-
 import {
   getCurrentGroup,
   getGroupPlayers,
   groupIsLoading,
   selectGroup,
 } from '../../features/group/groupSlice';
-
 import { selectCurrentUser } from '../../features/usersSlice';
 import MatchesListing from '../../components/match-listing/MatchesListing';
 import PlayerListing from '../../components/Players/PlayerListing';
 import { useEffect } from 'react';
-import { db } from '../../firebase/clientApp';
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
 
 export default function GroupDetail() {
   const router = useRouter();
