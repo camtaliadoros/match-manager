@@ -28,7 +28,7 @@ export const createGroup = createAsyncThunk(
       userStatus: 'admin',
     };
 
-    const docId = `${adminData.groupId}_${adminData.id}`;
+    const docId = `${adminData.groupId}_${adminData.userId}`;
 
     await setDoc(doc(db, 'group_users', docId), adminData);
 

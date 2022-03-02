@@ -64,13 +64,6 @@ export default function CreateGroupForm() {
         },
       };
 
-      const userData = {
-        groupId: groupId,
-        groupPath: path,
-        userId: currentUser.id,
-        userStatus: 'admin',
-      };
-
       dispatch(createGroup(groupData));
 
       setGroupPath(path);

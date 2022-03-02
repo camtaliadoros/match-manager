@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../components/layout/Layout';
 import MatchesListing from '../../components/match-listing/MatchesListing';
@@ -10,6 +10,7 @@ import {
   selectGroup,
 } from '../../features/group/groupSlice';
 import { selectCurrentUser } from '../../features/usersSlice';
+import PlayerListing from '../../components/Players/PlayerListing';
 
 export default function GroupDetail() {
   const dispatch = useDispatch();
@@ -20,22 +21,26 @@ export default function GroupDetail() {
   const isLoading = useSelector(groupIsLoading);
   const currentGroup = useSelector(selectGroup);
   const currentUser = useSelector(selectCurrentUser);
+  // get group matches
+
+  const [groupName, setGroupName] = useState(currentGroup.name);
+  const [players, setPlayers] = useState(currentGroup.players);
+  const [matches, setMatches] = useState(currentGroup.matches);
+  const [isAdmin, setIsAdmin] = useState();
 
   useEffect(() => {
     if (currentPath && currentGroup.path !== currentPath) {
       dispatch(getCurrentGroup(currentPath));
-      // dispatch(getGroupPlayers(currentPath));
     }
   }, [router]);
 
-  // get group matches
-
-  const adminArr = currentGroup.players.admin;
-  const isAdmin = adminArr.includes(currentUser.id);
-
-  const groupName = currentGroup.name;
-  const players = currentGroup.players;
-  const matches = currentGroup.matches;
+  useEffect(() => {
+    setGroupName(currentGroup.name);
+    setPlayers(currentGroup.players);
+    setMatches(currentGroup.matches);
+    const adminArr = currentGroup.players.admin;
+    setIsAdmin(adminArr.includes(currentUser.id));
+  }, [isLoading]);
 
   if (isLoading) {
     return (
@@ -45,7 +50,7 @@ export default function GroupDetail() {
     );
   }
 
-  if (!groupName) {
+  if (!currentGroup.path) {
     return (
       <Layout>
         <NotFound type='group' />
@@ -63,7 +68,7 @@ export default function GroupDetail() {
       )}
       {isAdmin && <button>Create Match</button>}
 
-      {/* <PlayerListing type='group' players={players} /> */}
+      <PlayerListing type='group' players={players} />
     </Layout>
   );
 }
