@@ -12,9 +12,25 @@ import {
 
 export const createGroup = createAsyncThunk(
   'group/createGroup',
-  async (groupData) => {
-    const id = groupData.path;
-    await setDoc(doc(db, 'groups', id), groupData);
+  async (newGroup) => {
+    const path = newGroup.path;
+    const groupData = {
+      id: newGroup.id,
+      name: newGroup.name,
+      path: path,
+    };
+    await setDoc(doc(db, 'groups', path), groupData);
+
+    const adminData = {
+      groupId: newGroup.id,
+      groupPath: path,
+      id: newGroup.players.admin[0],
+      status: 'admin',
+    };
+
+    const docId = `${adminData.groupId}_${adminData.uid}`;
+
+    await setDoc(doc(db, 'group_users', docId), adminData);
 
     return groupData;
   }
@@ -43,6 +59,7 @@ export const getCurrentGroup = createAsyncThunk(
         core: [],
         reserve: [],
         admin: [],
+        requested: [],
       },
     };
 
@@ -135,13 +152,8 @@ export const groupSlice = createSlice({
     });
     builder.addCase(createGroup.fulfilled, (state, action) => {
       state.data = {
+        ...state.data,
         ...action.payload,
-        matches: [],
-        players: {
-          core: [],
-          reserve: [],
-          admin: [],
-        },
       };
       state.isLoading = false;
       state.failedToLoad = false;

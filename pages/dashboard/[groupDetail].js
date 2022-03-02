@@ -1,21 +1,20 @@
-import Layout from '../../components/layout/Layout';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Layout from '../../components/layout/Layout';
+import MatchesListing from '../../components/match-listing/MatchesListing';
+import NotFound from '../../components/shared/NotFound';
 import {
   getCurrentGroup,
-  getGroupPlayers,
   groupIsLoading,
   selectGroup,
 } from '../../features/group/groupSlice';
 import { selectCurrentUser } from '../../features/usersSlice';
-import MatchesListing from '../../components/match-listing/MatchesListing';
-import PlayerListing from '../../components/Players/PlayerListing';
-import { useEffect } from 'react';
-import NotFound from '../../components/shared/NotFound';
 
 export default function GroupDetail() {
-  const router = useRouter();
   const dispatch = useDispatch();
+
+  const router = useRouter();
   let currentPath = router.query.groupDetail;
 
   const isLoading = useSelector(groupIsLoading);

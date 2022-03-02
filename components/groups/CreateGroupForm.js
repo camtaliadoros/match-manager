@@ -1,3 +1,5 @@
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,13 +8,9 @@ import {
   groupFailedToLoad,
   groupIsFulfilled,
   groupIsLoading,
-  setGroupPlayer,
-  resetGroup,
 } from '../../features/group/groupSlice';
 import { selectCurrentUser } from '../../features/usersSlice';
-import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
-import { useRouter } from 'next/router';
 
 export default function CreateGroupForm() {
   const dispatch = useDispatch();
@@ -33,9 +31,11 @@ export default function CreateGroupForm() {
     }
   }, [isFulfilled]);
 
-  if (failedToLoad) {
-    setErrorMessage('Something went wrong, please try again.');
-  }
+  useEffect(() => {
+    if (failedToLoad) {
+      setErrorMessage('Something went wrong, please try again.');
+    }
+  }, [failedToLoad]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,17 +59,19 @@ export default function CreateGroupForm() {
         id: groupId,
         name: groupName,
         path: path,
+        players: {
+          admin: [currentUser.id],
+        },
       };
 
       const userData = {
         groupId: groupId,
         groupPath: path,
-        userId: currentUser.uid,
+        userId: currentUser.id,
         userStatus: 'admin',
       };
 
       dispatch(createGroup(groupData));
-      dispatch(setGroupPlayer(userData));
 
       setGroupPath(path);
     }
