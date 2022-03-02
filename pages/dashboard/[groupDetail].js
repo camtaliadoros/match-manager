@@ -11,6 +11,7 @@ import { selectCurrentUser } from '../../features/usersSlice';
 import MatchesListing from '../../components/match-listing/MatchesListing';
 import PlayerListing from '../../components/Players/PlayerListing';
 import { useEffect } from 'react';
+import NotFound from '../../components/shared/NotFound';
 
 export default function GroupDetail() {
   const router = useRouter();
@@ -41,6 +42,14 @@ export default function GroupDetail() {
     return (
       <Layout>
         <h1>Loading</h1>
+      </Layout>
+    );
+  }
+
+  if (!groupName) {
+    return (
+      <Layout>
+        <NotFound type='group' />
       </Layout>
     );
   }
