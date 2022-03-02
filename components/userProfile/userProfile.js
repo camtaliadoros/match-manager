@@ -11,6 +11,8 @@ import { storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
 import classes from './styles/userProfile.module.scss';
 import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
+import { db } from '../../firebase/clientApp';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export default function UserProfile() {
   const dispatch = useDispatch();
@@ -30,34 +32,51 @@ export default function UserProfile() {
     setUsername(user.username);
   }, [user.username]);
 
+  useEffect(() => {
+    setErrorMessage('');
+  }, [username]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const updatedDetails = {};
 
-    if (username !== user.username) {
-      updatedDetails.username = username;
-    }
+    let usernameExists;
+    const q = query(collection(db, 'users'), where('username', '==', username));
+    const querySnapshot = await getDocs(q);
 
-    if (photo && photo !== currentPhoto) {
-      if (currentPhoto) {
-        const currentPhotoRef = ref(storage, currentPhoto);
-        deleteObject(currentPhotoRef).catch((error) => {
-          setErrorMessage('Something went wrong. Please try again!');
-        });
+    querySnapshot.forEach((doc) => {
+      usernameExists = doc.data();
+    });
+    if (usernameExists) {
+      setErrorMessage(
+        'This username is already taken. Please choose a different one.'
+      );
+    } else {
+      if (username !== user.username) {
+        updatedDetails.username = username;
       }
-      const imgType = getImageExtension(photo);
-      const storagePath = `profile-photo/${uid}.${imgType}`;
-      const profilePhotoRef = ref(storage, storagePath);
-      uploadString(profilePhotoRef, photo, 'data_url');
-      updatedDetails.photo = storagePath;
-    }
-    if (username !== user.username || photo !== currentPhoto) {
-      dispatch(updateUserProfile(updatedDetails));
-    }
 
-    setIsLoading(false);
-    setIsUpdated(true);
+      if (photo && photo !== currentPhoto) {
+        if (currentPhoto) {
+          const currentPhotoRef = ref(storage, currentPhoto);
+          deleteObject(currentPhotoRef).catch((error) => {
+            setErrorMessage('Something went wrong. Please try again!');
+          });
+        }
+        const imgType = getImageExtension(photo);
+        const storagePath = `profile-photo/${uid}.${imgType}`;
+        const profilePhotoRef = ref(storage, storagePath);
+        uploadString(profilePhotoRef, photo, 'data_url');
+        updatedDetails.photo = storagePath;
+      }
+      if (username !== user.username || photo !== currentPhoto) {
+        dispatch(updateUserProfile(updatedDetails));
+      }
+
+      setIsLoading(false);
+      setIsUpdated(true);
+    }
   };
 
   const handlePhotoChange = (file) => {
@@ -107,7 +126,11 @@ export default function UserProfile() {
             Save
           </button>
         )}
-        {errorMessage ? <p>{errorMessage}</p> : null}
+        {errorMessage ? (
+          <div className='error'>
+            <p className='error-message'>{errorMessage}</p>
+          </div>
+        ) : null}
       </form>
     </div>
   );
