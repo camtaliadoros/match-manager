@@ -12,8 +12,6 @@ import { getImageExtension } from '../../utilities/helpers';
 import classes from './styles/userProfile.module.scss';
 import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
 
-// To be replaced with database data
-
 export default function UserProfile() {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
@@ -22,7 +20,7 @@ export default function UserProfile() {
   const currentPhoto = user.photo;
   const uid = user.id;
 
-  const [username, setUsername] = useState();
+  const [username, setUsername] = useState('');
   const [photo, setPhoto] = useState();
   const [isUpdated, setIsUpdated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

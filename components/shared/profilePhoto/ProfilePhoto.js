@@ -10,9 +10,7 @@ export default function ProfilePhoto({ username, formPhoto }) {
   const currentPhoto = user.photo;
 
   const [photo, setPhoto] = useState();
-  const [letterDisplay, setLetterDisplay] = useState(
-    formPhoto ? formPhoto : null
-  );
+  const [letterDisplay, setLetterDisplay] = useState();
 
   useEffect(() => {
     if (user.photo) {

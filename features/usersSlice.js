@@ -33,10 +33,7 @@ export const updateUserProfile = createAsyncThunk(
     const userID = auth.currentUser.uid;
     await updateDoc(doc(db, 'users', userID), updatedDetails);
 
-    return {
-      username: updatedDetails.displayName,
-      photo: updatedDetails.photoURL,
-    };
+    return updatedDetails;
   }
 );
 
@@ -86,8 +83,10 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(updateUserProfile.fulfilled, (state, action) => {
-        state.data.username = action.payload.username;
-        state.data.photo = action.payload.photo;
+        state.data = {
+          ...state.data,
+          ...action.payload,
+        };
         state.isLoading = false;
         state.failedToLoad = false;
         state.isFulfilled = true;
