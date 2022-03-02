@@ -31,7 +31,7 @@ export default function GroupDetail() {
   // get group matches
 
   const adminArr = currentGroup.players.admin;
-  const isAdmin = adminArr.includes(currentUser.uid);
+  const isAdmin = adminArr.includes(currentUser.id);
 
   const groupName = currentGroup.name;
   const players = currentGroup.players;
