@@ -68,7 +68,7 @@ export default function GroupDetail() {
       )}
       {isAdmin && <button>Create Match</button>}
 
-      <PlayerListing type='group' players={players} />
+      <PlayerListing players={players} />
     </Layout>
   );
 }
