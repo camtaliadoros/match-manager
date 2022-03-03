@@ -8,7 +8,7 @@ import { auth } from '../../firebase/clientApp';
 import { handleAuthError } from '../../utilities/authErrorHandler';
 import classes from './Auth.module.scss';
 import { useDispatch } from 'react-redux';
-import { createUser } from '../../features/usersSlice';
+import { createUser } from '../../features/users/userSlice';
 import PasswordComparison from './PasswordComparison';
 
 function UserRegister() {

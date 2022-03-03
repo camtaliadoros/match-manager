@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../../../features/usersSlice';
+import { selectCurrentUser } from '../../../features/users/userSlice';
 import classes from './profilePhoto.module.scss';
 import { useState, useEffect } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';

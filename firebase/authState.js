@@ -4,7 +4,7 @@ import {
   resetUser,
   setUser,
   getUserProfile,
-} from '../features/usersSlice';
+} from '../features/users/userSlice';
 import { auth } from './clientApp';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';

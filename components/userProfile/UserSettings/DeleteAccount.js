@@ -2,7 +2,7 @@ import { deleteUser, AuthErrorCodes } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { resetUser } from '../../../features/usersSlice';
+import { resetUser } from '../../../features/users/userSlice';
 import { auth } from '../../../firebase/clientApp';
 import { handleAuthError } from '../../../utilities/authErrorHandler';
 import Reauth from './Reauth';

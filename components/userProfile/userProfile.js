@@ -6,7 +6,7 @@ import {
   updateUserProfile,
   userFailedToLoad,
   userIsLoading,
-} from '../../features/usersSlice';
+} from '../../features/users/userSlice';
 import { storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
 import classes from './styles/userProfile.module.scss';

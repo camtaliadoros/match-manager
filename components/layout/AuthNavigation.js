@@ -2,7 +2,10 @@ import { signOut } from 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { selectEmailVerified, selectLoggedIn } from '../../features/usersSlice';
+import {
+  selectEmailVerified,
+  selectLoggedIn,
+} from '../../features/users/userSlice';
 import { auth } from '../../firebase/clientApp';
 
 export default function AuthNavigation({ authClass }) {

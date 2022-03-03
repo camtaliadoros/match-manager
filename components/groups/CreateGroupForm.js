@@ -9,7 +9,7 @@ import {
   groupIsFulfilled,
   groupIsLoading,
 } from '../../features/group/groupSlice';
-import { selectCurrentUser } from '../../features/usersSlice';
+import { selectCurrentUser } from '../../features/users/userSlice';
 import { db } from '../../firebase/clientApp';
 
 export default function CreateGroupForm() {

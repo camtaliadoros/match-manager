@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from '../features/usersSlice';
+import userReducer from '../features/users/userSlice';
 import matchesReducer from '../features/matches/matchesSlice';
 import groupsReducer from '../features/group/groupsSlice';
 import groupReducer from '../features/group/groupSlice';

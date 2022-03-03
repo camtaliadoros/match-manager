@@ -9,7 +9,7 @@ import {
   groupIsLoading,
   selectGroup,
 } from '../../features/group/groupSlice';
-import { selectCurrentUser } from '../../features/usersSlice';
+import { selectCurrentUser } from '../../features/users/userSlice';
 import PlayerListing from '../../components/Players/PlayerListing';
 
 export default function GroupDetail() {

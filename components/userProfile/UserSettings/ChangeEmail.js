@@ -4,7 +4,7 @@ import { auth } from '../../../firebase/clientApp';
 import {
   selectCurrentUser,
   updateUserEmail,
-} from '../../../features/usersSlice';
+} from '../../../features/users/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import Reauth from './Reauth';
 import { handleAuthError } from '../../../utilities/authErrorHandler';
