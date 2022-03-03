@@ -13,18 +13,15 @@ import {
 export const createGroup = createAsyncThunk(
   'group/createGroup',
   async (newGroup) => {
-    const path = newGroup.path;
-    const groupData = {
-      id: newGroup.id,
-      name: newGroup.name,
-      path: path,
-    };
+    const path = newGroup.groupData.path;
+    const groupData = newGroup.groupData;
+
     await setDoc(doc(db, 'groups', path), groupData);
 
     const adminData = {
-      groupId: newGroup.id,
+      groupId: newGroup.groupData.id,
       groupPath: path,
-      userId: newGroup.players.admin[0],
+      userId: newGroup.adminId,
       userStatus: 'admin',
     };
 
@@ -32,7 +29,7 @@ export const createGroup = createAsyncThunk(
 
     await setDoc(doc(db, 'group_users', docId), adminData);
 
-    return groupData;
+    return newGroup;
   }
 );
 
@@ -118,6 +115,7 @@ const initialState = {
       core: [],
       reserve: [],
       admin: [],
+      requested: [],
     },
   },
   isFulfilled: false,
@@ -153,8 +151,9 @@ export const groupSlice = createSlice({
     builder.addCase(createGroup.fulfilled, (state, action) => {
       state.data = {
         ...state.data,
-        ...action.payload,
+        ...action.payload.groupData,
       };
+      state.data.players.admin = [action.payload.adminId];
       state.isLoading = false;
       state.failedToLoad = false;
       state.isFulfilled = true;

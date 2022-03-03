@@ -59,12 +59,11 @@ export default function CreateGroupForm() {
         id: groupId,
         name: groupName,
         path: path,
-        players: {
-          admin: [currentUser.id],
-        },
       };
 
-      dispatch(createGroup(groupData));
+      const adminId = currentUser.id;
+
+      dispatch(createGroup({ groupData, adminId }));
 
       setGroupPath(path);
     }
