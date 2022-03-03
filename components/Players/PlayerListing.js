@@ -21,24 +21,24 @@ export default function PlayerListing({ players }) {
     pendingPlayers
   );
 
-  // const playersToFetch = allPlayers.filter(
-  //   (player) => player === currentUser.id
-  // );
+  const playersToFetch = allPlayers.filter(
+    (player) => player === currentUser.id
+  );
 
-  const playersToFetch = [
-    'p1',
-    'p2',
-    'p3',
-    'p4',
-    'p5',
-    'p6',
-    'p7',
-    'p8',
-    'p9',
-    'p10',
-    'p11',
-    'p12',
-  ];
+  // const playersToFetch = [
+  //   'p1',
+  //   'p2',
+  //   'p3',
+  //   'p4',
+  //   'p5',
+  //   'p6',
+  //   'p7',
+  //   'p8',
+  //   'p9',
+  //   'p10',
+  //   'p11',
+  //   'p12',
+  // ];
 
   useEffect(() => {
     dispatch(getGroupPlayers(playersToFetch));
@@ -47,9 +47,11 @@ export default function PlayerListing({ players }) {
   return (
     <>
       <h2>Players</h2>
-      {adminPlayers.map((playerId, i) => {
-        <Player key={i} id={playerId} status='admin' />;
-      })}
+      {/* <Player id='FIntnn6vSye7Ai9w1X3QIhS1L0g1' status='admin' /> */}
+
+      {adminPlayers.map((playerId, i) => (
+        <Player key={i} id={playerId} status='admin' />
+      ))}
 
       {corePlayers.map((playerId, i) => (
         <Player key={i} id={playerId} status='core' />

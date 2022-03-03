@@ -1,39 +1,28 @@
 import classes from './players.module.scss';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase/clientApp';
+import { auth } from '../../firebase/clientApp';
+import { useSelector } from 'react-redux';
+import { selectPlayers } from '../../features/users/playersSlice';
+import { selectCurrentUser } from '../../features/users/userSlice';
 import { useEffect, useState } from 'react';
 
 export default function Player({ id, status }) {
   const [playerUsername, setPlayerUsername] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const currentUser = useSelector(selectCurrentUser);
+  const playersData = useSelector(selectPlayers);
 
-  let playerData;
+  useEffect(() => {
+    if (id === auth.currentUser.uid) {
+      setPlayerUsername(currentUser.username);
+    } else {
+      const currentPlayer = playersData.id;
 
-  useEffect(async () => {
-    try {
-      const q = query(collection(db, 'users'), where('id', '==', id));
-      const querySnapshot = await getDocs(q);
-
-      querySnapshot.forEach((doc) => {
-        playerData = doc.data();
-      });
-    } catch (error) {
-      setErrorMessage('Something wrong happened.');
+      setPlayerUsername(currentPlayer.username);
     }
   }, []);
 
-  useEffect(() => {
-    if (playerData) {
-      setPlayerUsername(playerData.username);
-    }
-  });
-
-  const photoURL = '';
   return (
     <div>
-      <div className={classes.profileIcon}>
-        <img src={photoURL} />
-      </div>
+      <div className={classes.profileIcon}>{/* <img src={photoURL} /> */}</div>
       <p>{playerUsername}</p>
     </div>
   );
