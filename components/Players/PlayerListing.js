@@ -4,12 +4,17 @@ export default function PlayerListing({ type, players }) {
   if (type === 'group') {
     const corePlayers = players.core;
     const reservePlayers = players.reserve;
-    const admin = players.admin;
+    const adminPlayers = players.admin;
+
+    //retrieve all users
 
     return (
       <>
         <h2>Players</h2>
-        <Player id={admin} />
+        {adminPlayers.map((playerId, i) => {
+          <Player key={i} id={playerId} status='admin' />;
+        })}
+
         {corePlayers.map((playerId, i) => (
           <Player key={i} id={playerId} status='core' />
         ))}
