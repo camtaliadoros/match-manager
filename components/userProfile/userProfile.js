@@ -95,7 +95,7 @@ export default function UserProfile() {
   return (
     <div className='wrapper'>
       <h1>Create your profile</h1>
-      <ProfilePhoto username={username} formPhoto={photo} />
+      <ProfilePhoto username={username} userPhoto={photo} />
       <input
         className={classes.fileInput}
         type='file'

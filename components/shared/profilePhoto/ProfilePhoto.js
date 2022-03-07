@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../../../firebase/clientApp';
 
-export default function ProfilePhoto({ username, formPhoto }) {
+export default function ProfilePhoto({ username, userPhoto }) {
   const user = useSelector(selectCurrentUser);
   const currentPhoto = user.photo;
 
@@ -23,10 +23,10 @@ export default function ProfilePhoto({ username, formPhoto }) {
   }, [username]);
 
   useEffect(() => {
-    if (formPhoto) {
-      setPhoto(formPhoto);
+    if (userPhoto) {
+      setPhoto(userPhoto);
     }
-  }, [formPhoto]);
+  }, [userPhoto]);
 
   return (
     <div className={classes.imageContainer}>

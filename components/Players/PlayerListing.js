@@ -7,7 +7,6 @@ import { selectCurrentUser } from '../../features/users/userSlice';
 
 export default function PlayerListing({ players }) {
   const dispatch = useDispatch();
-  const group = useSelector(selectGroup);
   const currentUser = useSelector(selectCurrentUser);
 
   const corePlayers = players.core;
@@ -22,32 +21,18 @@ export default function PlayerListing({ players }) {
   );
 
   const playersToFetch = allPlayers.filter(
-    (player) => player === currentUser.id
+    (player) => player !== currentUser.id
   );
 
-  // const playersToFetch = [
-  //   'p1',
-  //   'p2',
-  //   'p3',
-  //   'p4',
-  //   'p5',
-  //   'p6',
-  //   'p7',
-  //   'p8',
-  //   'p9',
-  //   'p10',
-  //   'p11',
-  //   'p12',
-  // ];
-
   useEffect(() => {
-    dispatch(getGroupPlayers(playersToFetch));
-  }, []);
+    if (playersToFetch) {
+      dispatch(getGroupPlayers(playersToFetch));
+    }
+  }, [playersToFetch]);
 
   return (
     <>
       <h2>Players</h2>
-      {/* <Player id='FIntnn6vSye7Ai9w1X3QIhS1L0g1' status='admin' /> */}
 
       {adminPlayers.map((playerId, i) => (
         <Player key={i} id={playerId} status='admin' />
@@ -58,6 +43,11 @@ export default function PlayerListing({ players }) {
       ))}
       {reservePlayers.map((playerId, i) => (
         <Player key={i} id={playerId} status='reserve' />
+      ))}
+
+      <h2>Requested to join</h2>
+      {pendingPlayers.map((playerId, i) => (
+        <Player key={i} id={playerId} status='requested' />
       ))}
     </>
   );

@@ -101,6 +101,18 @@ export const getCurrentGroup = createAsyncThunk(
       const data = doc.data();
       currentGroupState.players.admin.push(data.userId);
     });
+
+    const queryRequested = query(
+      groupsRef,
+      where('groupPath', '==', groupPath),
+      where('userStatus', '==', 'requested')
+    );
+    const querySnapshotRequested = await getDocs(queryRequested);
+    querySnapshotRequested.forEach((doc) => {
+      const data = doc.data();
+      currentGroupState.players.requested.push(data.userId);
+    });
+
     return currentGroupState;
   }
 );
