@@ -14,6 +14,8 @@ export default function PlayerListing({ players }) {
   const adminPlayers = players.admin;
   const pendingPlayers = players.requested;
 
+  const isAdmin = adminPlayers.includes(currentUser.id);
+
   const allPlayers = corePlayers.concat(
     reservePlayers,
     adminPlayers,
@@ -45,10 +47,14 @@ export default function PlayerListing({ players }) {
         <Player key={i} id={playerId} status='reserve' />
       ))}
 
-      <h2>Requested to join</h2>
-      {pendingPlayers.map((playerId, i) => (
-        <Player key={i} id={playerId} status='requested' />
-      ))}
+      {isAdmin ? (
+        <>
+          <h2>Requested to join</h2>
+          {pendingPlayers.map((playerId, i) => (
+            <Player key={i} id={playerId} status='requested' />
+          ))}
+        </>
+      ) : null}
     </>
   );
 }
