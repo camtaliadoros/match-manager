@@ -18,7 +18,7 @@ export default function UserProfile() {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
   const dataIsLoading = useSelector(userIsLoading);
-  const failedToLoad = useSelector(userFailedToLoad);
+
   const currentPhoto = user.photo;
   const uid = user.id;
 
@@ -48,7 +48,7 @@ export default function UserProfile() {
     querySnapshot.forEach((doc) => {
       usernameExists = doc.data();
     });
-    if (usernameExists) {
+    if (username !== user.username && usernameExists) {
       setErrorMessage(
         'This username is already taken. Please choose a different one.'
       );
