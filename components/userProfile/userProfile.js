@@ -37,7 +37,7 @@ export default function UserProfile() {
 
   useEffect(() => {
     if (user.photo) {
-      getDownloadURL(ref(storage, currentPhoto)).then((url) => setPhoto(url));
+      setPhoto(user.photo);
     }
   }, [user.photo]);
 
