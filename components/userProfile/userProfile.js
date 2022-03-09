@@ -1,18 +1,21 @@
-import { deleteObject, ref, uploadString } from 'firebase/storage';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from 'firebase/storage';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentUser,
   updateUserProfile,
-  userFailedToLoad,
   userIsLoading,
 } from '../../features/users/userSlice';
-import { storage } from '../../firebase/clientApp';
+import { db, storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
-import classes from './styles/userProfile.module.scss';
 import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
-import { db } from '../../firebase/clientApp';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import classes from './styles/userProfile.module.scss';
 
 export default function UserProfile() {
   const dispatch = useDispatch();
@@ -31,6 +34,12 @@ export default function UserProfile() {
   useEffect(() => {
     setUsername(user.username);
   }, [user.username]);
+
+  useEffect(() => {
+    if (user.photo) {
+      getDownloadURL(ref(storage, currentPhoto)).then((url) => setPhoto(url));
+    }
+  }, [user.photo]);
 
   useEffect(() => {
     setErrorMessage('');

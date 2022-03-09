@@ -6,17 +6,8 @@ import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../../../firebase/clientApp';
 
 export default function ProfilePhoto({ username, userPhoto }) {
-  const user = useSelector(selectCurrentUser);
-  const currentPhoto = user.photo;
-
   const [photo, setPhoto] = useState();
   const [letterDisplay, setLetterDisplay] = useState();
-
-  useEffect(() => {
-    if (user.photo) {
-      getDownloadURL(ref(storage, currentPhoto)).then((url) => setPhoto(url));
-    }
-  }, [user.photo]);
 
   useEffect(() => {
     username ? setLetterDisplay(username[0]) : setLetterDisplay('?');
@@ -24,7 +15,7 @@ export default function ProfilePhoto({ username, userPhoto }) {
 
   useEffect(() => {
     if (userPhoto) {
-      setPhoto(userPhoto);
+      getDownloadURL(ref(storage, userPhoto)).then((url) => setPhoto(url));
     }
   }, [userPhoto]);
 

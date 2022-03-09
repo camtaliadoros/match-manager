@@ -20,11 +20,13 @@ export default function Player({ id, status }) {
   useEffect(() => {
     if (id === auth.currentUser.uid) {
       setPlayerUsername(currentUser.username);
+      setPlayerPhoto(currentUser.photo);
     } else {
       if (playersData[id]) {
         const player = playersData[id];
 
         setPlayerUsername(player.username);
+        setPlayerPhoto(player.photo);
       }
     }
   }, [isLoading]);
