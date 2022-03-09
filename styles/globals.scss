@@ -43,6 +43,12 @@ header p {
   height: 100vh;
 }
 
+@media screen and (min-width: $screen-sm) {
+  .outter-wrapper {
+    background-color: #e6e6e6;
+  }
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
