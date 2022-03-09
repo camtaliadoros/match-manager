@@ -34,7 +34,7 @@ export default function PlayerListing({ players }) {
 
   return (
     <>
-      <h2>Players</h2>
+      <h3 className='title'>Players</h3>
 
       {adminPlayers.map((playerId, i) => (
         <Player key={i} id={playerId} status='admin' />
@@ -49,7 +49,7 @@ export default function PlayerListing({ players }) {
 
       {isAdmin ? (
         <>
-          <h2>Requested to join</h2>
+          <h3>Requested to join</h3>
           {pendingPlayers.map((playerId, i) => (
             <Player key={i} id={playerId} status='requested' />
           ))}

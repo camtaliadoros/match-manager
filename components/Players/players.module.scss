@@ -1,0 +1,11 @@
+@import 'styles/variables';
+
+.playerRow {
+  display: flex;
+  align-items: center;
+}
+
+.profileIcon {
+  height: $spacing-md;
+  width: $spacing-md;
+}

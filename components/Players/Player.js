@@ -32,7 +32,7 @@ export default function Player({ id, status }) {
   }, [isLoading]);
 
   return (
-    <div>
+    <div className={classes.playerRow}>
       <div className={classes.profileIcon}>
         <ProfilePhoto username={playerUsername} userPhoto={playerPhoto} />
       </div>

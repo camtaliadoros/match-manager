@@ -51,6 +51,13 @@ header p {
   max-width: 540px;
 }
 
+.details-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
 footer {
   flex: 0 0 60px;
   background-color: #557c50;
@@ -222,7 +229,6 @@ button {
 }
 
 .title {
-  font-size: $font-lg;
   color: $dark-green;
   font-weight: 700;
 }

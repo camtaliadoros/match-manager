@@ -1,10 +1,5 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadString,
-} from 'firebase/storage';
+import { deleteObject, ref, uploadString } from 'firebase/storage';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -104,7 +99,9 @@ export default function UserProfile() {
   return (
     <div className='wrapper'>
       <h1>Create your profile</h1>
-      <ProfilePhoto username={username} userPhoto={photo} />
+      <div className={classes.profilePhotoWrapper}>
+        <ProfilePhoto username={username} userPhoto={photo} />
+      </div>
       <input
         className={classes.fileInput}
         type='file'

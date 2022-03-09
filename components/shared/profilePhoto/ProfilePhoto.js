@@ -1,9 +1,7 @@
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../../../features/users/userSlice';
-import classes from './profilePhoto.module.scss';
-import { useState, useEffect } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { useEffect, useState } from 'react';
 import { storage } from '../../../firebase/clientApp';
+import classes from './profilePhoto.module.scss';
 
 export default function ProfilePhoto({ username, userPhoto }) {
   const [photo, setPhoto] = useState();

@@ -59,16 +59,22 @@ export default function GroupDetail() {
   }
   return (
     <Layout>
-      <h2>{groupName}</h2>
+      <div className='details-wrapper'>
+        <h2 className='title'>{groupName}</h2>
 
-      {matches.length === 0 ? (
-        <p>No upcoming Matches</p>
-      ) : (
-        <MatchesListing type='upcomingMatches' display='1' matches={matches} />
-      )}
-      {isAdmin && <button>Create Match</button>}
+        {matches.length === 0 ? (
+          <p>No upcoming Matches</p>
+        ) : (
+          <MatchesListing
+            type='upcomingMatches'
+            display='1'
+            matches={matches}
+          />
+        )}
+        {isAdmin && <button>Create Match</button>}
 
-      <PlayerListing players={players} />
+        <PlayerListing players={players} />
+      </div>
     </Layout>
   );
 }
