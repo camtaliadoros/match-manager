@@ -280,15 +280,15 @@ button {
 .loading-icon {
   color: $dark-green;
   height: 60px;
-  animation: loading 2s cubic-bezier(1, 2, 1, 1) infinite;
+  animation: loading 2s linear infinite;
 }
 
 @keyframes loading {
   0% {
   }
 
-  50% {
-    transform: rotate(180deg);
+  100% {
+    transform: rotate(360deg);
   }
 }
 
