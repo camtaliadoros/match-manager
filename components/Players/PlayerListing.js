@@ -49,7 +49,7 @@ export default function PlayerListing({ players }) {
 
       {isAdmin ? (
         <>
-          <h3>Requested to join</h3>
+          <h3 className='title'>Requested to join</h3>
           {pendingPlayers.map((playerId, i) => (
             <Player key={i} id={playerId} status='requested' />
           ))}
