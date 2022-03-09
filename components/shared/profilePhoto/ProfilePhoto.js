@@ -29,7 +29,7 @@ export default function ProfilePhoto({ username, userPhoto }) {
           style={{ backgroundImage: `url('${photo}')` }}
         ></div>
       ) : (
-        <p>{letterDisplay}</p>
+        <div>{letterDisplay}</div>
       )}
     </div>
   );

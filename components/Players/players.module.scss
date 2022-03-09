@@ -3,6 +3,12 @@
 .playerRow {
   display: flex;
   align-items: center;
+  margin-bottom: $spacing-xsm;
+
+  p {
+    margin: 0;
+    margin-left: $spacing-xsm;
+  }
 }
 
 .profileIcon {

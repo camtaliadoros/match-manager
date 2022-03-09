@@ -18,7 +18,7 @@ export default function Player({ id, status }) {
   const [playerPhoto, setPlayerPhoto] = useState();
 
   useEffect(() => {
-    if (id === auth.currentUser.uid) {
+    if (id === currentUser.id) {
       setPlayerUsername(currentUser.username);
       setPlayerPhoto(currentUser.photo);
     } else {
