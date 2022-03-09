@@ -271,6 +271,27 @@ button {
   }
 }
 
+.loading-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.loading-icon {
+  color: $dark-green;
+  height: 60px;
+  animation: loading 2s cubic-bezier(1, 2, 1, 1) infinite;
+}
+
+@keyframes loading {
+  0% {
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+}
+
 // Forms
 
 form {

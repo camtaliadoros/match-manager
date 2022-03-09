@@ -11,6 +11,7 @@ import {
 } from '../../features/group/groupSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
 import PlayerListing from '../../components/Players/PlayerListing';
+import LoadingState from '../../components/shared/LoadingState';
 
 export default function GroupDetail() {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export default function GroupDetail() {
   if (isLoading) {
     return (
       <Layout>
-        <h1>Loading</h1>
+        <LoadingState />
       </Layout>
     );
   }

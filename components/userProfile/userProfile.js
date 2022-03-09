@@ -11,6 +11,7 @@ import { db, storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
 import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
 import classes from './styles/userProfile.module.scss';
+import LoadingState from '../shared/LoadingState';
 
 export default function UserProfile() {
   const dispatch = useDispatch();
@@ -94,7 +95,7 @@ export default function UserProfile() {
   };
 
   if (dataIsLoading) {
-    return <h1>Loading</h1>;
+    return <LoadingState />;
   }
   return (
     <div className='wrapper'>
