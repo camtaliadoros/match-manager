@@ -1,8 +1,11 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import GroupShare from '../../components/groups/GroupShare';
 import Layout from '../../components/layout/Layout';
 import MatchesListing from '../../components/match-listing/MatchesListing';
+import PlayerListing from '../../components/Players/PlayerListing';
+import LoadingState from '../../components/shared/LoadingState';
 import NotFound from '../../components/shared/NotFound';
 import {
   getCurrentGroup,
@@ -10,8 +13,6 @@ import {
   selectGroup,
 } from '../../features/group/groupSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
-import PlayerListing from '../../components/Players/PlayerListing';
-import LoadingState from '../../components/shared/LoadingState';
 
 export default function GroupDetail() {
   const dispatch = useDispatch();
@@ -75,6 +76,7 @@ export default function GroupDetail() {
         {isAdmin && <button>Create Match</button>}
 
         <PlayerListing players={players} />
+        <GroupShare />
       </div>
     </Layout>
   );
