@@ -1,0 +1,15 @@
+@import 'styles/variables';
+
+.shareLinks {
+  display: flex;
+  align-items: center;
+
+  button {
+    display: flex;
+    margin-bottom: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+}
