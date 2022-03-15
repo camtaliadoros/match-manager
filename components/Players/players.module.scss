@@ -15,3 +15,17 @@
   height: $spacing-md;
   width: $spacing-md;
 }
+
+.coreButton {
+  background-color: $green25;
+  color: $dark-green;
+  padding: 6px 12px;
+  font-weight: 500;
+}
+
+.reserveButton {
+  background-color: $dark-green;
+  color: $chalk;
+  padding: 6px 12px;
+  font-weight: 500;
+}

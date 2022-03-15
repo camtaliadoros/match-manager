@@ -56,21 +56,26 @@ export default function PlayerListing({ players }) {
       </div>
 
       {adminPlayers.map((playerId, i) => (
-        <Player key={i} id={playerId} status='admin' />
+        <Player key={i} id={playerId} status='admin' adminView={isAdmin} />
       ))}
 
       {corePlayers.map((playerId, i) => (
-        <Player key={i} id={playerId} status='core' />
+        <Player key={i} id={playerId} status='core' adminView={isAdmin} />
       ))}
       {reservePlayers.map((playerId, i) => (
-        <Player key={i} id={playerId} status='reserve' />
+        <Player key={i} id={playerId} status='reserve' adminView={isAdmin} />
       ))}
 
       {isAdmin ? (
         <>
           <h3 className='title'>Requested to join</h3>
           {pendingPlayers.map((playerId, i) => (
-            <Player key={i} id={playerId} status='requested' />
+            <Player
+              key={i}
+              id={playerId}
+              status='requested'
+              adminView={isAdmin}
+            />
           ))}
         </>
       ) : null}
