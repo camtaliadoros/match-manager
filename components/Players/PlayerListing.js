@@ -2,12 +2,16 @@ import Player from './Player';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGroup } from '../../features/group/groupSlice';
 import { getGroupPlayers } from '../../features/users/playersSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { selectCurrentUser } from '../../features/users/userSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 export default function PlayerListing({ players }) {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const corePlayers = players.core;
   const reservePlayers = players.reserve;
@@ -32,9 +36,24 @@ export default function PlayerListing({ players }) {
     }
   }, [playersToFetch]);
 
+  const handleClick = () => {
+    setIsEditing(false);
+  };
+
   return (
     <>
-      <h3 className='title'>Players</h3>
+      <div>
+        <h3 className='title'>Players</h3>
+        {isAdmin ? (
+          isEditing ? (
+            <button onClick={handleClick}>SAVE</button>
+          ) : (
+            <button className='link-style' onClick={() => setIsEditing(true)}>
+              <FontAwesomeIcon icon={faPen} />
+            </button>
+          )
+        ) : null}
+      </div>
 
       {adminPlayers.map((playerId, i) => (
         <Player key={i} id={playerId} status='admin' />

@@ -37,6 +37,7 @@ export default function Player({ id, status }) {
         <ProfilePhoto username={playerUsername} userPhoto={playerPhoto} />
       </div>
       <p>{playerUsername}</p>
+      <div>{status === 'reserve' ? <p>RESERVE</p> : null}</div>
     </div>
   );
 }
