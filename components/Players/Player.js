@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  removeGroupPlayer,
   selectGroup,
   updatePlayerStatus,
 } from '../../features/group/groupSlice';
@@ -62,7 +63,10 @@ export default function Player({ id, status, adminView }) {
     setPlayerStatus('core');
   };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    const groupId = group.id;
+    dispatch(removeGroupPlayer({ playerId: id, groupId }));
+  };
 
   if (!adminView) {
     return (
@@ -108,7 +112,7 @@ export default function Player({ id, status, adminView }) {
                 />
                 <label htmlFor='status-change'>RESERVE</label>
               </div>
-              <button className='link-style'>
+              <button className='link-style' onClick={handleDelete}>
                 <FontAwesomeIcon icon={faCircleXmark} />
               </button>
             </div>

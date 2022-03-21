@@ -9,6 +9,7 @@ import {
   where,
   setDoc,
   updateDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 
 export const createGroup = createAsyncThunk(
@@ -127,16 +128,25 @@ export const updatePlayerStatus = createAsyncThunk(
 
     const docId = `${groupId}_${playerId}`;
 
-    try {
-      const playerRef = doc(db, 'group_users', docId);
-      await updateDoc(playerRef, {
-        userStatus: newStatus,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    const playerRef = doc(db, 'group_users', docId);
+    await updateDoc(playerRef, {
+      userStatus: newStatus,
+    });
 
     return updatedData;
+  }
+);
+
+export const removeGroupPlayer = createAsyncThunk(
+  'group/removeGroupPlayer',
+  async (playerToRemove) => {
+    const groupId = playerToRemove.groupId;
+    const playerId = playerToRemove.playerId;
+    const docId = `${groupId}_${playerId}`;
+
+    await deleteDoc(doc(db, 'group_users', docId));
+
+    return playerToRemove;
   }
 );
 
@@ -236,6 +246,26 @@ export const groupSlice = createSlice({
       state.failedToLoad = false;
     });
     builder.addCase(updatePlayerStatus.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(removeGroupPlayer.fulfilled, (state, action) => {
+      state.data.players.core = state.data.players.core.filter(
+        (id) => id !== action.payload.playerId
+      );
+      state.data.players.reserve = state.data.players.reserve.filter(
+        (id) => id !== action.payload.playerId
+      );
+      state.data.players.requested = state.data.players.requested.filter(
+        (id) => id !== action.payload.playerId
+      );
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(removeGroupPlayer.pending, (state) => {
+      state.failedToLoad = false;
+    });
+    builder.addCase(removeGroupPlayer.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });
