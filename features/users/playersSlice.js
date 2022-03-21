@@ -23,8 +23,6 @@ export const getGroupPlayers = createAsyncThunk(
       remainingPlayers = remainingPlayers.filter((id) => {
         return !playersToFetch.includes(id);
       });
-
-      console.log(remainingPlayers);
     }
 
     return playersData;

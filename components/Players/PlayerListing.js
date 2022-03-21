@@ -31,7 +31,7 @@ export default function PlayerListing({ players }) {
   );
 
   useEffect(() => {
-    if (playersToFetch) {
+    if (playersToFetch.length > 0) {
       dispatch(getGroupPlayers(playersToFetch));
     }
   }, [playersToFetch]);
