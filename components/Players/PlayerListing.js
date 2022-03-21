@@ -1,6 +1,5 @@
 import Player from './Player';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectGroup } from '../../features/group/groupSlice';
 import { getGroupPlayers } from '../../features/users/playersSlice';
 import { useEffect, useState } from 'react';
 import { selectCurrentUser } from '../../features/users/userSlice';
@@ -13,10 +12,17 @@ export default function PlayerListing({ players }) {
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const corePlayers = players.core;
-  const reservePlayers = players.reserve;
-  const adminPlayers = players.admin;
-  const pendingPlayers = players.requested;
+  const [corePlayers, setCorePlayers] = useState(players.core);
+  const [reservePlayers, setReservePlayers] = useState(players.reserve);
+  const [adminPlayers, setAdminPlayers] = useState(players.admin);
+  const [pendingPlayers, setPendingPlayers] = useState(players.requested);
+
+  useEffect(() => {
+    setCorePlayers(players.core);
+    setReservePlayers(players.reserve);
+    setAdminPlayers(players.admin);
+    setPendingPlayers(players.requested);
+  }, [players]);
 
   const isAdmin = adminPlayers.includes(currentUser.id);
 
@@ -34,7 +40,7 @@ export default function PlayerListing({ players }) {
     if (playersToFetch.length > 0) {
       dispatch(getGroupPlayers(playersToFetch));
     }
-  }, [playersToFetch]);
+  }, [playersToFetch.length]);
 
   const handleClick = () => {
     setIsEditing(false);

@@ -38,11 +38,14 @@ export default function GroupDetail() {
 
   useEffect(() => {
     setGroupName(currentGroup.name);
-    setPlayers(currentGroup.players);
     setMatches(currentGroup.matches);
     const adminArr = currentGroup.players.admin;
     setIsAdmin(adminArr.includes(currentUser.id));
   }, [isLoading]);
+
+  useEffect(() => {
+    setPlayers(currentGroup.players);
+  }, [currentGroup]);
 
   if (isLoading) {
     return (

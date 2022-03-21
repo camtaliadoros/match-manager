@@ -8,6 +8,7 @@ import {
   query,
   where,
   setDoc,
+  updateDoc,
 } from 'firebase/firestore';
 
 export const createGroup = createAsyncThunk(
@@ -117,6 +118,28 @@ export const getCurrentGroup = createAsyncThunk(
   }
 );
 
+export const updatePlayerStatus = createAsyncThunk(
+  'group/updatePlayerStatus',
+  async (updatedData) => {
+    const groupId = updatedData.groupId;
+    const playerId = updatedData.playerId;
+    const newStatus = updatedData.playerStatus;
+
+    const docId = `${groupId}_${playerId}`;
+
+    try {
+      const playerRef = doc(db, 'group_users', docId);
+      await updateDoc(playerRef, {
+        userStatus: newStatus,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    return updatedData;
+  }
+);
+
 const initialState = {
   data: {
     id: '',
@@ -168,17 +191,14 @@ export const groupSlice = createSlice({
       state.data.players.admin = [action.payload.adminId];
       state.isLoading = false;
       state.failedToLoad = false;
-      state.isFulfilled = true;
     });
     builder.addCase(createGroup.pending, (state) => {
       state.isLoading = true;
       state.failedToLoad = false;
-      state.isFulfilled = false;
     });
     builder.addCase(createGroup.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
-      state.isFulfilled = false;
     });
     builder.addCase(setGroupPlayer.fulfilled, (state, action) => {
       const playerStatus = action.payload.userStatus;
@@ -187,17 +207,37 @@ export const groupSlice = createSlice({
       playerStatusArr.push(uId);
       state.isLoading = false;
       state.failedToLoad = false;
-      state.isFulfilled = true;
     });
     builder.addCase(setGroupPlayer.pending, (state) => {
       state.isLoading = true;
       state.failedToLoad = false;
-      state.isFulfilled = false;
     });
-    builder.addCase(setGroupPlayer.rejected, (state, action) => {
+    builder.addCase(setGroupPlayer.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
-      state.isFulfilled = false;
+    });
+    builder.addCase(updatePlayerStatus.fulfilled, (state, action) => {
+      state.data.players.core = state.data.players.core.filter(
+        (id) => id !== action.payload.playerId
+      );
+      state.data.players.reserve = state.data.players.reserve.filter(
+        (id) => id !== action.payload.playerId
+      );
+      state.data.players.requested = state.data.players.requested.filter(
+        (id) => id !== action.payload.playerId
+      );
+      state.data.players[action.payload.playerStatus].push(
+        action.payload.playerId
+      );
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(updatePlayerStatus.pending, (state) => {
+      state.failedToLoad = false;
+    });
+    builder.addCase(updatePlayerStatus.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
     });
   },
 });

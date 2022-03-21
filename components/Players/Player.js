@@ -1,7 +1,11 @@
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectGroup,
+  updatePlayerStatus,
+} from '../../features/group/groupSlice';
 import {
   playersIsLoading,
   selectPlayers,
@@ -14,9 +18,13 @@ export default function Player({ id, status, adminView }) {
   const currentUser = useSelector(selectCurrentUser);
   const playersData = useSelector(selectPlayers);
   const isLoading = useSelector(playersIsLoading);
+  const group = useSelector(selectGroup);
+
+  const dispatch = useDispatch();
 
   const [playerUsername, setPlayerUsername] = useState('');
   const [playerPhoto, setPlayerPhoto] = useState();
+  const [playerStatus, setPlayerStatus] = useState(status);
 
   useEffect(() => {
     if (id === currentUser.id) {
@@ -30,7 +38,31 @@ export default function Player({ id, status, adminView }) {
         setPlayerPhoto(player.photo);
       }
     }
-  }, [isLoading]);
+  }, [id, isLoading]);
+
+  const handleStatusChange = () => {
+    const groupId = group.id;
+    if (playerStatus === 'reserve') {
+      dispatch(
+        updatePlayerStatus({ playerId: id, groupId, playerStatus: 'core' })
+      );
+    }
+    if (playerStatus === 'core') {
+      dispatch(
+        updatePlayerStatus({ playerId: id, groupId, playerStatus: 'reserve' })
+      );
+    }
+  };
+
+  const handleRequestChange = () => {
+    const groupId = group.id;
+    dispatch(
+      updatePlayerStatus({ playerId: id, groupId, playerStatus: 'core' })
+    );
+    setPlayerStatus('core');
+  };
+
+  const handleDelete = () => {};
 
   if (!adminView) {
     return (
@@ -68,12 +100,13 @@ export default function Player({ id, status, adminView }) {
           {status !== 'requested' ? (
             <div>
               <div>
-                {status === 'core' ? (
-                  <button className={classes.coreButton}>RESERVE</button>
-                ) : null}
-                {status === 'reserve' ? (
-                  <button className={classes.reserveButton}>RESERVE</button>
-                ) : null}
+                <input
+                  type='checkbox'
+                  id='status-change'
+                  checked={playerStatus === 'reserve'}
+                  onChange={handleStatusChange}
+                />
+                <label htmlFor='status-change'>RESERVE</label>
               </div>
               <button className='link-style'>
                 <FontAwesomeIcon icon={faCircleXmark} />
@@ -81,8 +114,8 @@ export default function Player({ id, status, adminView }) {
             </div>
           ) : (
             <div>
-              <button>CONFIRM</button>
-              <button>DELETE</button>
+              <button onClick={handleRequestChange}>CONFIRM</button>
+              <button onClick={handleDelete}>DELETE</button>
             </div>
           )}
         </div>
