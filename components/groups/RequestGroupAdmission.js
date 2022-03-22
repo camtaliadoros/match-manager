@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  removeGroupPlayer,
   selectGroup,
   setGroupPlayer,
   updatePlayerStatus,
@@ -41,10 +42,21 @@ export default function RequestGroupAdmission({ players }) {
     );
   };
 
+  const handleCancelClick = () => {
+    dispatch(
+      removeGroupPlayer({ playerId: currentUser.id, groupId: group.id })
+    );
+  };
+
   return (
     <>
       {!isJoined ? <button onClick={handleClick}>JOIN GROUP</button> : null}
-      {isRequested ? <p>You have requested to join this group</p> : null}
+      {isRequested ? (
+        <div>
+          <p>You have requested to join this group</p>
+          <button onClick={handleCancelClick}>CANCEL REQUEST</button>
+        </div>
+      ) : null}
     </>
   );
 }
