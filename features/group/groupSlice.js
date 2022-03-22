@@ -219,7 +219,7 @@ export const groupSlice = createSlice({
       state.failedToLoad = false;
     });
     builder.addCase(setGroupPlayer.pending, (state) => {
-      state.isLoading = true;
+      // state.isLoading = true;
       state.failedToLoad = false;
     });
     builder.addCase(setGroupPlayer.rejected, (state) => {

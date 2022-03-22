@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GroupShare from '../../components/groups/GroupShare';
+import RequestGroupAdmission from '../../components/groups/RequestGroupAdmission';
 import Layout from '../../components/layout/Layout';
 import MatchesListing from '../../components/match-listing/MatchesListing';
 import PlayerListing from '../../components/Players/PlayerListing';
@@ -41,9 +42,6 @@ export default function GroupDetail() {
     setMatches(currentGroup.matches);
     const adminArr = currentGroup.players.admin;
     setIsAdmin(adminArr.includes(currentUser.id));
-  }, [isLoading]);
-
-  useEffect(() => {
     setPlayers(currentGroup.players);
   }, [currentGroup]);
 
@@ -66,6 +64,7 @@ export default function GroupDetail() {
     <Layout>
       <div className='details-wrapper'>
         <h2 className='title'>{groupName}</h2>
+        <RequestGroupAdmission players={players} />
 
         {matches.length === 0 ? (
           <p>No upcoming Matches</p>
