@@ -12,6 +12,7 @@ import {
   selectPlayers,
 } from '../../features/users/playersSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
+import AddAdmin from '../groups/AddAdmin';
 import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
 import classes from './players.module.scss';
 
@@ -26,6 +27,7 @@ export default function Player({ id, status, adminView }) {
   const [playerUsername, setPlayerUsername] = useState('');
   const [playerPhoto, setPlayerPhoto] = useState();
   const [playerStatus, setPlayerStatus] = useState(status);
+  const [needsNewAdmin, setNeedsNewAdmin] = useState(false);
 
   useEffect(() => {
     if (id === currentUser.id) {
@@ -65,7 +67,11 @@ export default function Player({ id, status, adminView }) {
 
   const handleDelete = () => {
     const groupId = group.id;
-    dispatch(removeGroupPlayer({ playerId: id, groupId }));
+    if (status === 'admin') {
+      setNeedsNewAdmin(true);
+    } else {
+      dispatch(removeGroupPlayer({ playerId: id, groupId }));
+    }
   };
 
   if (!adminView) {
@@ -103,15 +109,18 @@ export default function Player({ id, status, adminView }) {
         <div>
           {status !== 'requested' ? (
             <div>
-              <div>
-                <input
-                  type='checkbox'
-                  id='status-change'
-                  checked={playerStatus === 'reserve'}
-                  onChange={handleStatusChange}
-                />
-                <label htmlFor='status-change'>RESERVE</label>
-              </div>
+              {status !== 'admin' ? (
+                <div>
+                  <input
+                    type='checkbox'
+                    id='status-change'
+                    checked={playerStatus === 'reserve'}
+                    onChange={handleStatusChange}
+                  />
+                  <label htmlFor='status-change'>RESERVE</label>
+                </div>
+              ) : null}
+
               <button className='link-style' onClick={handleDelete}>
                 <FontAwesomeIcon icon={faCircleXmark} />
               </button>
@@ -123,6 +132,9 @@ export default function Player({ id, status, adminView }) {
             </div>
           )}
         </div>
+        {needsNewAdmin ? (
+          <AddAdmin needsNewAdmin={setNeedsNewAdmin} currentPlayer={id} />
+        ) : null}
       </div>
     );
   }
