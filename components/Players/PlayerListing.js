@@ -74,15 +74,19 @@ export default function PlayerListing({ players }) {
 
       {isAdmin ? (
         <>
-          <h3 className='title'>Requested to join</h3>
-          {pendingPlayers.map((playerId, i) => (
-            <Player
-              key={i}
-              id={playerId}
-              status='requested'
-              adminView={isAdmin}
-            />
-          ))}
+          {pendingPlayers.length > 0 ? (
+            <div>
+              <h3 className='title'>Requested to join</h3>
+              {pendingPlayers.map((playerId, i) => (
+                <Player
+                  key={i}
+                  id={playerId}
+                  status='requested'
+                  adminView={isAdmin}
+                />
+              ))}
+            </div>
+          ) : null}
         </>
       ) : null}
     </>
