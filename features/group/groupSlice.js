@@ -259,6 +259,9 @@ export const groupSlice = createSlice({
       state.data.players.requested = state.data.players.requested.filter(
         (id) => id !== action.payload.playerId
       );
+      state.data.players.admin = state.data.players.admin.filter(
+        (id) => id !== action.payload.playerId
+      );
       state.isLoading = false;
       state.failedToLoad = false;
     });

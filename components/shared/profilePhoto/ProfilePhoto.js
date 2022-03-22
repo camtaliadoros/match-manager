@@ -12,12 +12,10 @@ export default function ProfilePhoto({ username, userPhoto }) {
   }, [username]);
 
   useEffect(() => {
-    if (userPhoto) {
-      if (userPhoto.includes('profile-photo')) {
-        getDownloadURL(ref(storage, userPhoto)).then((url) => setPhoto(url));
-      } else {
-        setPhoto(userPhoto);
-      }
+    if (userPhoto && userPhoto.includes('profile-photo')) {
+      getDownloadURL(ref(storage, userPhoto)).then((url) => setPhoto(url));
+    } else {
+      setPhoto(userPhoto);
     }
   }, [userPhoto]);
 
