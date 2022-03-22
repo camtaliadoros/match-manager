@@ -4,7 +4,7 @@ import classes from './matchListing.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function MatchesListing({ display, type }) {
+export default function MatchesListing({ display, type, matches }) {
   const typeMap = {
     upcomingMatches: {
       title: 'Upcoming Matches',
@@ -32,11 +32,13 @@ export default function MatchesListing({ display, type }) {
       {/* <Link href=`./${path}`> */}
       <div className={classes.matchListingTitle}>
         <a className='title'>{title}</a>
-        <FontAwesomeIcon icon={faAngleRight} className='next-icon' />
+        {display === '1' ? (
+          <FontAwesomeIcon icon={faAngleRight} className='next-icon' />
+        ) : null}
       </div>
 
       {/* </Link> */}
-      <MatchCard />
+      {matches.length > 0 ? <MatchCard /> : <p>No upcoming Matches</p>}
     </div>
   );
 }

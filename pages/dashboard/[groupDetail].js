@@ -66,15 +66,8 @@ export default function GroupDetail() {
         <h2 className='title'>{groupName}</h2>
         <RequestGroupAdmission players={players} />
 
-        {matches.length === 0 ? (
-          <p>No upcoming Matches</p>
-        ) : (
-          <MatchesListing
-            type='upcomingMatches'
-            display='1'
-            matches={matches}
-          />
-        )}
+        <MatchesListing type='upcomingMatches' display='1' matches={matches} />
+
         {isAdmin && <button>Create Match</button>}
 
         <PlayerListing players={players} />
