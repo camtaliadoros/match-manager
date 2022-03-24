@@ -6,6 +6,7 @@ import RequestGroupAdmission from '../../components/groups/RequestGroupAdmission
 import Layout from '../../components/layout/Layout';
 import MatchesListing from '../../components/match-listing/MatchesListing';
 import PlayerListing from '../../components/Players/PlayerListing';
+import CreateMatchButton from '../../components/shared/CreateMatch/CreateMatchButton';
 import LoadingState from '../../components/shared/LoadingState';
 import NotFound from '../../components/shared/NotFound';
 import {
@@ -68,7 +69,7 @@ export default function GroupDetail() {
 
         <MatchesListing type='upcomingMatches' display='1' matches={matches} />
 
-        {isAdmin && <button>Create Match</button>}
+        {isAdmin && <CreateMatchButton />}
 
         <PlayerListing players={players} />
         <GroupShare />
