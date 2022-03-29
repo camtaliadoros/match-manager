@@ -6,7 +6,6 @@ import RequestGroupAdmission from '../../components/groups/RequestGroupAdmission
 import Layout from '../../components/layout/Layout';
 import MatchesListing from '../../components/match-listing/MatchesListing';
 import PlayerListing from '../../components/Players/PlayerListing';
-import CreateMatchButton from '../../components/shared/CreateMatch/CreateMatchButton';
 import LoadingState from '../../components/shared/LoadingState';
 import NotFound from '../../components/shared/NotFound';
 import {
@@ -46,6 +45,10 @@ export default function GroupDetail() {
     setPlayers(currentGroup.players);
   }, [currentGroup]);
 
+  const handleClick = () => {
+    router.push(`/${currentPath}/create-match`);
+  };
+
   if (isLoading) {
     return (
       <Layout>
@@ -69,7 +72,7 @@ export default function GroupDetail() {
 
         <MatchesListing type='upcomingMatches' display='1' matches={matches} />
 
-        {isAdmin && <CreateMatchButton />}
+        {isAdmin && <button onClick={handleClick}>Create Match</button>}
 
         <PlayerListing players={players} />
         <GroupShare />
