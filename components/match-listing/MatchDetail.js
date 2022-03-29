@@ -1,8 +1,13 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectGroup } from '../../features/group/groupSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentGroup, selectGroup } from '../../features/group/groupSlice';
+import { createMatch } from '../../features/matches/matchSlice';
 
 export default function MatchDetail() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const group = useSelector(selectGroup);
 
   const [isEditing, setIsEditing] = useState(true);
@@ -16,19 +21,28 @@ export default function MatchDetail() {
   const [cost, setCost] = useState('');
   const [costPerPlayer, setCostPerPlayer] = useState('');
 
+  useEffect(() => {
+    if (!group.id) {
+      const currentPath = router.query.groupDetail;
+      dispatch(getCurrentGroup(currentPath));
+    }
+  });
+
   const handleClick = (e) => {
     e.preventDefault();
-    console.log({
+    const matchData = {
       title,
       date,
-      group,
+      group: group.id,
       location,
       isPublic,
       time,
       isRecurring,
       numOfPlayers,
       cost,
-    });
+    };
+
+    dispatch(createMatch(matchData));
   };
 
   useEffect(() => {
