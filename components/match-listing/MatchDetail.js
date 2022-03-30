@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentGroup, selectGroup } from '../../features/group/groupSlice';
 import { createMatch } from '../../features/matches/matchSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function MatchDetail() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const currentPath = router.query.groupDetail;
 
   const group = useSelector(selectGroup);
 
@@ -23,7 +25,6 @@ export default function MatchDetail() {
 
   useEffect(() => {
     if (!group.id) {
-      const currentPath = router.query.groupDetail;
       dispatch(getCurrentGroup(currentPath));
     }
   });
@@ -31,6 +32,7 @@ export default function MatchDetail() {
   const handleClick = (e) => {
     e.preventDefault();
     const matchData = {
+      id: uuidv4(),
       title,
       date,
       group: group.id,
@@ -43,6 +45,9 @@ export default function MatchDetail() {
     };
 
     dispatch(createMatch(matchData));
+    if (router.asPath === `/${currentPath}/create-match`) {
+      router.push(`/${currentPath}/${matchData.id}`);
+    }
   };
 
   useEffect(() => {

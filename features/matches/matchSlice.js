@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
-import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
   data: {},
@@ -13,7 +12,7 @@ export const createMatch = createAsyncThunk(
   'match/createMatch',
   async (matchData) => {
     const docRef = await addDoc(collection(db, 'matches'), {
-      id: uuidv4(),
+      id: matchData.id,
       title: matchData.title,
       date: Date.parse(`${matchData.date} ${matchData.time}`),
       group: matchData.group,
