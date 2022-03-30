@@ -76,5 +76,6 @@ const matchSlice = createSlice({
 
 export const {} = matchSlice.actions;
 export const selectCurrentMatch = (state) => state.match.data;
+export const selectMatchIsLoading = (state) => state.match.isLoading;
 
 export default matchSlice.reducer;

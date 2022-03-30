@@ -54,3 +54,16 @@
   align-items: center;
   margin-right: 6px;
 }
+
+.matchDataContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.matchDataRow {
+  display: flex;
+
+  p {
+    margin: 6px 0;
+  }
+}
