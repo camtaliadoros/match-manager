@@ -2,15 +2,21 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentGroup, selectGroup } from '../../features/group/groupSlice';
-import { createMatch } from '../../features/matches/matchSlice';
+import {
+  createMatch,
+  getCurrentMatch,
+  selectCurrentMatch,
+} from '../../features/matches/matchSlice';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function MatchDetail() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const currentPath = router.query.groupDetail;
+  const groupPath = router.query.groupDetail;
+  const matchPath = router.query.matchDetail;
 
   const group = useSelector(selectGroup);
+  const match = useSelector(selectCurrentMatch);
 
   const [isEditing, setIsEditing] = useState(true);
   const [title, setTitle] = useState('');
@@ -25,9 +31,15 @@ export default function MatchDetail() {
 
   useEffect(() => {
     if (!group.id) {
-      dispatch(getCurrentGroup(currentPath));
+      dispatch(getCurrentGroup(groupPath));
     }
-  });
+  }, [groupPath]);
+
+  useEffect(() => {
+    if (matchPath) {
+      dispatch(getCurrentMatch(matchPath));
+    }
+  }, [matchPath]);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -45,8 +57,8 @@ export default function MatchDetail() {
     };
 
     dispatch(createMatch(matchData));
-    if (router.asPath === `/${currentPath}/create-match`) {
-      router.push(`/${currentPath}/${matchData.id}`);
+    if (router.asPath === `/${groupPath}/create-match`) {
+      router.push(`/${groupPath}/${matchData.id}`);
     }
   };
 

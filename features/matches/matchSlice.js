@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { collection, addDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
 
 const initialState = {
@@ -11,7 +11,7 @@ const initialState = {
 export const createMatch = createAsyncThunk(
   'match/createMatch',
   async (matchData) => {
-    const docRef = await addDoc(collection(db, 'matches'), {
+    const docRef = await setDoc(doc(db, 'matches', matchData.id), {
       id: matchData.id,
       title: matchData.title,
       date: Date.parse(`${matchData.date} ${matchData.time}`),
@@ -24,6 +24,19 @@ export const createMatch = createAsyncThunk(
     });
 
     return matchData;
+  }
+);
+
+export const getCurrentMatch = createAsyncThunk(
+  'match/getCurrentMatch',
+  async (matchId) => {
+    const docRef = doc(db, 'matches', matchId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      throw `There was a problem finding the match you're looking for.`;
+    }
   }
 );
 
@@ -45,9 +58,23 @@ const matchSlice = createSlice({
       state.isLoading = false;
       state.failedToLoad = true;
     });
+    builder.addCase(getCurrentMatch.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getCurrentMatch.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getCurrentMatch.rejected, (state) => {
+      state.failedToLoad = true;
+      state.isLoading = false;
+    });
   },
 });
 
 export const {} = matchSlice.actions;
+export const selectCurrentMatch = (state) => state.match.data;
 
 export default matchSlice.reducer;
