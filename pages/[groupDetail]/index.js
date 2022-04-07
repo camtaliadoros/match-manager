@@ -13,6 +13,10 @@ import {
   groupIsLoading,
   selectGroup,
 } from '../../features/group/groupSlice';
+import {
+  getGroupMatches,
+  selectMatches,
+} from '../../features/matches/matchesSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
 
 export default function GroupDetail() {
@@ -24,7 +28,7 @@ export default function GroupDetail() {
   const isLoading = useSelector(groupIsLoading);
   const currentGroup = useSelector(selectGroup);
   const currentUser = useSelector(selectCurrentUser);
-  // get group matches
+  const groupMatches = useSelector(selectMatches);
 
   const [groupName, setGroupName] = useState(currentGroup.name);
   const [players, setPlayers] = useState(currentGroup.players);
@@ -39,11 +43,15 @@ export default function GroupDetail() {
 
   useEffect(() => {
     setGroupName(currentGroup.name);
-    setMatches(currentGroup.matches);
     const adminArr = currentGroup.players.admin;
     setIsAdmin(adminArr.includes(currentUser.id));
     setPlayers(currentGroup.players);
+    dispatch(getGroupMatches(currentGroup.id));
   }, [currentGroup]);
+
+  useEffect(() => {
+    setMatches(groupMatches);
+  }, [groupMatches]);
 
   const handleClick = () => {
     router.push(`/${currentPath}/create-match`);

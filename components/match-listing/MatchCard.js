@@ -1,6 +1,6 @@
 import { selectMatches } from '../../features/matches/matchesSlice';
 import { useSelector } from 'react-redux';
-import classes from './matchListing.module.scss';
+import classes from './match.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendar,

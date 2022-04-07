@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import MatchCard from './MatchCard';
-import classes from './matchListing.module.scss';
+import classes from './match.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 

@@ -1,41 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase/clientApp';
+
+export const getGroupMatches = createAsyncThunk(
+  'matches/getGroupMatches',
+  async (groupId) => {
+    const result = {};
+    const matchesRef = collection(db, 'matches');
+    const q = query(matchesRef, where('group', '==', groupId));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      result[doc.id] = doc.data();
+    });
+    return result;
+  }
+);
 
 const initialState = {
-  byId: {
-    match1: {
-      date: 'Sunday, January 9',
-      time: '7pm',
-      group: 'groupID1',
-      location: 'Sobell Leisure Centre',
-      isRecurring: 'Weekly',
-      numOfPlayers: 10,
-      cost: 7,
-      players: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10'],
-      waitlist: ['p11', 'p12', 'p13', 'p14'],
-    },
-    match2: {
-      date: 'Sunday, January 9',
-      time: '7pm',
-      group: 'groupID2',
-      location: 'Sobell Leisure Centre',
-      isRecurring: 'Weekly',
-      numOfPlayers: 10,
-      cost: 7,
-      players: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10'],
-      waitlist: ['p11', 'p12', 'p13', 'p14'],
-    },
-    match3: {
-      date: 'Sunday, January 9',
-      time: '7pm',
-      group: 'groupID3',
-      location: 'Sobell Leisure Centre',
-      isRecurring: 'Weekly',
-      numOfPlayers: 10,
-      cost: 7,
-      players: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10'],
-      waitlist: ['p11', 'p12', 'p13', 'p14'],
-    },
-  },
+  byId: {},
   isLoading: false,
   failedToLoad: false,
 };
@@ -43,10 +25,21 @@ const initialState = {
 export const matchesSlice = createSlice({
   name: 'matches',
   initialState,
-  reducers: {
-    createNewMatch: (state, action) => {
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(getGroupMatches.fulfilled, (state, action) => {
       state.byId = action.payload;
-    },
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getGroupMatches.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getGroupMatches.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
   },
 });
 
