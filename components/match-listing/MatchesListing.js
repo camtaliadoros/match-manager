@@ -26,6 +26,7 @@ export default function MatchesListing({ display, type, matches }) {
 
   const title = typeMap[type].title;
   const path = typeMap[type].link;
+  const matchesIdArr = Object.keys(matches);
 
   return (
     <div className={classes.listingWrapper}>
@@ -38,7 +39,10 @@ export default function MatchesListing({ display, type, matches }) {
       </div>
 
       {/* </Link> */}
-      {matches.length > 0 ? <MatchCard /> : <p>No upcoming Matches</p>}
+      {/* {matchesIdArr.length > 0 ? <MatchCard /> : <p>No upcoming Matches</p>} */}
+      {matchesIdArr.map((matchId, i) => (
+        <MatchCard matchId={matchId} key={i} />
+      ))}
     </div>
   );
 }

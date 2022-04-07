@@ -8,15 +8,30 @@ import {
   faUserGroup,
   faLocationDot,
 } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import moment from 'moment';
 
-export default function MatchCard() {
+export default function MatchCard({ matchId }) {
   const matchData = useSelector(selectMatches);
-  const currentMatch = matchData.match1;
-  const matchDate = currentMatch.date;
-  const matchTime = currentMatch.time;
-  const matchGroupID = currentMatch.group; // ToDo: retrieve group data
-  const matchLocation = currentMatch.location;
   const onWaitlist = true;
+
+  const [matchDate, setMatchDate] = useState('');
+  const [matchTime, setMatchTime] = useState('');
+  const [matchGroupID, setMatchGroupID] = useState('');
+  const [matchLocation, setMatchLocation] = useState('');
+
+  useEffect(() => {
+    console.log(matchId);
+    const currentMatch = matchData[matchId];
+    const date = moment.unix(currentMatch.date / 1000).format('dddd, MMMM Do');
+
+    const time = moment.unix(currentMatch.date / 1000).format('h:mm a');
+
+    setMatchDate(date);
+    setMatchTime(time);
+    setMatchGroupID(currentMatch.group);
+    setMatchLocation(currentMatch.location);
+  }, [matchData]);
 
   return (
     <div className='card'>
