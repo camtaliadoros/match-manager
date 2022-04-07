@@ -10,6 +10,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase/clientApp';
 
 export default function MatchCard({ matchId }) {
   const matchData = useSelector(selectMatches);
@@ -17,19 +19,30 @@ export default function MatchCard({ matchId }) {
 
   const [matchDate, setMatchDate] = useState('');
   const [matchTime, setMatchTime] = useState('');
-  const [matchGroupID, setMatchGroupID] = useState('');
+  const [matchGroup, setMatchGroup] = useState('');
   const [matchLocation, setMatchLocation] = useState('');
 
+  const getGroupName = async (groupId) => {
+    const q = query(collection(db, 'groups'), where('id', '==', groupId));
+    let groupData = {};
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      groupData = doc.data();
+    });
+    return groupData;
+  };
+
   useEffect(() => {
-    console.log(matchId);
     const currentMatch = matchData[matchId];
     const date = moment.unix(currentMatch.date / 1000).format('dddd, MMMM Do');
-
     const time = moment.unix(currentMatch.date / 1000).format('h:mm a');
+    const groupData = getGroupName(currentMatch.group).then((value) =>
+      setMatchGroup(value.name)
+    );
 
     setMatchDate(date);
     setMatchTime(time);
-    setMatchGroupID(currentMatch.group);
     setMatchLocation(currentMatch.location);
   }, [matchData]);
 
@@ -53,7 +66,7 @@ export default function MatchCard({ matchId }) {
           <div className={classes.iconContainer}>
             <FontAwesomeIcon icon={faUserGroup} className='icon' />
           </div>
-          <p>{matchGroupID}</p>
+          <p>{matchGroup}</p>
         </div>
         <div className={classes.matchData}>
           <div className={classes.iconContainer}>
