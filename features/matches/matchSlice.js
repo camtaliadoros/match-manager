@@ -27,6 +27,36 @@ export const createMatch = createAsyncThunk(
   }
 );
 
+export const inviteCorePlayers = createAsyncThunk(
+  'match/inviteCorePlayers',
+  async (playerData) => {
+    const matchId = playerData.matchId;
+
+    const admin = playerData.groupPlayers.admin;
+    const core = playerData.groupPlayers.core;
+
+    admin.forEach(async (player) => {
+      await setDoc(doc(db, 'user_matches', `${player}_${matchId}`), {
+        playerId: player,
+        matchId: matchId,
+        playerStatus: 'yes',
+        paymentStatus: false,
+      });
+    });
+
+    core.forEach(async (player) => {
+      await setDoc(doc(db, 'user_matches', `${player}_${matchId}`), {
+        playerId: player,
+        matchId: matchId,
+        playerStatus: 'no',
+        paymentStatus: false,
+      });
+    });
+
+    return playerData.groupPlayers;
+  }
+);
+
 export const getCurrentMatch = createAsyncThunk(
   'match/getCurrentMatch',
   async (matchId) => {
@@ -70,6 +100,23 @@ const matchSlice = createSlice({
     builder.addCase(getCurrentMatch.rejected, (state) => {
       state.failedToLoad = true;
       state.isLoading = false;
+    });
+    builder.addCase(inviteCorePlayers.fulfilled, (state, action) => {
+      state.data.players = {
+        playing: action.payload.admin,
+        notPlaying: action.payload.core,
+      };
+
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(inviteCorePlayers.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(inviteCorePlayers.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
     });
   },
 });

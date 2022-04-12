@@ -20,6 +20,7 @@ import { getCurrentGroup, selectGroup } from '../../features/group/groupSlice';
 import {
   createMatch,
   getCurrentMatch,
+  inviteCorePlayers,
   selectCurrentMatch,
   selectMatchIsLoading,
 } from '../../features/matches/matchSlice';
@@ -40,9 +41,9 @@ export default function MatchDetail() {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
-  const [isPublic, setIsPublic] = useState(true);
+  const [isPublic, setIsPublic] = useState(false);
   const [time, setTime] = useState('');
-  const [isRecurring, setIsRecurring] = useState('');
+  const [isRecurring, setIsRecurring] = useState(false);
   const [numOfPlayers, setNumOfPlayers] = useState('');
   const [cost, setCost] = useState('');
   const [costPerPlayer, setCostPerPlayer] = useState('');
@@ -81,8 +82,11 @@ export default function MatchDetail() {
 
   const handleClick = (e) => {
     e.preventDefault();
+
+    const matchId = uuidv4();
+
     const matchData = {
-      id: uuidv4(),
+      id: matchId,
       title,
       date,
       group: group.id,
@@ -94,7 +98,14 @@ export default function MatchDetail() {
       cost,
     };
 
+    const playerData = {
+      matchId,
+      groupPlayers: group.players,
+    };
+
     dispatch(createMatch(matchData));
+    dispatch(inviteCorePlayers(playerData));
+
     if (router.asPath === `/${groupPath}/create-match`) {
       router.push(`/${groupPath}/${matchData.id}`);
     }
@@ -114,13 +125,14 @@ export default function MatchDetail() {
   } else {
     return (
       <>
-        <form>
+        <form onSubmit={handleClick}>
           {isEditing ? (
             <input
               type='text'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder='Match Title'
+              required
             />
           ) : (
             <h2>{title}</h2>
@@ -133,6 +145,7 @@ export default function MatchDetail() {
                   type='date'
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                  required
                 />
               ) : (
                 <p>{date}</p>
@@ -146,6 +159,7 @@ export default function MatchDetail() {
                   placeholder='Location'
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
+                  required
                 />
               ) : (
                 <p>{location}</p>
@@ -180,6 +194,7 @@ export default function MatchDetail() {
                   placeholder='Time'
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
+                  required
                 />
               ) : (
                 <p>{time}</p>
@@ -210,6 +225,7 @@ export default function MatchDetail() {
                   placeholder='Number of Players'
                   value={numOfPlayers}
                   onChange={(e) => setNumOfPlayers(e.target.value)}
+                  required
                 />
               ) : (
                 <p>{numOfPlayers} players</p>
@@ -223,6 +239,7 @@ export default function MatchDetail() {
                   placeholder='Total cost of pitch'
                   value={cost}
                   onChange={(e) => setCost(e.target.value)}
+                  required
                 />
               ) : (
                 <p>{cost}</p>
@@ -233,7 +250,7 @@ export default function MatchDetail() {
               {costPerPlayer ? <p>{costPerPlayer}</p> : null}
             </div>
           </div>
-          {isEditing ? <button onClick={handleClick}>SAVE</button> : null}
+          {isEditing ? <button>SAVE</button> : null}
         </form>
       </>
     );
