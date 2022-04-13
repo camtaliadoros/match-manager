@@ -67,7 +67,7 @@ export default function MatchDetail() {
   }, [matchPath]);
 
   useEffect(() => {
-    if (match) {
+    if (match.id) {
       const matchDate = new Date(match.date);
       console.log(matchDate);
       // setDate(matchDate);
@@ -175,8 +175,8 @@ export default function MatchDetail() {
                 <div>
                   <input
                     type='checkbox'
-                    onChange={() => setIsPublic(!isPublic)}
                     checked={isPublic}
+                    onChange={() => setIsPublic(!isPublic)}
                   />
                   <label>Is Looking for players</label>
                 </div>
