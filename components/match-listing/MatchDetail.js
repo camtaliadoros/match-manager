@@ -249,7 +249,7 @@ export default function MatchDetail() {
                   required
                 />
               ) : (
-                <p>{cost}</p>
+                <p>£ {cost}</p>
               )}
             </div>
             <div className={classes.matchDataRow}>
