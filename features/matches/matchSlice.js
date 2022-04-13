@@ -1,5 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
 
 const initialState = {
@@ -39,7 +47,7 @@ export const inviteCorePlayers = createAsyncThunk(
       await setDoc(doc(db, 'user_matches', `${player}_${matchId}`), {
         playerId: player,
         matchId: matchId,
-        playerStatus: 'yes',
+        playerStatus: 'playing',
         paymentStatus: false,
       });
     });
@@ -48,7 +56,7 @@ export const inviteCorePlayers = createAsyncThunk(
       await setDoc(doc(db, 'user_matches', `${player}_${matchId}`), {
         playerId: player,
         matchId: matchId,
-        playerStatus: 'no',
+        playerStatus: 'notPlaying',
         paymentStatus: false,
       });
     });
@@ -67,6 +75,67 @@ export const getCurrentMatch = createAsyncThunk(
     } else {
       throw `There was a problem finding the match you're looking for.`;
     }
+  }
+);
+
+export const getMatchPlayers = createAsyncThunk(
+  'match/getMatchPlayers',
+  async (matchId) => {
+    const players = {
+      playing: [],
+      waitlist: [],
+      requested: [],
+    };
+    const matchPlayersRef = collection(db, 'user_matches');
+    const qPlaying = query(
+      matchPlayersRef,
+      where('matchId', '==', matchId),
+      where('playerStatus', '==', 'playing')
+    );
+
+    const queryPlayingSnap = await getDocs(qPlaying);
+    queryPlayingSnap.forEach((doc) => {
+      const data = doc.data();
+      players.playing.push({
+        playerId: data.playerId,
+        paymentStatus: data.paymentStatus,
+        playerStatus: data.playerStatus,
+      });
+    });
+
+    const qWaitlist = query(
+      matchPlayersRef,
+      where('matchId', '==', matchId),
+      where('playerStatus', '==', 'waitlist')
+    );
+
+    const queryWaitlistSnap = await getDocs(qWaitlist);
+    queryWaitlistSnap.forEach((doc) => {
+      const data = doc.data();
+      players.waitlist.push({
+        playerId: data.playerId,
+        paymentStatus: data.paymentStatus,
+        playerStatus: data.playerStatus,
+      });
+    });
+
+    const qRequested = query(
+      matchPlayersRef,
+      where('matchId', '==', matchId),
+      where('playerStatus', '==', 'requested')
+    );
+
+    const queryRequestedSnap = await getDocs(qRequested);
+    queryRequestedSnap.forEach((doc) => {
+      const data = doc.data();
+      players.requested.push({
+        playerId: data.playerId,
+        paymentStatus: data.paymentStatus,
+        playerStatus: data.playerStatus,
+      });
+    });
+
+    return players;
   }
 );
 
@@ -118,11 +187,25 @@ const matchSlice = createSlice({
       state.isLoading = false;
       state.failedToLoad = true;
     });
+    builder.addCase(getMatchPlayers.fulfilled, (state, action) => {
+      state.data.players = action.payload;
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getMatchPlayers.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getMatchPlayers.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
   },
 });
 
 export const {} = matchSlice.actions;
 export const selectCurrentMatch = (state) => state.match.data;
+export const selectMatchPlayers = (state) => state.match.data.players;
 export const selectMatchIsLoading = (state) => state.match.isLoading;
 
 export default matchSlice.reducer;

@@ -6,7 +6,7 @@ import { selectCurrentUser } from '../../features/users/userSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
-export default function PlayerListing({ players }) {
+export default function GroupPlayerListing({ players }) {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
 

@@ -32,11 +32,9 @@ export default function MatchDetail() {
   const dispatch = useDispatch();
   const router = useRouter();
   const groupPath = router.query.groupDetail;
-  const matchPath = router.query.matchDetail;
 
   const group = useSelector(selectGroup);
   const match = useSelector(selectCurrentMatch);
-  const isLoading = useSelector(selectMatchIsLoading);
 
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
@@ -62,19 +60,11 @@ export default function MatchDetail() {
   }, [groupPath]);
 
   useEffect(() => {
-    if (matchPath) {
-      dispatch(getCurrentMatch(matchPath));
-    }
-  }, [matchPath]);
-
-  useEffect(() => {
     if (match.id) {
       const matchDate = moment
         .unix(match.timestamp / 1000)
         .format('dddd, MMMM Do');
       const matchTime = moment.unix(match.timestamp / 1000).format('h:mm a');
-
-      console.log(match.date, matchDate, matchTime);
 
       setDate(matchDate);
       setTime(matchTime);
@@ -127,139 +117,135 @@ export default function MatchDetail() {
     );
   }, [cost, numOfPlayers]);
 
-  if (isLoading) {
-    return <LoadingState />;
-  } else {
-    return (
-      <>
-        <form onSubmit={handleClick}>
-          {isEditing ? (
-            <input
-              type='text'
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder='Match Title'
-              required
-            />
-          ) : (
-            <h2>{title}</h2>
-          )}
-          <div className={classes.matchDataContainer}>
-            <div className={classes.matchDataRow}>
-              <FontAwesomeIcon icon={faCalendar} className='data-icon' />
-              {isEditing ? (
-                <input
-                  type='date'
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
-                />
-              ) : (
-                <p>{date}</p>
-              )}
-            </div>
-            <div className={classes.matchDataRow}>
-              <FontAwesomeIcon icon={faLocationDot} className='data-icon' />
-              {isEditing ? (
-                <input
-                  type='text'
-                  placeholder='Location'
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  required
-                />
-              ) : (
-                <p>{location}</p>
-              )}
-            </div>
-            <div className={classes.matchDataRow}>
-              <FontAwesomeIcon icon={faUserGroup} className='data-icon' />
-              <p>{group.name}</p>
-            </div>
-            <div className={classes.matchDataRow}>
-              <FontAwesomeIcon icon={faEye} className='data-icon' />
-              {isEditing ? (
-                <div>
-                  <input
-                    type='checkbox'
-                    checked={isPublic}
-                    onChange={() => setIsPublic(!isPublic)}
-                  />
-                  <label>Is Looking for players</label>
-                </div>
-              ) : isPublic ? (
-                <p>Looking for players</p>
-              ) : (
-                <p>Not looking for players</p>
-              )}
-            </div>
-            <div className={classes.matchDataRow}>
-              <FontAwesomeIcon icon={faClock} className='data-icon' />
-              {isEditing ? (
-                <input
-                  type='time'
-                  placeholder='Time'
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  required
-                />
-              ) : (
-                <p>{time}</p>
-              )}
-            </div>
-            <div className={classes.matchDataRow}>
-              <FontAwesomeIcon icon={faRepeat} className='data-icon' />
-              {isEditing ? (
-                <div>
-                  <input
-                    type='checkbox'
-                    onChange={() => setIsRecurring(!isRecurring)}
-                    checked={isRecurring}
-                  />
-                  <label>Recurring Match</label>
-                </div>
-              ) : isRecurring ? (
-                <p>Recurring Game</p>
-              ) : (
-                <p>One-off game</p>
-              )}
-            </div>
-            <div className={classes.matchDataRow}>
-              <FontAwesomeIcon icon={faShirt} className='data-icon' />
-              {isEditing ? (
-                <input
-                  type='number'
-                  placeholder='Number of Players'
-                  value={numOfPlayers}
-                  onChange={(e) => setNumOfPlayers(e.target.value)}
-                  required
-                />
-              ) : (
-                <p>{numOfPlayers} players</p>
-              )}
-            </div>
-            <div className={classes.matchDataRow}>
-              <FontAwesomeIcon icon={faFutbol} className='data-icon' />
-              {isEditing ? (
-                <input
-                  type='number'
-                  placeholder='Total cost of pitch'
-                  value={cost}
-                  onChange={(e) => setCost(e.target.value)}
-                  required
-                />
-              ) : (
-                <p>£ {cost}</p>
-              )}
-            </div>
-            <div className={classes.matchDataRow}>
-              <FontAwesomeIcon icon={faMoneyBill} className='data-icon' />
-              {costPerPlayer ? <p>{costPerPlayer}</p> : null}
-            </div>
+  return (
+    <>
+      <form onSubmit={handleClick}>
+        {isEditing ? (
+          <input
+            type='text'
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder='Match Title'
+            required
+          />
+        ) : (
+          <h2>{title}</h2>
+        )}
+        <div className={classes.matchDataContainer}>
+          <div className={classes.matchDataRow}>
+            <FontAwesomeIcon icon={faCalendar} className='data-icon' />
+            {isEditing ? (
+              <input
+                type='date'
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+            ) : (
+              <p>{date}</p>
+            )}
           </div>
-          {isEditing ? <button>SAVE</button> : null}
-        </form>
-      </>
-    );
-  }
+          <div className={classes.matchDataRow}>
+            <FontAwesomeIcon icon={faLocationDot} className='data-icon' />
+            {isEditing ? (
+              <input
+                type='text'
+                placeholder='Location'
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                required
+              />
+            ) : (
+              <p>{location}</p>
+            )}
+          </div>
+          <div className={classes.matchDataRow}>
+            <FontAwesomeIcon icon={faUserGroup} className='data-icon' />
+            <p>{group.name}</p>
+          </div>
+          <div className={classes.matchDataRow}>
+            <FontAwesomeIcon icon={faEye} className='data-icon' />
+            {isEditing ? (
+              <div>
+                <input
+                  type='checkbox'
+                  checked={isPublic}
+                  onChange={() => setIsPublic(!isPublic)}
+                />
+                <label>Is Looking for players</label>
+              </div>
+            ) : isPublic ? (
+              <p>Looking for players</p>
+            ) : (
+              <p>Not looking for players</p>
+            )}
+          </div>
+          <div className={classes.matchDataRow}>
+            <FontAwesomeIcon icon={faClock} className='data-icon' />
+            {isEditing ? (
+              <input
+                type='time'
+                placeholder='Time'
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                required
+              />
+            ) : (
+              <p>{time}</p>
+            )}
+          </div>
+          <div className={classes.matchDataRow}>
+            <FontAwesomeIcon icon={faRepeat} className='data-icon' />
+            {isEditing ? (
+              <div>
+                <input
+                  type='checkbox'
+                  onChange={() => setIsRecurring(!isRecurring)}
+                  checked={isRecurring}
+                />
+                <label>Recurring Match</label>
+              </div>
+            ) : isRecurring ? (
+              <p>Recurring Game</p>
+            ) : (
+              <p>One-off game</p>
+            )}
+          </div>
+          <div className={classes.matchDataRow}>
+            <FontAwesomeIcon icon={faShirt} className='data-icon' />
+            {isEditing ? (
+              <input
+                type='number'
+                placeholder='Number of Players'
+                value={numOfPlayers}
+                onChange={(e) => setNumOfPlayers(e.target.value)}
+                required
+              />
+            ) : (
+              <p>{numOfPlayers} players</p>
+            )}
+          </div>
+          <div className={classes.matchDataRow}>
+            <FontAwesomeIcon icon={faFutbol} className='data-icon' />
+            {isEditing ? (
+              <input
+                type='number'
+                placeholder='Total cost of pitch'
+                value={cost}
+                onChange={(e) => setCost(e.target.value)}
+                required
+              />
+            ) : (
+              <p>£ {cost}</p>
+            )}
+          </div>
+          <div className={classes.matchDataRow}>
+            <FontAwesomeIcon icon={faMoneyBill} className='data-icon' />
+            {costPerPlayer ? <p>{costPerPlayer}</p> : null}
+          </div>
+        </div>
+        {isEditing ? <button>SAVE</button> : null}
+      </form>
+    </>
+  );
 }
