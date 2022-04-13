@@ -12,6 +12,7 @@ import {
   faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -68,9 +69,15 @@ export default function MatchDetail() {
 
   useEffect(() => {
     if (match.id) {
-      const matchDate = new Date(match.date);
-      console.log(matchDate);
-      // setDate(matchDate);
+      const matchDate = moment
+        .unix(match.timestamp / 1000)
+        .format('dddd, MMMM Do');
+      const matchTime = moment.unix(match.timestamp / 1000).format('h:mm a');
+
+      console.log(match.date, matchDate, matchTime);
+
+      setDate(matchDate);
+      setTime(matchTime);
       setTitle(match.title);
       setLocation(match.location);
       setIsPublic(match.isPublic);
@@ -84,15 +91,15 @@ export default function MatchDetail() {
     e.preventDefault();
 
     const matchId = uuidv4();
+    const timestamp = Date.parse(`${date} ${time}`);
 
     const matchData = {
       id: matchId,
       title,
-      date,
+      timestamp,
       group: group.id,
       location,
       isPublic,
-      time,
       isRecurring,
       numOfPlayers,
       cost,

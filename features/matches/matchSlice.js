@@ -14,7 +14,7 @@ export const createMatch = createAsyncThunk(
     const docRef = await setDoc(doc(db, 'matches', matchData.id), {
       id: matchData.id,
       title: matchData.title,
-      date: Date.parse(`${matchData.date} ${matchData.time}`),
+      timestamp: matchData.timestamp,
       group: matchData.group,
       isPublic: matchData.isPublic,
       isRecurring: matchData.isRecurring,
