@@ -1,47 +1,23 @@
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   removeGroupPlayer,
   selectGroup,
   updatePlayerStatus,
 } from '../../features/group/groupSlice';
-import {
-  playersIsLoading,
-  selectPlayers,
-} from '../../features/users/playersSlice';
-import { selectCurrentUser } from '../../features/users/userSlice';
 import AddAdmin from '../groups/AddAdmin';
-import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
+import PlayerDetails from './PlayerDetails';
 import classes from './players.module.scss';
 
-export default function Player({ id, status, adminView }) {
-  const currentUser = useSelector(selectCurrentUser);
-  const playersData = useSelector(selectPlayers);
-  const isLoading = useSelector(playersIsLoading);
+export default function GroupPlayerActions({ id, status, adminView }) {
   const group = useSelector(selectGroup);
 
   const dispatch = useDispatch();
 
-  const [playerUsername, setPlayerUsername] = useState('');
-  const [playerPhoto, setPlayerPhoto] = useState();
   const [playerStatus, setPlayerStatus] = useState(status);
   const [needsNewAdmin, setNeedsNewAdmin] = useState(false);
-
-  useEffect(() => {
-    if (id === currentUser.id) {
-      setPlayerUsername(currentUser.username);
-      setPlayerPhoto(currentUser.photo);
-    } else {
-      if (playersData[id]) {
-        const player = playersData[id];
-
-        setPlayerUsername(player.username);
-        setPlayerPhoto(player.photo);
-      }
-    }
-  }, [id, isLoading]);
 
   const handleStatusChange = () => {
     const groupId = group.id;
@@ -77,15 +53,7 @@ export default function Player({ id, status, adminView }) {
   if (!adminView) {
     return (
       <div className={classes.playerRow}>
-        <div>
-          <div className={classes.profileIcon}>
-            <ProfilePhoto username={playerUsername} userPhoto={playerPhoto} />
-          </div>
-          <p>
-            {playerUsername}
-            {id === currentUser.id ? '- YOU' : null}
-          </p>
-        </div>
+        <PlayerDetails id={id} />
         <div>
           {status === 'reserve' ? <p>RESERVE</p> : null}
           {status === 'admin' ? <p>ADMIN</p> : null}
@@ -97,15 +65,7 @@ export default function Player({ id, status, adminView }) {
   if (adminView) {
     return (
       <div className={classes.playerRow}>
-        <div>
-          <div className={classes.profileIcon}>
-            <ProfilePhoto username={playerUsername} userPhoto={playerPhoto} />
-          </div>
-          <p>
-            {playerUsername}
-            {id === currentUser.id ? '- YOU' : null}
-          </p>
-        </div>
+        <PlayerDetails id={id} />
         <div>
           {status !== 'requested' ? (
             <div>

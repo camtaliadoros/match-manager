@@ -1,4 +1,4 @@
-import Player from './Player';
+import GroupPlayerActions from './GroupPlayerActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGroupPlayers } from '../../features/users/playersSlice';
 import { useEffect, useState } from 'react';
@@ -62,14 +62,29 @@ export default function PlayerListing({ players }) {
       </div>
 
       {adminPlayers.map((playerId, i) => (
-        <Player key={i} id={playerId} status='admin' adminView={isAdmin} />
+        <GroupPlayerActions
+          key={i}
+          id={playerId}
+          status='admin'
+          adminView={isAdmin}
+        />
       ))}
 
       {corePlayers.map((playerId, i) => (
-        <Player key={i} id={playerId} status='core' adminView={isAdmin} />
+        <GroupPlayerActions
+          key={i}
+          id={playerId}
+          status='core'
+          adminView={isAdmin}
+        />
       ))}
       {reservePlayers.map((playerId, i) => (
-        <Player key={i} id={playerId} status='reserve' adminView={isAdmin} />
+        <GroupPlayerActions
+          key={i}
+          id={playerId}
+          status='reserve'
+          adminView={isAdmin}
+        />
       ))}
 
       {isAdmin ? (
@@ -78,7 +93,7 @@ export default function PlayerListing({ players }) {
             <div>
               <h3 className='title'>Requested to join</h3>
               {pendingPlayers.map((playerId, i) => (
-                <Player
+                <GroupPlayerActions
                   key={i}
                   id={playerId}
                   status='requested'
