@@ -20,12 +20,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { getCurrentGroup, selectGroup } from '../../features/group/groupSlice';
 import {
   createMatch,
-  getCurrentMatch,
   inviteCorePlayers,
   selectCurrentMatch,
-  selectMatchIsLoading,
 } from '../../features/matches/matchSlice';
-import LoadingState from '../shared/LoadingState';
 import classes from './match.module.scss';
 
 export default function MatchDetail() {
@@ -33,8 +30,8 @@ export default function MatchDetail() {
   const router = useRouter();
   const groupPath = router.query.groupDetail;
 
-  const group = useSelector(selectGroup);
   const match = useSelector(selectCurrentMatch);
+  const group = useSelector(selectGroup);
 
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
@@ -54,7 +51,7 @@ export default function MatchDetail() {
   }, [router]);
 
   useEffect(() => {
-    if (!group.id) {
+    if (!group.path && groupPath) {
       dispatch(getCurrentGroup(groupPath));
     }
   }, [groupPath]);
@@ -87,7 +84,7 @@ export default function MatchDetail() {
       id: matchId,
       title,
       timestamp,
-      group: group.id,
+      group: group.path,
       location,
       isPublic,
       isRecurring,
