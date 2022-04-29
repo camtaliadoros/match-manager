@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { db } from '../../firebase/clientApp';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
-export const getGroupPlayers = createAsyncThunk(
-  'players/getGroupPlayers',
+export const getPlayersData = createAsyncThunk(
+  'players/getPlayersData',
   async (playerIds) => {
     const playersData = {};
     let remainingPlayers = playerIds;
@@ -40,16 +40,16 @@ const playersSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getGroupPlayers.fulfilled, (state, action) => {
+    builder.addCase(getPlayersData.fulfilled, (state, action) => {
       state.data = action.payload;
       state.isLoading = false;
       state.failedToLoad = false;
     });
-    builder.addCase(getGroupPlayers.pending, (state) => {
+    builder.addCase(getPlayersData.pending, (state) => {
       state.isLoading = true;
       state.failedToLoad = false;
     });
-    builder.addCase(getGroupPlayers.rejected, (state) => {
+    builder.addCase(getPlayersData.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });

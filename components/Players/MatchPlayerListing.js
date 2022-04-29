@@ -5,18 +5,22 @@ import {
   selectCurrentMatch,
   selectMatchPlayers,
 } from '../../features/matches/matchSlice';
+import { getPlayersData } from '../../features/users/playersSlice';
+import { selectCurrentUser } from '../../features/users/userSlice';
 import MatchPlayerActions from './MatchPlayerActions';
 
 export default function MatchPlayerListing() {
   const players = useSelector(selectMatchPlayers);
   const matchDetails = useSelector(selectCurrentMatch);
   const currentGroup = useSelector(selectGroup);
+  const currentUser = useSelector(selectCurrentUser);
 
   const dispatch = useDispatch();
 
   const [playing, setPlaying] = useState();
   const [requested, setRequested] = useState();
   const [waitlist, setWaitlist] = useState();
+  const [playersToFetch, setPlayersToFetch] = useState([]);
   const [isAdmin, setIsAdmin] = useState();
 
   useEffect(() => {
@@ -24,8 +28,25 @@ export default function MatchPlayerListing() {
       setPlaying(players.playing);
       setRequested(players.requested);
       setWaitlist(players.waitlist);
+
+      const allPlayers = players.playing.concat(
+        players.requested,
+        players.waitlist
+      );
+
+      const playerIds = allPlayers.map((player) => player.playerId);
+
+      setPlayersToFetch(
+        playerIds.filter((player) => player !== currentUser.id)
+      );
     }
   }, [players]);
+
+  useEffect(() => {
+    if (playersToFetch.length > 0) {
+      dispatch(getPlayersData(playersToFetch));
+    }
+  }, [playersToFetch.length]);
 
   // useEffect(() => {
   //   if (matchDetails.group) {
@@ -56,11 +77,11 @@ export default function MatchPlayerListing() {
           : null}
       </div>
       <div>
-        {waitlist && waitlist.length !== 0 ? (
-          <h3 className='title'>Waitlist</h3>
+        {requested && requested.length !== 0 ? (
+          <h3 className='title'>Requested</h3>
         ) : null}
-        {waitlist
-          ? waitlist.map((player, i) => (
+        {requested
+          ? requested.map((player, i) => (
               <MatchPlayerActions key={i} player={player} />
             ))
           : null}

@@ -1,6 +1,6 @@
 import GroupPlayerActions from './GroupPlayerActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGroupPlayers } from '../../features/users/playersSlice';
+import { getPlayersData } from '../../features/users/playersSlice';
 import { useEffect, useState } from 'react';
 import { selectCurrentUser } from '../../features/users/userSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,7 +38,7 @@ export default function GroupPlayerListing({ players }) {
 
   useEffect(() => {
     if (playersToFetch.length > 0) {
-      dispatch(getGroupPlayers(playersToFetch));
+      dispatch(getPlayersData(playersToFetch));
     }
   }, [playersToFetch.length]);
 
