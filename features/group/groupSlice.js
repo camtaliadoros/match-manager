@@ -162,6 +162,7 @@ const initialState = {
       admin: [],
       requested: [],
     },
+    isAdmin: false,
   },
   isFulfilled: false,
   isLoading: false,
@@ -175,10 +176,16 @@ export const groupSlice = createSlice({
     resetGroup() {
       return initialState;
     },
+    setIsAdmin(state, action) {
+      state.data.isAdmin = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getCurrentGroup.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = {
+        ...state.data,
+        ...action.payload,
+      };
       state.failedToLoad = false;
       state.isLoading = false;
       state.isFulfilled = true;
@@ -275,10 +282,11 @@ export const groupSlice = createSlice({
   },
 });
 
-export const { resetGroup } = groupSlice.actions;
+export const { resetGroup, setIsAdmin } = groupSlice.actions;
 export const selectGroup = (state) => state.group.data;
 export const groupIsLoading = (state) => state.group.isLoading;
 export const groupFailedToLoad = (state) => state.group.failedToLoad;
 export const groupIsFulfilled = (state) => state.group.isFulfilled;
+export const selectUserIsAdmin = (state) => state.group.data.isAdmin;
 
 export default groupSlice.reducer;

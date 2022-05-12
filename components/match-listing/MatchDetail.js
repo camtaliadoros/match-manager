@@ -17,12 +17,17 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { getCurrentGroup, selectGroup } from '../../features/group/groupSlice';
+import {
+  getCurrentGroup,
+  selectGroup,
+  setIsAdmin,
+} from '../../features/group/groupSlice';
 import {
   createMatch,
   inviteCorePlayers,
   selectCurrentMatch,
 } from '../../features/matches/matchSlice';
+import { selectCurrentUser } from '../../features/users/userSlice';
 import classes from './match.module.scss';
 
 export default function MatchDetail() {
@@ -32,6 +37,7 @@ export default function MatchDetail() {
 
   const match = useSelector(selectCurrentMatch);
   const group = useSelector(selectGroup);
+  const currentUser = useSelector(selectCurrentUser);
 
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
@@ -73,6 +79,13 @@ export default function MatchDetail() {
       setCost(match.cost);
     }
   }, [match]);
+
+  useEffect(() => {
+    if (group.id && currentUser.id) {
+      const groupAdmins = group.players.admin;
+      dispatch(setIsAdmin(groupAdmins.includes(currentUser.id)));
+    }
+  }, [group.id, currentUser.id]);
 
   const handleClick = (e) => {
     e.preventDefault();

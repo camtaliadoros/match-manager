@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentGroup, selectGroup } from '../../features/group/groupSlice';
+import {
+  getCurrentGroup,
+  selectGroup,
+  selectUserIsAdmin,
+} from '../../features/group/groupSlice';
 import {
   selectCurrentMatch,
   selectMatchPlayers,
@@ -11,9 +15,8 @@ import MatchPlayerActions from './MatchPlayerActions';
 
 export default function MatchPlayerListing() {
   const players = useSelector(selectMatchPlayers);
-  const matchDetails = useSelector(selectCurrentMatch);
-  const currentGroup = useSelector(selectGroup);
   const currentUser = useSelector(selectCurrentUser);
+  const userIsAdmin = useSelector(selectUserIsAdmin);
 
   const dispatch = useDispatch();
 
@@ -49,6 +52,10 @@ export default function MatchPlayerListing() {
   }, [playersToFetch.length]);
 
   // useEffect(() => {
+  //   setIsAdmin(userIsAdmin);
+  // }, [userIsAdmin]);
+
+  // useEffect(() => {
   //   if (matchDetails.group) {
   //     if (matchDetails.group !== currentGroup.path) {
   //       dispatch(getCurrentGroup(matchDetails.group));
@@ -59,6 +66,7 @@ export default function MatchPlayerListing() {
   return (
     <>
       <div>
+        {userIsAdmin ? <p>User is admin</p> : <p>Not admin</p>}
         <h3 className='title'>Players</h3>
         {playing
           ? playing.map((player, i) => (
