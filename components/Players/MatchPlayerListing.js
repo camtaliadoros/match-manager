@@ -12,6 +12,7 @@ import {
 import { getPlayersData } from '../../features/users/playersSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
 import MatchPlayerActions from './MatchPlayerActions';
+import classes from './players.module.scss';
 
 export default function MatchPlayerListing() {
   const players = useSelector(selectMatchPlayers);
@@ -51,48 +52,37 @@ export default function MatchPlayerListing() {
     }
   }, [playersToFetch.length]);
 
-  // useEffect(() => {
-  //   setIsAdmin(userIsAdmin);
-  // }, [userIsAdmin]);
-
-  // useEffect(() => {
-  //   if (matchDetails.group) {
-  //     if (matchDetails.group !== currentGroup.path) {
-  //       dispatch(getCurrentGroup(matchDetails.group));
-  //     }
-  //   }
-  // }, [matchDetails]);
-
   return (
     <>
-      <div>
-        {userIsAdmin ? <p>User is admin</p> : <p>Not admin</p>}
-        <h3 className='title'>Players</h3>
-        {playing
-          ? playing.map((player, i) => (
-              <MatchPlayerActions key={i} player={player} />
-            ))
-          : null}
-      </div>
-      <div>
-        {waitlist && waitlist.length !== 0 ? (
-          <h3 className='title'>Waitlist</h3>
-        ) : null}
-        {waitlist
-          ? waitlist.map((player, i) => (
-              <MatchPlayerActions key={i} player={player} />
-            ))
-          : null}
-      </div>
-      <div>
-        {requested && requested.length !== 0 ? (
-          <h3 className='title'>Requested</h3>
-        ) : null}
-        {requested
-          ? requested.map((player, i) => (
-              <MatchPlayerActions key={i} player={player} />
-            ))
-          : null}
+      <div className={classes.playerListingWrapper}>
+        <div>
+          <h3 className='title'>Players</h3>
+          {playing
+            ? playing.map((player, i) => (
+                <MatchPlayerActions key={i} player={player} />
+              ))
+            : null}
+        </div>
+        <div>
+          {waitlist && waitlist.length !== 0 ? (
+            <h3 className='title'>Waitlist</h3>
+          ) : null}
+          {waitlist
+            ? waitlist.map((player, i) => (
+                <MatchPlayerActions key={i} player={player} />
+              ))
+            : null}
+        </div>
+        <div>
+          {userIsAdmin ? (
+            <>
+              <h3 className='title'>Requested</h3>
+              {requested.map((player, i) => (
+                <MatchPlayerActions key={i} player={player} />
+              ))}
+            </>
+          ) : null}
+        </div>
       </div>
     </>
   );

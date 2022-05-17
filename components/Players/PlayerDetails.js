@@ -31,7 +31,7 @@ export default function PlayerDetails({ id }) {
   }, [id, isLoading]);
 
   return (
-    <div>
+    <div className={classes.playerProfileWrapper}>
       <div className={classes.profileIcon}>
         <ProfilePhoto username={playerUsername} userPhoto={playerPhoto} />
       </div>

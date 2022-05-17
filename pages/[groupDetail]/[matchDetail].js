@@ -35,8 +35,10 @@ export default function MatchDetailPage() {
 
   return (
     <Layout>
-      <MatchDetail />
-      <MatchPlayerListing />
+      <div className='details-wrapper'>
+        <MatchDetail />
+        <MatchPlayerListing />
+      </div>
     </Layout>
   );
 }
