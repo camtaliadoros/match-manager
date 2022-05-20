@@ -29,6 +29,16 @@
   align-items: center;
 }
 
+.playerPaidIcon {
+  width: 24px;
+  color: $dark-green;
+}
+
+.playerNotPaidIcon {
+  width: 24px;
+  color: $red;
+}
+
 // .coreButton {
 //   background-color: $green25;
 //   color: $dark-green;

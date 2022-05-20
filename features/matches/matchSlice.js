@@ -7,6 +7,8 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
 
@@ -139,6 +141,35 @@ export const getMatchPlayers = createAsyncThunk(
   }
 );
 
+export const togglePaymentStatus = createAsyncThunk(
+  'match/togglePaymentStatus',
+  async (matchPlayerData) => {
+    const playerId = matchPlayerData.playerId;
+    const matchId = matchPlayerData.matchId;
+    const updatedPaymentStatus = matchPlayerData.paymentStatus;
+    const matchRef = doc(db, 'user_matches', `${playerId}_${matchId}`);
+
+    await updateDoc(matchRef, {
+      paymentStatus: updatedPaymentStatus,
+    });
+
+    return matchPlayerData;
+  }
+);
+
+export const removeMatchPlayer = createAsyncThunk(
+  'group/removeMatchPlayer',
+  async (playerToRemove) => {
+    const matchId = playerToRemove.matchId;
+    const playerId = playerToRemove.playerId;
+    const docId = `${playerId}_${matchId}`;
+
+    await deleteDoc(doc(db, 'user_matches', docId));
+
+    return playerToRemove;
+  }
+);
+
 const matchSlice = createSlice({
   name: 'match',
   initialState,
@@ -197,6 +228,57 @@ const matchSlice = createSlice({
       state.failedToLoad = false;
     });
     builder.addCase(getMatchPlayers.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(togglePaymentStatus.fulfilled, (state, action) => {
+      const currentPlayer = state.data.players.playing.find(
+        (player) => player.playerId === action.payload.playerId
+      );
+      if (currentPlayer) {
+        currentPlayer.paymentStatus = action.payload.paymentStatus;
+      }
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(togglePaymentStatus.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(togglePaymentStatus.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(removeMatchPlayer.fulfilled, (state, action) => {
+      const playerPlaying = state.data.players.playing.findIndex(
+        (player) => player.playerId === action.payload.playerId
+      );
+      if (playerPlaying) {
+        state.data.players.playing.splice(playerPlaying, 1);
+      }
+
+      const playerWaitlist = state.data.players.waitlist.findIndex(
+        (player) => player.playerId === action.payload.playerId
+      );
+      if (playerWaitlist) {
+        state.data.players.waitlist.splice(playerWaitlist, 1);
+      }
+
+      const playerRequested = state.data.players.requested.findIndex(
+        (player) => player.playerId === action.payload.playerId
+      );
+      if (playerRequested) {
+        state.data.players.requested.splice(playerRequested, 1);
+      }
+
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(removeMatchPlayer, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(removeMatchPlayer.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });

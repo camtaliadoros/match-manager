@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getCurrentGroup,
-  selectGroup,
-  selectUserIsAdmin,
-} from '../../features/group/groupSlice';
-import {
-  selectCurrentMatch,
-  selectMatchPlayers,
-} from '../../features/matches/matchSlice';
+import { selectUserIsAdmin } from '../../features/group/groupSlice';
+import { selectMatchPlayers } from '../../features/matches/matchSlice';
 import { getPlayersData } from '../../features/users/playersSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
 import MatchPlayerActions from './MatchPlayerActions';
@@ -76,10 +69,14 @@ export default function MatchPlayerListing() {
         <div>
           {userIsAdmin ? (
             <>
-              <h3 className='title'>Requested</h3>
-              {requested.map((player, i) => (
-                <MatchPlayerActions key={i} player={player} />
-              ))}
+              {requested && requested.length !== 0 ? (
+                <h3 className='title'>Requested</h3>
+              ) : null}
+              {requested
+                ? requested.map((player, i) => (
+                    <MatchPlayerActions key={i} player={player} />
+                  ))
+                : null}
             </>
           ) : null}
         </div>
