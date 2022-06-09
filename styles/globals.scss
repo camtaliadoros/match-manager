@@ -364,6 +364,13 @@ form {
   }
 }
 
+select {
+  background-color: white;
+  padding: $spacing-xsm;
+  border: 0;
+  margin-bottom: $spacing-md;
+}
+
 .success-message {
   font-weight: 400;
   color: $dark-green;
