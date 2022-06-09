@@ -82,7 +82,7 @@ export default function GroupPlayerActions({ id, status, adminView }) {
                     <div className='checkbox-box'>
                       <FontAwesomeIcon icon={faCheck} />
                     </div>
-                    RESERVE
+                    <p className={classes.playerStatus}>RESERVE</p>
                   </label>
                 </div>
               ) : null}

@@ -9,7 +9,6 @@
 
   p {
     margin: 0;
-    margin-left: $spacing-xsm;
   }
 }
 
@@ -47,6 +46,17 @@
   div {
     margin-right: $spacing-xsm;
   }
+}
+
+input[checked] {
+  ~ .playerStatus {
+    color: $dark-green;
+  }
+}
+
+.playerStatus {
+  font-weight: 500;
+  color: $green50;
 }
 
 // .coreButton {
