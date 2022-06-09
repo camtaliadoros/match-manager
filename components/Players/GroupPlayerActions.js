@@ -1,4 +1,5 @@
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -68,16 +69,21 @@ export default function GroupPlayerActions({ id, status, adminView }) {
         <PlayerDetails id={id} />
         <div>
           {status !== 'requested' ? (
-            <div>
+            <div className={classes.actionButtons}>
               {status !== 'admin' ? (
                 <div>
-                  <input
-                    type='checkbox'
-                    id='status-change'
-                    checked={playerStatus === 'reserve'}
-                    onChange={handleStatusChange}
-                  />
-                  <label htmlFor='status-change'>RESERVE</label>
+                  <label htmlFor='status-change' className='checkbox'>
+                    <input
+                      type='checkbox'
+                      id='status-change'
+                      checked={playerStatus === 'reserve'}
+                      onChange={handleStatusChange}
+                    />
+                    <div className='checkbox-box'>
+                      <FontAwesomeIcon icon={faCheck} />
+                    </div>
+                    RESERVE
+                  </label>
                 </div>
               ) : null}
 

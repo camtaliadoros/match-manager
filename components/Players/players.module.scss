@@ -32,11 +32,21 @@
 .playerPaidIcon {
   width: 24px;
   color: $dark-green;
+  margin-right: $spacing-xsm;
 }
 
 .playerNotPaidIcon {
   width: 24px;
   color: $red;
+  margin-right: $spacing-xsm;
+}
+
+.actionButtons {
+  display: flex;
+
+  div {
+    margin-right: $spacing-xsm;
+  }
 }
 
 // .coreButton {

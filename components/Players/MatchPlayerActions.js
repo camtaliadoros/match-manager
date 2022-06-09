@@ -45,7 +45,7 @@ export default function MatchPlayerActions({ player }) {
     return (
       <div className={classes.playerRow}>
         <PlayerDetails id={id} />
-        <div>
+        <div className={classes.actionButtons}>
           <button onClick={handleClick} className='link-style'>
             <FontAwesomeIcon
               icon={faMoneyBill}
