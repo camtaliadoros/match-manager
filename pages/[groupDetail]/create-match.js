@@ -5,8 +5,10 @@ export default function CreateMatch() {
   return (
     <>
       <Layout>
-        <h1>Create Match</h1>
-        <MatchDetail />
+        <div className='details-wrapper'>
+          <h1>Create Match</h1>
+          <MatchDetail />
+        </div>
       </Layout>
     </>
   );
