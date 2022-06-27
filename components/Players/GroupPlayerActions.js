@@ -71,7 +71,7 @@ export default function GroupPlayerActions({ id, status, adminView }) {
           {status !== 'requested' ? (
             <div className={classes.actionButtons}>
               {status !== 'admin' ? (
-                <div>
+                <div className={classes.actionContainer}>
                   <label htmlFor='status-change' className='checkbox'>
                     <input
                       type='checkbox'

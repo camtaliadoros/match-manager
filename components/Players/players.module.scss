@@ -24,6 +24,12 @@
   width: 100%;
 }
 
+.titleContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .playerProfileWrapper {
   display: flex;
   align-items: center;
@@ -44,6 +50,10 @@
 .actionButtons {
   display: flex;
   align-items: center;
+}
+
+.actionContainer {
+  margin-right: 6px;
 }
 
 input[checked] {

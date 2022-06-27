@@ -57,7 +57,7 @@ export default function MatchPlayerActions({ player }) {
             />
           </button>
           <button className='link-style' onClick={handleDelete}>
-            <FontAwesomeIcon icon={faCircleXmark} className='icon' />
+            <FontAwesomeIcon icon={faCircleXmark} />
           </button>
         </div>
       </div>

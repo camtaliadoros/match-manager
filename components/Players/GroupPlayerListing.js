@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { selectCurrentUser } from '../../features/users/userSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
+import classes from './players.module.scss';
 
 export default function GroupPlayerListing({ players }) {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ export default function GroupPlayerListing({ players }) {
 
   return (
     <>
-      <div>
+      <div className={classes.titleContainer}>
         <h3 className='title'>Players</h3>
         {isAdmin ? (
           isEditing ? (
