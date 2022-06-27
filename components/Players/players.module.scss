@@ -9,6 +9,7 @@
 
   p {
     margin: 0;
+    margin-left: 6px;
   }
 }
 
@@ -43,10 +44,6 @@
 .actionButtons {
   display: flex;
   align-items: center;
-
-  div {
-    margin-right: 6px;
-  }
 }
 
 input[checked] {
