@@ -42,9 +42,10 @@
 
 .actionButtons {
   display: flex;
+  align-items: center;
 
   div {
-    margin-right: $spacing-xsm;
+    margin-right: 6px;
   }
 }
 
