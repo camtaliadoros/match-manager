@@ -37,7 +37,9 @@ export default function PlayerDetails({ id }) {
       </div>
       <p>
         {playerUsername}
-        {id === currentUser.id ? '- YOU' : null}
+        <span className={classes.highlight}>
+          {id === currentUser.id ? ' - YOU' : null}
+        </span>
       </p>
     </div>
   );
