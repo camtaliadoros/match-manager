@@ -65,6 +65,13 @@ header p {
   max-width: 540px;
 }
 
+.flex-row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
 @media screen and (min-width: $screen-sm) {
   .details-wrapper {
     background-color: $chalk;

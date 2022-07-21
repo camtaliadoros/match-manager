@@ -1,3 +1,5 @@
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -75,7 +77,14 @@ export default function GroupDetail() {
   return (
     <Layout>
       <div className='details-wrapper'>
-        <h2 className='title'>{groupName}</h2>
+        <div className='flex-row'>
+          <h2 className='title'>{groupName}</h2>
+          {isAdmin ? (
+            <button className='link-style'>
+              <FontAwesomeIcon icon={faPencil} className='icon' />
+            </button>
+          ) : null}
+        </div>
         <RequestGroupAdmission players={players} />
 
         <MatchesListing type='upcomingMatches' display='1' matches={matches} />
