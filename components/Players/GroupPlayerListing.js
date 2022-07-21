@@ -51,15 +51,6 @@ export default function GroupPlayerListing({ players }) {
     <>
       <div className={classes.titleContainer}>
         <h3 className='title'>Players</h3>
-        {isAdmin ? (
-          isEditing ? (
-            <button onClick={handleClick}>SAVE</button>
-          ) : (
-            <button className='link-style' onClick={() => setIsEditing(true)}>
-              <FontAwesomeIcon icon={faPen} />
-            </button>
-          )
-        ) : null}
       </div>
 
       {adminPlayers.map((playerId, i) => (
