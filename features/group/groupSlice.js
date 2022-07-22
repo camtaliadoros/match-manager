@@ -150,6 +150,26 @@ export const removeGroupPlayer = createAsyncThunk(
   }
 );
 
+export const updateGroupName = createAsyncThunk(
+  'group/updateGroupName',
+  async (groupToUpdate) => {
+    const currentPath = groupToUpdate.currentPath;
+    const newName = groupToUpdate.newGroupName;
+    const newPath = groupName.toLowerCase().replace(' ', '-');
+
+    const groupRef = doc(db, 'groups', currentPath);
+    await updateDoc(groupRef, {
+      name: newName,
+      path: newPath,
+    });
+
+    return {
+      newName,
+      newPath,
+    };
+  }
+);
+
 const initialState = {
   data: {
     id: '',
@@ -276,6 +296,20 @@ export const groupSlice = createSlice({
       state.failedToLoad = false;
     });
     builder.addCase(removeGroupPlayer.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(updateGroupName.fulfilled, (state, action) => {
+      state.data.name = action.payload.newName;
+      state.data.path = action.payload.newPath;
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(updateGroupName.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(updateGroupName.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });

@@ -14,6 +14,7 @@ import {
   getCurrentGroup,
   groupIsLoading,
   selectGroup,
+  updateGroupName,
 } from '../../features/group/groupSlice';
 import {
   getGroupMatches,
@@ -36,6 +37,8 @@ export default function GroupDetail() {
   const [players, setPlayers] = useState(currentGroup.players);
   const [matches, setMatches] = useState(currentGroup.matches);
   const [isAdmin, setIsAdmin] = useState();
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [newGroupName, setnewGroupName] = useState('');
 
   useEffect(() => {
     if (currentPath && currentGroup.path !== currentPath) {
@@ -74,15 +77,40 @@ export default function GroupDetail() {
       </Layout>
     );
   }
+
+  const handleEditClick = () => {
+    setIsEditingName(!isEditingName);
+  };
+
+  const handleSaveClick = () => {
+    dispatch(updateGroupName({ newGroupName, currentPath }));
+    setIsEditingName(false);
+  };
+
   return (
     <Layout>
       <div className='details-wrapper'>
         <div className='flex-row'>
-          <h2 className='title'>{groupName}</h2>
+          {isEditingName ? (
+            <input
+              type='text'
+              value={newGroupName}
+              onChange={(e) => setnewGroupName(e.target.value)}
+              placeholder={groupName}
+              required
+            />
+          ) : (
+            <h2 className='title'>{groupName}</h2>
+          )}
+
           {isAdmin ? (
-            <button className='link-style'>
-              <FontAwesomeIcon icon={faPencil} className='icon' />
-            </button>
+            isEditingName ? (
+              <button onClick={handleSaveClick}>SAVE</button>
+            ) : (
+              <button className='link-style' onClick={handleEditClick}>
+                <FontAwesomeIcon icon={faPencil} className='icon' />
+              </button>
+            )
           ) : null}
         </div>
         <RequestGroupAdmission players={players} />
