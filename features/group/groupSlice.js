@@ -15,14 +15,14 @@ import {
 export const createGroup = createAsyncThunk(
   'group/createGroup',
   async (newGroup) => {
-    const path = newGroup.groupData.path;
+    const groupId = newGroup.groupData.id;
     const groupData = newGroup.groupData;
 
-    await setDoc(doc(db, 'groups', path), groupData);
+    await setDoc(doc(db, 'groups', groupId), groupData);
 
     const adminData = {
-      groupId: newGroup.groupData.id,
-      groupPath: path,
+      groupId: groupId,
+      groupPath: newGroup.groupData.path,
       userId: newGroup.adminId,
       userStatus: 'admin',
     };

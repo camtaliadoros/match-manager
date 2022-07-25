@@ -27,9 +27,9 @@ export default function CreateGroupForm() {
 
   useEffect(() => {
     if (groupPath) {
-      router.push(`/dashboard/${groupPath}`);
+      router.push(`/${groupPath}`);
     }
-  }, [isFulfilled]);
+  });
 
   useEffect(() => {
     if (failedToLoad) {
