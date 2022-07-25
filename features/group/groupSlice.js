@@ -22,7 +22,6 @@ export const createGroup = createAsyncThunk(
 
     const adminData = {
       groupId: groupId,
-      groupPath: newGroup.groupData.path,
       userId: newGroup.adminId,
       userStatus: 'admin',
     };
