@@ -62,18 +62,24 @@ export const getCurrentGroup = createAsyncThunk(
       },
     };
 
-    const groupDocRef = doc(db, 'groups', groupPath);
-    const groupDocSnap = await getDoc(groupDocRef);
-    const response = groupDocSnap.data();
+    const groupsRef = collection(db, 'groups');
+    const q = query(groupsRef, where('path', '==', groupPath));
+    let response;
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      response = doc.data();
+    });
+
     currentGroupState = {
       ...currentGroupState,
       ...response,
     };
 
-    const groupsRef = collection(db, 'group_users');
+    const groupPlayersRef = collection(db, 'group_users');
     const queryCore = query(
-      groupsRef,
-      where('groupPath', '==', groupPath),
+      groupPlayersRef,
+      where('groupId', '==', currentGroupState.id),
       where('userStatus', '==', 'core')
     );
     const querySnapshotCore = await getDocs(queryCore);
@@ -83,8 +89,8 @@ export const getCurrentGroup = createAsyncThunk(
     });
 
     const queryReserve = query(
-      groupsRef,
-      where('groupPath', '==', groupPath),
+      groupPlayersRef,
+      where('groupId', '==', currentGroupState.id),
       where('userStatus', '==', 'reserve')
     );
     const querySnapshotReserve = await getDocs(queryReserve);
@@ -94,8 +100,8 @@ export const getCurrentGroup = createAsyncThunk(
     });
 
     const queryAdmin = query(
-      groupsRef,
-      where('groupPath', '==', groupPath),
+      groupPlayersRef,
+      where('groupId', '==', currentGroupState.id),
       where('userStatus', '==', 'admin')
     );
     const querySnapshotAdmin = await getDocs(queryAdmin);
@@ -105,8 +111,8 @@ export const getCurrentGroup = createAsyncThunk(
     });
 
     const queryRequested = query(
-      groupsRef,
-      where('groupPath', '==', groupPath),
+      groupPlayersRef,
+      where('groupId', '==', currentGroupState.id),
       where('userStatus', '==', 'requested')
     );
     const querySnapshotRequested = await getDocs(queryRequested);

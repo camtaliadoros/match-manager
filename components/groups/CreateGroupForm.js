@@ -17,7 +17,6 @@ export default function CreateGroupForm() {
 
   const currentUser = useSelector(selectCurrentUser);
   const isLoading = useSelector(groupIsLoading);
-  const isFulfilled = useSelector(groupIsFulfilled);
   const failedToLoad = useSelector(groupFailedToLoad);
   const router = useRouter();
 
