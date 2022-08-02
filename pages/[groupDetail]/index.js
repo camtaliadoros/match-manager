@@ -84,8 +84,10 @@ export default function GroupDetail() {
 
   const handleSaveClick = () => {
     const groupId = currentGroup.id;
-    dispatch(updateGroupName({ newGroupName, groupId }));
+    const newPath = newGroupName.toLowerCase().replace(' ', '-');
+    dispatch(updateGroupName({ newGroupName, newPath, groupId }));
     setIsEditingName(false);
+    router.replace(newPath);
   };
 
   return (

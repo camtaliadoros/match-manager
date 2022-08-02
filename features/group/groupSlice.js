@@ -160,7 +160,7 @@ export const updateGroupName = createAsyncThunk(
   async (groupToUpdate) => {
     const groupId = groupToUpdate.groupId;
     const newName = groupToUpdate.newGroupName;
-    const newPath = newName.toLowerCase().replace(' ', '-');
+    const newPath = groupToUpdate.newPath;
 
     const groupRef = doc(db, 'groups', groupId);
     await updateDoc(groupRef, {
