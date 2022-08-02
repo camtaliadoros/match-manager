@@ -97,7 +97,7 @@ export default function MatchDetail() {
       id: matchId,
       title,
       timestamp,
-      group: group.path,
+      groupId: group.id,
       location,
       isPublic,
       isRecurring,

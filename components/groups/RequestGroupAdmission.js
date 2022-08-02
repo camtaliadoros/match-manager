@@ -36,7 +36,6 @@ export default function RequestGroupAdmission({ players }) {
       setGroupPlayer({
         userId: currentUser.id,
         groupId: group.id,
-        groupPath: currentPath,
         userStatus: 'requested',
       })
     );

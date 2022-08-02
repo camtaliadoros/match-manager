@@ -25,7 +25,7 @@ export const createMatch = createAsyncThunk(
       id: matchData.id,
       title: matchData.title,
       timestamp: matchData.timestamp,
-      group: matchData.group,
+      groupId: matchData.groupId,
       isPublic: matchData.isPublic,
       isRecurring: matchData.isRecurring,
       location: matchData.location,
@@ -85,6 +85,7 @@ export const getMatchPlayers = createAsyncThunk(
   async (matchId) => {
     const players = {
       playing: [],
+      notPlaying: [],
       waitlist: [],
       requested: [],
     };
@@ -99,6 +100,22 @@ export const getMatchPlayers = createAsyncThunk(
     queryPlayingSnap.forEach((doc) => {
       const data = doc.data();
       players.playing.push({
+        playerId: data.playerId,
+        paymentStatus: data.paymentStatus,
+        playerStatus: data.playerStatus,
+      });
+    });
+
+    const qNotPlaying = query(
+      matchPlayersRef,
+      where('matchId', '==', matchId),
+      where('playerStatus', '==', 'notPlaying')
+    );
+
+    const queryNotPlayingSnap = await getDocs(qNotPlaying);
+    queryNotPlayingSnap.forEach((doc) => {
+      const data = doc.data();
+      players.notPlaying.push({
         playerId: data.playerId,
         paymentStatus: data.paymentStatus,
         playerStatus: data.playerStatus,

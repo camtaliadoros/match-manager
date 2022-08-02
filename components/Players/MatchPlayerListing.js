@@ -23,15 +23,17 @@ export default function MatchPlayerListing() {
   useEffect(() => {
     if (players) {
       setPlaying(players.playing);
-      setRequested(players.requested);
-      setWaitlist(players.waitlist);
+      setRequested(players.requested ? players.requested : []);
+      setWaitlist(players.waitlist ? players.waitlist : []);
 
       const allPlayers = players.playing.concat(
         players.requested,
         players.waitlist
       );
 
-      const playerIds = allPlayers.map((player) => player.playerId);
+      const playerIds = allPlayers.map((player) => {
+        return player.playerId;
+      });
 
       setPlayersToFetch(
         playerIds.filter((player) => player !== currentUser.id)
