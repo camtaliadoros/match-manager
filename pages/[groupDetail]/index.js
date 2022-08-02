@@ -83,7 +83,8 @@ export default function GroupDetail() {
   };
 
   const handleSaveClick = () => {
-    dispatch(updateGroupName({ newGroupName, currentPath }));
+    const groupId = currentGroup.id;
+    dispatch(updateGroupName({ newGroupName, groupId }));
     setIsEditingName(false);
   };
 

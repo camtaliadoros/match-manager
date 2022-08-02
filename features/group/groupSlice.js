@@ -158,11 +158,11 @@ export const removeGroupPlayer = createAsyncThunk(
 export const updateGroupName = createAsyncThunk(
   'group/updateGroupName',
   async (groupToUpdate) => {
-    const currentPath = groupToUpdate.currentPath;
+    const groupId = groupToUpdate.groupId;
     const newName = groupToUpdate.newGroupName;
     const newPath = newName.toLowerCase().replace(' ', '-');
 
-    const groupRef = doc(db, 'groups', currentPath);
+    const groupRef = doc(db, 'groups', groupId);
     await updateDoc(groupRef, {
       name: newName,
       path: newPath,
