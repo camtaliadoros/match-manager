@@ -11,6 +11,7 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 
 export const createGroup = createAsyncThunk(
   'group/createGroup',

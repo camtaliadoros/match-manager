@@ -44,7 +44,7 @@ export default function GroupDetail() {
     if (currentPath && currentGroup.path !== currentPath) {
       dispatch(getCurrentGroup(currentPath));
     }
-  }, [router]);
+  }, [currentGroup.path]);
 
   useEffect(() => {
     setGroupName(currentGroup.name);
@@ -87,7 +87,7 @@ export default function GroupDetail() {
     const newPath = newGroupName.toLowerCase().replace(' ', '-');
     dispatch(updateGroupName({ newGroupName, newPath, groupId }));
     setIsEditingName(false);
-    router.replace(newPath);
+    router.replace(newPath, undefined, { shallow: true });
   };
 
   return (
