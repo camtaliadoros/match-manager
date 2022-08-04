@@ -13,6 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -171,7 +172,7 @@ export default function MatchDetail() {
           </div>
           <div className={classes.matchDataRow}>
             <FontAwesomeIcon icon={faUserGroup} className='data-icon' />
-            <p>{group.name}</p>
+            <Link href={groupPath ? `/${groupPath}` : '/'}>{group.name}</Link>
           </div>
           <div className={classes.matchDataRow}>
             <FontAwesomeIcon icon={faEye} className='data-icon' />

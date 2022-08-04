@@ -63,7 +63,12 @@
 .matchDataRow {
   display: flex;
 
-  p {
+  p,
+  a {
     margin: 6px 0;
+  }
+
+  a {
+    font-size: 14px;
   }
 }
