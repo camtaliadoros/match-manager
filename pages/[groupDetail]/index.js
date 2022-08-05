@@ -44,7 +44,7 @@ export default function GroupDetail() {
     if (currentPath && currentGroup.path !== currentPath) {
       dispatch(getCurrentGroup(currentPath));
     }
-  }, [currentGroup.path]);
+  }, [currentPath][currentGroup.path]);
 
   useEffect(() => {
     setGroupName(currentGroup.name);
