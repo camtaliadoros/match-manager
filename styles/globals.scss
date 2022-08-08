@@ -152,6 +152,10 @@ p {
   font-weight: 800;
 }
 
+.matchcard-wrapper {
+  width: 100%;
+}
+
 @media only screen and (min-width: $screen-sm) {
   h1 {
     font-size: $font-xlg;
@@ -214,7 +218,7 @@ button {
     margin: $spacing-lg 0;
   }
 
-  .full-width {
+  &.full-width {
     width: 100%;
   }
 

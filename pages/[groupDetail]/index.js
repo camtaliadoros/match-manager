@@ -128,14 +128,19 @@ export default function GroupDetail() {
           ) : null}
         </div>
         <RequestGroupAdmission players={players} />
+        <div className='matchcard-wrapper'>
+          <MatchesListing
+            type='upcomingMatches'
+            display='1'
+            matches={groupMatches}
+          />
 
-        <MatchesListing
-          type='upcomingMatches'
-          display='1'
-          matches={groupMatches}
-        />
-
-        {isAdmin && <button onClick={handleClick}>Create Match</button>}
+          {isAdmin && (
+            <button className='full-width' onClick={handleClick}>
+              Create Match
+            </button>
+          )}
+        </div>
 
         <GroupPlayerListing players={players} />
         <GroupShare />
