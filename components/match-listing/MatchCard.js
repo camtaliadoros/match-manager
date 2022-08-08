@@ -13,6 +13,7 @@ import moment from 'moment';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
 import { selectGroup } from '../../features/group/groupSlice';
+import Link from 'next/link';
 
 export default function MatchCard({ matchId }) {
   const matchData = useSelector(selectMatches);
@@ -23,6 +24,7 @@ export default function MatchCard({ matchId }) {
   const [matchTime, setMatchTime] = useState('');
   const [matchGroup, setMatchGroup] = useState('');
   const [matchLocation, setMatchLocation] = useState('');
+  const [groupPath, setGroupPath] = useState();
 
   const getGroupName = async (groupId) => {
     if (groupId === currentGroup.id) {
@@ -36,6 +38,7 @@ export default function MatchCard({ matchId }) {
         groupData = doc.data();
       });
       setMatchGroup(groupData.name);
+      setGroupPath(groupData.path);
     }
   };
 
@@ -53,34 +56,38 @@ export default function MatchCard({ matchId }) {
   }, [matchData]);
 
   return (
-    <div className='card'>
-      {onWaitlist ? <p className={classes.waitlistText}>On Waitlist</p> : null}
-      <div className={classes.matchDataWrapper}>
-        <div className={classes.matchData}>
-          <div className={classes.iconContainer}>
-            <FontAwesomeIcon icon={faCalendar} className='icon' />
+    <Link href={`./${groupPath}/${matchId}`}>
+      <div className='card'>
+        {onWaitlist ? (
+          <p className={classes.waitlistText}>On Waitlist</p>
+        ) : null}
+        <div className={classes.matchDataWrapper}>
+          <div className={classes.matchData}>
+            <div className={classes.iconContainer}>
+              <FontAwesomeIcon icon={faCalendar} className='icon' />
+            </div>
+            <p>{matchDate}</p>
           </div>
-          <p>{matchDate}</p>
-        </div>
-        <div className={classes.matchData}>
-          <div className={classes.iconContainer}>
-            <FontAwesomeIcon icon={faClock} className='icon' />
+          <div className={classes.matchData}>
+            <div className={classes.iconContainer}>
+              <FontAwesomeIcon icon={faClock} className='icon' />
+            </div>
+            <p>{matchTime}</p>
           </div>
-          <p>{matchTime}</p>
-        </div>
-        <div className={classes.matchData}>
-          <div className={classes.iconContainer}>
-            <FontAwesomeIcon icon={faUserGroup} className='icon' />
+          <div className={classes.matchData}>
+            <div className={classes.iconContainer}>
+              <FontAwesomeIcon icon={faUserGroup} className='icon' />
+            </div>
+            <p>{matchGroup}</p>
           </div>
-          <p>{matchGroup}</p>
-        </div>
-        <div className={classes.matchData}>
-          <div className={classes.iconContainer}>
-            <FontAwesomeIcon icon={faLocationDot} className='icon' />
+          <div className={classes.matchData}>
+            <div className={classes.iconContainer}>
+              <FontAwesomeIcon icon={faLocationDot} className='icon' />
+            </div>
+            <p>{matchLocation}</p>
           </div>
-          <p>{matchLocation}</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
