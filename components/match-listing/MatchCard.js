@@ -12,9 +12,11 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
+import { selectGroup } from '../../features/group/groupSlice';
 
 export default function MatchCard({ matchId }) {
   const matchData = useSelector(selectMatches);
+  const currentGroup = useSelector(selectGroup);
   const onWaitlist = true;
 
   const [matchDate, setMatchDate] = useState('');
@@ -23,14 +25,18 @@ export default function MatchCard({ matchId }) {
   const [matchLocation, setMatchLocation] = useState('');
 
   const getGroupName = async (groupId) => {
-    const q = query(collection(db, 'groups'), where('id', '==', groupId));
-    let groupData = {};
+    if (groupId === currentGroup.id) {
+      setMatchGroup(currentGroup.name);
+    } else {
+      const q = query(collection(db, 'groups'), where('id', '==', groupId));
+      let groupData = {};
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      groupData = doc.data();
-    });
-    setMatchGroup(groupData.name);
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        groupData = doc.data();
+      });
+      setMatchGroup(groupData.name);
+    }
   };
 
   useEffect(() => {
