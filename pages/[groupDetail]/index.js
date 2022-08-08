@@ -1,6 +1,5 @@
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { current } from '@reduxjs/toolkit';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -136,7 +135,8 @@ export default function GroupDetail() {
           />
 
           {isAdmin && (
-            <button className='full-width' onClick={handleClick}>
+            <button className='link-style' onClick={handleClick}>
+              <FontAwesomeIcon icon={faCirclePlus} />
               Create Match
             </button>
           )}

@@ -203,6 +203,7 @@ button {
   font-family: 'proxima-nova', sans-serif;
   font-size: 12px;
   transition: filter 0.5s;
+  display: flex;
 
   &.linkStyle {
     align-self: flex-start;
@@ -235,6 +236,7 @@ button {
       display: flex;
       align-items: center;
       height: 1.4em;
+      margin-right: $spacing-xsm;
     }
   }
 
@@ -402,6 +404,7 @@ form .error-message {
 .card {
   background-color: $light-green;
   padding: $spacing-sm;
+  margin-bottom: $spacing-sm;
 }
 
 .icon {
