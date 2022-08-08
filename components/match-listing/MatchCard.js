@@ -30,16 +30,16 @@ export default function MatchCard({ matchId }) {
     querySnapshot.forEach((doc) => {
       groupData = doc.data();
     });
-    return groupData;
+    setMatchGroup(groupData.name);
   };
 
   useEffect(() => {
     const currentMatch = matchData[matchId];
-    const date = moment.unix(currentMatch.date / 1000).format('dddd, MMMM Do');
-    const time = moment.unix(currentMatch.date / 1000).format('h:mm a');
-    const groupData = getGroupName(currentMatch.group).then((value) =>
-      setMatchGroup(value.name)
-    );
+    const date = moment
+      .unix(currentMatch.timestamp / 1000)
+      .format('dddd, MMMM Do');
+    const time = moment.unix(currentMatch.timestamp / 1000).format('h:mm a');
+    getGroupName(currentMatch.groupId);
 
     setMatchDate(date);
     setMatchTime(time);

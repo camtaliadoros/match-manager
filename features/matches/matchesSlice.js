@@ -7,7 +7,7 @@ export const getGroupMatches = createAsyncThunk(
   async (groupId) => {
     const result = {};
     const matchesRef = collection(db, 'matches');
-    const q = query(matchesRef, where('group', '==', groupId));
+    const q = query(matchesRef, where('groupId', '==', groupId));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       result[doc.id] = doc.data();

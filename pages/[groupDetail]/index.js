@@ -1,5 +1,6 @@
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { current } from '@reduxjs/toolkit';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,8 +18,8 @@ import {
   updateGroupName,
 } from '../../features/group/groupSlice';
 import {
-  getGroupMatches,
   selectMatches,
+  getGroupMatches,
 } from '../../features/matches/matchesSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
 
@@ -35,7 +36,7 @@ export default function GroupDetail() {
 
   const [groupName, setGroupName] = useState(currentGroup.name);
   const [players, setPlayers] = useState(currentGroup.players);
-  const [matches, setMatches] = useState(currentGroup.matches);
+  const [matches, setMatches] = useState(groupMatches);
   const [isAdmin, setIsAdmin] = useState();
   const [isEditingName, setIsEditingName] = useState(false);
   const [newGroupName, setnewGroupName] = useState('');
@@ -47,16 +48,26 @@ export default function GroupDetail() {
   }, [currentPath][currentGroup.path]);
 
   useEffect(() => {
-    setGroupName(currentGroup.name);
-    const adminArr = currentGroup.players.admin;
-    setIsAdmin(adminArr.includes(currentUser.id));
-    setPlayers(currentGroup.players);
-    dispatch(getGroupMatches(currentGroup.id));
-  }, [currentGroup]);
+    if (currentGroup.id) {
+      dispatch(getGroupMatches(currentGroup.id));
+    }
+  }, [currentGroup.id]);
+
+  // useEffect(() => {
+  //   if (groupMatches) {
+  //     setMatches(groupMatches);
+  //   }
+  // }, [groupMatches]);
 
   useEffect(() => {
-    setMatches(groupMatches);
-  }, [groupMatches]);
+    if (currentGroup.id) {
+      setGroupName(currentGroup.name);
+      const adminArr = currentGroup.players.admin;
+      setIsAdmin(adminArr.includes(currentUser.id));
+      setPlayers(currentGroup.players);
+      setMatches(groupMatches);
+    }
+  }, [currentGroup]);
 
   const handleClick = () => {
     router.push(`/${currentPath}/create-match`);
@@ -118,7 +129,11 @@ export default function GroupDetail() {
         </div>
         <RequestGroupAdmission players={players} />
 
-        <MatchesListing type='upcomingMatches' display='1' matches={matches} />
+        <MatchesListing
+          type='upcomingMatches'
+          display='1'
+          matches={groupMatches}
+        />
 
         {isAdmin && <button onClick={handleClick}>Create Match</button>}
 
