@@ -1,8 +1,7 @@
-import Link from 'next/link';
-import MatchCard from './MatchCard';
-import classes from './match.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classes from './match.module.scss';
+import MatchCard from './MatchCard';
 
 export default function MatchesListing({ display, type, matches }) {
   const typeMap = {

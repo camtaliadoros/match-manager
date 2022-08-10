@@ -30,6 +30,7 @@ import {
 } from '../../features/matches/matchSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
 import classes from './match.module.scss';
+import MatchPlayerStatus from './MatchPlayerStatus';
 
 export default function MatchDetail() {
   const dispatch = useDispatch();
@@ -142,6 +143,7 @@ export default function MatchDetail() {
         ) : (
           <h2>{title}</h2>
         )}
+        <MatchPlayerStatus />
         <div className={classes.matchDataContainer}>
           <div className={classes.matchDataRow}>
             <FontAwesomeIcon icon={faCalendar} className='data-icon' />

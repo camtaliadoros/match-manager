@@ -58,7 +58,7 @@ export const inviteCorePlayers = createAsyncThunk(
       await setDoc(doc(db, 'user_matches', `${player}_${matchId}`), {
         playerId: player,
         matchId: matchId,
-        playerStatus: 'notPlaying',
+        playerStatus: 'invited',
         paymentStatus: false,
       });
     });
@@ -88,6 +88,7 @@ export const getMatchPlayers = createAsyncThunk(
       notPlaying: [],
       waitlist: [],
       requested: [],
+      invited: [],
     };
     const matchPlayersRef = collection(db, 'user_matches');
     const qPlaying = query(
@@ -221,7 +222,7 @@ const matchSlice = createSlice({
     builder.addCase(inviteCorePlayers.fulfilled, (state, action) => {
       state.data.players = {
         playing: action.payload.admin,
-        notPlaying: action.payload.core,
+        invited: action.payload.core,
       };
 
       state.isLoading = false;
