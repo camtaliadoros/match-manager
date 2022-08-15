@@ -15,15 +15,15 @@ import { db } from '../../firebase/clientApp';
 import { selectGroup } from '../../features/group/groupSlice';
 import Link from 'next/link';
 
-export default function MatchCard({ matchId }) {
-  const matchData = useSelector(selectMatches);
+export default function MatchCard({ matchData }) {
+  const matches = useSelector(selectMatches);
   const currentGroup = useSelector(selectGroup);
   const onWaitlist = true;
 
   const [matchDate, setMatchDate] = useState('');
   const [matchTime, setMatchTime] = useState('');
   const [matchGroup, setMatchGroup] = useState('');
-  const [matchLocation, setMatchLocation] = useState('');
+  const [matchLocation, setMatchLocation] = useState(matchData.location);
   const [groupPath, setGroupPath] = useState();
 
   const getGroupName = async (groupId) => {
@@ -43,20 +43,19 @@ export default function MatchCard({ matchId }) {
   };
 
   useEffect(() => {
-    const currentMatch = matchData[matchId];
     const date = moment
-      .unix(currentMatch.timestamp / 1000)
+      .unix(matchData.timestamp / 1000)
       .format('dddd, MMMM Do');
-    const time = moment.unix(currentMatch.timestamp / 1000).format('h:mm a');
-    getGroupName(currentMatch.groupId);
+    const time = moment.unix(matchData.timestamp / 1000).format('h:mm a');
+    getGroupName(matchData.groupId);
 
     setMatchDate(date);
     setMatchTime(time);
-    setMatchLocation(currentMatch.location);
-  }, [matchData]);
+    setMatchLocation(matchData.location);
+  }, [matches]);
 
   return (
-    <Link href={`./${groupPath}/${matchId}`}>
+    <Link href={`./${groupPath}/${matchData.id}`}>
       <div className='card'>
         {onWaitlist ? (
           <p className={classes.waitlistText}>On Waitlist</p>

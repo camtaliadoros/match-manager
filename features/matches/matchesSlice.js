@@ -5,19 +5,19 @@ import { db } from '../../firebase/clientApp';
 export const getGroupMatches = createAsyncThunk(
   'matches/getGroupMatches',
   async (groupId) => {
-    const result = {};
+    const result = [];
     const matchesRef = collection(db, 'matches');
     const q = query(matchesRef, where('groupId', '==', groupId));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      result[doc.id] = doc.data();
+      result.push(doc.data());
     });
     return result;
   }
 );
 
 const initialState = {
-  byId: {},
+  data: [],
   isLoading: false,
   failedToLoad: false,
 };
@@ -28,7 +28,7 @@ export const matchesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getGroupMatches.fulfilled, (state, action) => {
-      state.byId = action.payload;
+      state.data = action.payload;
       state.isLoading = false;
       state.failedToLoad = false;
     });
@@ -45,6 +45,6 @@ export const matchesSlice = createSlice({
 
 export const { createNewMatch } = matchesSlice.actions;
 export const selectMatches = (state) => {
-  return state.matches.byId;
+  return state.matches.data;
 };
 export default matchesSlice.reducer;

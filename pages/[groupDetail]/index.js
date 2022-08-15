@@ -35,7 +35,7 @@ export default function GroupDetail() {
 
   const [groupName, setGroupName] = useState(currentGroup.name);
   const [players, setPlayers] = useState(currentGroup.players);
-  const [matches, setMatches] = useState(groupMatches);
+  const [matches, setMatches] = useState([]);
   const [isAdmin, setIsAdmin] = useState();
   const [isEditingName, setIsEditingName] = useState(false);
   const [newGroupName, setnewGroupName] = useState('');
@@ -49,6 +49,7 @@ export default function GroupDetail() {
   useEffect(() => {
     if (currentGroup.id) {
       dispatch(getGroupMatches(currentGroup.id));
+      setMatches(groupMatches);
     }
   }, [currentGroup.id]);
 
@@ -64,7 +65,6 @@ export default function GroupDetail() {
       const adminArr = currentGroup.players.admin;
       setIsAdmin(adminArr.includes(currentUser.id));
       setPlayers(currentGroup.players);
-      setMatches(groupMatches);
     }
   }, [currentGroup]);
 
