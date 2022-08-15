@@ -29,6 +29,7 @@ export default function MatchCard({ matchData }) {
   const getGroupName = async (groupId) => {
     if (groupId === currentGroup.id) {
       setMatchGroup(currentGroup.name);
+      setGroupPath(currentGroup.path);
     } else {
       const q = query(collection(db, 'groups'), where('id', '==', groupId));
       let groupData = {};

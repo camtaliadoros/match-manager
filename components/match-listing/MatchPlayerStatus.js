@@ -48,6 +48,14 @@ export default function MatchPlayerStatus() {
       </>
     );
   } else {
-    return <p>hey</p>;
+    return (
+      <>
+        {userStatus === 'playing' && <p>You're in!</p>}
+        {userStatus === 'notPlaying' && <p>You're out!</p>}
+        {userStatus === 'waitlist' && <p>On waitlist</p>}
+        {userStatus === 'requested' && <p>Pending request</p>}
+        <button>edit</button>
+      </>
+    );
   }
 }
