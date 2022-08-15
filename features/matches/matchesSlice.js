@@ -47,4 +47,10 @@ export const { createNewMatch } = matchesSlice.actions;
 export const selectMatches = (state) => {
   return state.matches.data;
 };
+export const selectSortedMatches = (state) => {
+  const matchesToSort = [...state.matches.data];
+  return matchesToSort.sort((matchA, matchB) => {
+    return matchA.timestamp - matchB.timestamp;
+  });
+};
 export default matchesSlice.reducer;

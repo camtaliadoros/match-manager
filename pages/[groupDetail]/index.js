@@ -19,6 +19,7 @@ import {
 import {
   selectMatches,
   getGroupMatches,
+  selectSortedMatches,
 } from '../../features/matches/matchesSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
 
@@ -31,7 +32,7 @@ export default function GroupDetail() {
   const isLoading = useSelector(groupIsLoading);
   const currentGroup = useSelector(selectGroup);
   const currentUser = useSelector(selectCurrentUser);
-  const groupMatches = useSelector(selectMatches);
+  const groupMatches = useSelector(selectSortedMatches);
 
   const [groupName, setGroupName] = useState(currentGroup.name);
   const [players, setPlayers] = useState(currentGroup.players);
