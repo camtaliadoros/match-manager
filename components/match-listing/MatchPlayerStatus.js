@@ -21,38 +21,58 @@ export default function MatchPlayerStatus() {
 
   useEffect(() => {
     if (matchPlayers) {
-      const playing = matchPlayers.playing.find(
-        (player) => player.playerId === currentUser.id
+      const playing = matchPlayers.filter(
+        (player) => player.playerStatus === 'playing'
       );
-      const notPlaying = matchPlayers.notPlaying.find(
-        (player) => player.playerId === currentUser.id
+      const notPlaying = matchPlayers.filter(
+        (player) => player.playerStatus === 'notPlaying'
       );
-      const waitlist = matchPlayers.waitlist.find(
-        (player) => player.playerId === currentUser.id
+      const waitlist = matchPlayers.filter(
+        (player) => player.playerStatus === 'waitlist'
       );
-      const requested = matchPlayers.requested.find(
-        (player) => player.playerId === currentUser.id
+      const requested = matchPlayers.filter(
+        (player) => player.playerStatus === 'requested'
       );
-      const invited = matchPlayers.invited.find(
-        (player) => player.playerId === currentUser.id
+      const invited = matchPlayers.filter(
+        (player) => player.playerStatus === 'invited'
       );
-      if (playing) {
+      if (
+        playing.includes((player) => {
+          player.playerId === currentUser.id;
+        })
+      ) {
         setUserStatus('playing');
         setstatusTitle(`You're in!`);
-      } else if (notPlaying) {
+      } else if (
+        notPlaying.includes((player) => {
+          player.playerId === currentUser.id;
+        })
+      ) {
         setUserStatus('notPlaying');
         setstatusTitle(`You're out!`);
-      } else if (waitlist) {
+      } else if (
+        waitlist.includes((player) => {
+          player.playerId === currentUser.id;
+        })
+      ) {
         setUserStatus('waitlist');
         setstatusTitle('On waitlist');
-      } else if (requested) {
+      } else if (
+        requested.includes((player) => {
+          player.playerId === currentUser.id;
+        })
+      ) {
         setUserStatus('requested');
         setstatusTitle('Request pending');
-      } else if (invited) {
+      } else if (
+        invited.includes((player) => {
+          player.playerId === currentUser.id;
+        })
+      ) {
         setUserStatus('invited');
       }
 
-      if (matchPlayers.playing.length >= currentMatch.numOfPlayers) {
+      if (playing.length >= currentMatch.numOfPlayers) {
         setActionButtonTitle('WL');
       } else {
         setActionButtonTitle('IN');
