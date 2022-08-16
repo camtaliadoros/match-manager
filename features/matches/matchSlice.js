@@ -211,7 +211,7 @@ const matchSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(createMatch.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = { ...state.data, ...action.payload };
       state.isLoading = false;
       state.failedToLoad = false;
     });
@@ -237,10 +237,24 @@ const matchSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(inviteCorePlayers.fulfilled, (state, action) => {
-      state.data.players = {
-        playing: action.payload.admin,
-        invited: action.payload.core,
+      state.data = {
+        ...state.data,
+        players: [],
       };
+      action.payload.admin.forEach((player) => {
+        state.data.players.push({
+          playerId: player,
+          playerStatus: 'playing',
+          paymentStatus: false,
+        });
+      });
+      action.payload.core.forEach((player) => {
+        state.data.players.push({
+          playerId: player,
+          playerStatus: 'invited',
+          paymentStatus: false,
+        });
+      });
 
       state.isLoading = false;
       state.failedToLoad = false;
@@ -309,7 +323,7 @@ const matchSlice = createSlice({
       state.isLoading = false;
       state.failedToLoad = false;
     });
-    builder.addCase(removeMatchPlayer, (state) => {
+    builder.addCase(removeMatchPlayer.pending, (state) => {
       state.isLoading = true;
       state.failedToLoad = false;
     });
