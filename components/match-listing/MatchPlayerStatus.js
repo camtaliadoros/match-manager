@@ -8,6 +8,7 @@ export default function MatchPlayerStatus() {
   const matchPlayers = useSelector(selectMatchPlayers);
 
   const [userStatus, setUserStatus] = useState();
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (matchPlayers) {
@@ -40,11 +41,37 @@ export default function MatchPlayerStatus() {
     }
   }, [matchPlayers]);
 
-  if (userStatus === 'invited') {
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleInClick = () => {
+    setUserStatus('playing');
+    setIsEditing(false);
+  };
+
+  const handleOutClick = () => {
+    setUserStatus('notPlaying');
+    setIsEditing(false);
+  };
+
+  if (userStatus === 'invited' || isEditing === true) {
     return (
       <>
-        <button>IN</button>
-        <button>OUT</button>
+        <button
+          type='button'
+          onClick={handleInClick}
+          disabled={userStatus === 'playing'}
+        >
+          IN
+        </button>
+        <button
+          type='button'
+          onClick={handleOutClick}
+          disabled={userStatus === 'notPlaying'}
+        >
+          OUT
+        </button>
       </>
     );
   } else {
@@ -54,7 +81,7 @@ export default function MatchPlayerStatus() {
         {userStatus === 'notPlaying' && <p>You're out!</p>}
         {userStatus === 'waitlist' && <p>On waitlist</p>}
         {userStatus === 'requested' && <p>Pending request</p>}
-        <button>edit</button>
+        <button onClick={handleEditClick}>edit</button>
       </>
     );
   }
