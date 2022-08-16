@@ -83,72 +83,18 @@ export const getCurrentMatch = createAsyncThunk(
 export const getMatchPlayers = createAsyncThunk(
   'match/getMatchPlayers',
   async (matchId) => {
-    const players = {
-      playing: [],
-      notPlaying: [],
-      waitlist: [],
-      requested: [],
-      invited: [],
-    };
+    const players = [];
+
     const matchPlayersRef = collection(db, 'user_matches');
-    const qPlaying = query(
+    const qMatchPlayers = query(
       matchPlayersRef,
-      where('matchId', '==', matchId),
-      where('playerStatus', '==', 'playing')
+      where('matchId', '==', matchId)
     );
 
-    const queryPlayingSnap = await getDocs(qPlaying);
-    queryPlayingSnap.forEach((doc) => {
+    const matchPlayersSnap = await getDocs(qMatchPlayers);
+    matchPlayersSnap.forEach((doc) => {
       const data = doc.data();
-      players.playing.push({
-        playerId: data.playerId,
-        paymentStatus: data.paymentStatus,
-        playerStatus: data.playerStatus,
-      });
-    });
-
-    const qNotPlaying = query(
-      matchPlayersRef,
-      where('matchId', '==', matchId),
-      where('playerStatus', '==', 'notPlaying')
-    );
-
-    const queryNotPlayingSnap = await getDocs(qNotPlaying);
-    queryNotPlayingSnap.forEach((doc) => {
-      const data = doc.data();
-      players.notPlaying.push({
-        playerId: data.playerId,
-        paymentStatus: data.paymentStatus,
-        playerStatus: data.playerStatus,
-      });
-    });
-
-    const qWaitlist = query(
-      matchPlayersRef,
-      where('matchId', '==', matchId),
-      where('playerStatus', '==', 'waitlist')
-    );
-
-    const queryWaitlistSnap = await getDocs(qWaitlist);
-    queryWaitlistSnap.forEach((doc) => {
-      const data = doc.data();
-      players.waitlist.push({
-        playerId: data.playerId,
-        paymentStatus: data.paymentStatus,
-        playerStatus: data.playerStatus,
-      });
-    });
-
-    const qRequested = query(
-      matchPlayersRef,
-      where('matchId', '==', matchId),
-      where('playerStatus', '==', 'requested')
-    );
-
-    const queryRequestedSnap = await getDocs(qRequested);
-    queryRequestedSnap.forEach((doc) => {
-      const data = doc.data();
-      players.requested.push({
+      players.push({
         playerId: data.playerId,
         paymentStatus: data.paymentStatus,
         playerStatus: data.playerStatus,
@@ -281,7 +227,7 @@ const matchSlice = createSlice({
       state.failedToLoad = true;
     });
     builder.addCase(togglePaymentStatus.fulfilled, (state, action) => {
-      const currentPlayer = state.data.players.playing.find(
+      const currentPlayer = state.data.players.find(
         (player) => player.playerId === action.payload.playerId
       );
       if (currentPlayer) {
