@@ -176,7 +176,7 @@ export const togglePaymentStatus = createAsyncThunk(
 );
 
 export const removeMatchPlayer = createAsyncThunk(
-  'group/removeMatchPlayer',
+  'match/removeMatchPlayer',
   async (playerToRemove) => {
     const matchId = playerToRemove.matchId;
     const playerId = playerToRemove.playerId;
@@ -185,6 +185,23 @@ export const removeMatchPlayer = createAsyncThunk(
     await deleteDoc(doc(db, 'user_matches', docId));
 
     return playerToRemove;
+  }
+);
+
+export const updatePlayerMatchStatus = createAsyncThunk(
+  'match/updatePlayerStatus',
+  async (dataToUpdate) => {
+    const playerId = dataToUpdate.playerId;
+    const matchId = dataToUpdate.matchId;
+    const currentStatus = dataToUpdate.currentStatus;
+    const newStatus = dataToUpdate.newStatus;
+
+    const userMatchRef = doc(db, 'user_matches', `${playerId}_${matchId}`);
+    await updateDoc(userMatchRef, {
+      playerStatus: newStatus,
+    });
+
+    return dataToUpdate;
   }
 );
 
@@ -297,6 +314,18 @@ const matchSlice = createSlice({
       state.failedToLoad = false;
     });
     builder.addCase(removeMatchPlayer.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(updatePlayerMatchStatus.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(updatePlayerMatchStatus.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(updatePlayerMatchStatus.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });

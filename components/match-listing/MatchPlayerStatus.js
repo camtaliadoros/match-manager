@@ -1,13 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectMatchPlayers } from '../../features/matches/matchSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCurrentMatch,
+  selectMatchPlayers,
+  updatePlayerMatchStatus,
+} from '../../features/matches/matchSlice';
 import { selectCurrentUser, setUser } from '../../features/users/userSlice';
 
 export default function MatchPlayerStatus() {
   const currentUser = useSelector(selectCurrentUser);
   const matchPlayers = useSelector(selectMatchPlayers);
+  const currentMatch = useSelector(selectCurrentMatch);
+
+  const dispatch = useDispatch();
 
   const [userStatus, setUserStatus] = useState();
+  const [statusTitle, setstatusTitle] = useState();
+  const [actionButtonTitle, setActionButtonTitle] = useState();
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -29,14 +38,24 @@ export default function MatchPlayerStatus() {
       );
       if (playing) {
         setUserStatus('playing');
+        setstatusTitle(`You're in!`);
       } else if (notPlaying) {
         setUserStatus('notPlaying');
+        setstatusTitle(`You're out!`);
       } else if (waitlist) {
         setUserStatus('waitlist');
+        setstatusTitle('On waitlist');
       } else if (requested) {
         setUserStatus('requested');
+        setstatusTitle('Request pending');
       } else if (invited) {
         setUserStatus('invited');
+      }
+
+      if (matchPlayers.playing.length >= currentMatch.numOfPlayers) {
+        setActionButtonTitle('WL');
+      } else {
+        setActionButtonTitle('IN');
       }
     }
   }, [matchPlayers]);
@@ -46,12 +65,40 @@ export default function MatchPlayerStatus() {
   };
 
   const handleInClick = () => {
-    setUserStatus('playing');
+    const dataToUpdate = {
+      playerId: currentUser.id,
+      matchId: currentMatch.id,
+      currentStatus: userStatus,
+    };
+    if (actionButtonTitle === 'WL') {
+      dispatch(
+        updatePlayerMatchStatus({
+          ...dataToUpdate,
+          newStatus: 'waitlist',
+        })
+      );
+    } else {
+      dispatch(
+        updatePlayerMatchStatus({
+          ...dataToUpdate,
+          newStatus: 'waitlist',
+        })
+      );
+    }
+    // setUserStatus('playing');
     setIsEditing(false);
   };
 
   const handleOutClick = () => {
-    setUserStatus('notPlaying');
+    dispatch(
+      updatePlayerMatchStatus({
+        playerId: currentUser.id,
+        matchId: currentMatch.id,
+        currentStatus: userStatus,
+        newStatus: 'notPlaying',
+      })
+    );
+    // setUserStatus('notPlaying');
     setIsEditing(false);
   };
 
@@ -63,7 +110,7 @@ export default function MatchPlayerStatus() {
           onClick={handleInClick}
           disabled={userStatus === 'playing'}
         >
-          IN
+          {actionButtonTitle}
         </button>
         <button
           type='button'
@@ -77,11 +124,10 @@ export default function MatchPlayerStatus() {
   } else {
     return (
       <>
-        {userStatus === 'playing' && <p>You're in!</p>}
-        {userStatus === 'notPlaying' && <p>You're out!</p>}
-        {userStatus === 'waitlist' && <p>On waitlist</p>}
-        {userStatus === 'requested' && <p>Pending request</p>}
-        <button onClick={handleEditClick}>edit</button>
+        <p>{statusTitle}</p>
+        <button type='button' onClick={handleEditClick}>
+          edit
+        </button>
       </>
     );
   }
