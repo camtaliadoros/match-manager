@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserIsAdmin } from '../../features/group/groupSlice';
-import { selectMatchPlayers } from '../../features/matches/matchSlice';
+import {
+  selectMatchPlayers,
+  selectMatchPlayersByStatus,
+} from '../../features/matches/matchSlice';
 import { getPlayersData } from '../../features/users/playersSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
 import MatchPlayerActions from './MatchPlayerActions';
@@ -9,6 +12,7 @@ import classes from './players.module.scss';
 
 export default function MatchPlayerListing() {
   const players = useSelector(selectMatchPlayers);
+  const playersByStatus = useSelector(selectMatchPlayersByStatus);
   const currentUser = useSelector(selectCurrentUser);
   const userIsAdmin = useSelector(selectUserIsAdmin);
 
@@ -22,14 +26,14 @@ export default function MatchPlayerListing() {
 
   useEffect(() => {
     if (players) {
-      setPlaying(players.playing);
-      setRequested(players.requested ? players.requested : []);
-      setWaitlist(players.waitlist ? players.waitlist : []);
+      // setPlaying(players.playing);
+      // setRequested(players.requested ? players.requested : []);
+      // setWaitlist(players.waitlist ? players.waitlist : []);
 
-      const allPlayers = players.playing.concat(
-        players.requested,
-        players.waitlist
-      );
+      // const allPlayers = players.playing.concat(
+      //   players.requested,
+      //   players.waitlist
+      // );
 
       const playerIds = allPlayers.map((player) => {
         return player.playerId;
@@ -52,18 +56,18 @@ export default function MatchPlayerListing() {
       <div className={classes.playerListingWrapper}>
         <div>
           <h3 className='title'>Players</h3>
-          {playing
-            ? playing.map((player, i) => (
+          {playersByStatus.playing
+            ? playersByStatus.playing.map((player, i) => (
                 <MatchPlayerActions key={i} player={player} />
               ))
             : null}
         </div>
         <div>
-          {waitlist && waitlist.length !== 0 ? (
+          {playersByStatus.waitlist && playersByStatus.waitlist.length !== 0 ? (
             <h3 className='title'>Waitlist</h3>
           ) : null}
-          {waitlist
-            ? waitlist.map((player, i) => (
+          {playersByStatus.waitlist
+            ? playersByStatus.waitlist.map((player, i) => (
                 <MatchPlayerActions key={i} player={player} />
               ))
             : null}
@@ -71,11 +75,12 @@ export default function MatchPlayerListing() {
         <div>
           {userIsAdmin ? (
             <>
-              {requested && requested.length !== 0 ? (
+              {playersByStatus.requested &&
+              playersByStatus.requested.length !== 0 ? (
                 <h3 className='title'>Requested</h3>
               ) : null}
-              {requested
-                ? requested.map((player, i) => (
+              {playersByStatus.requested
+                ? playersByStatus.requested.map((player, i) => (
                     <MatchPlayerActions key={i} player={player} />
                   ))
                 : null}

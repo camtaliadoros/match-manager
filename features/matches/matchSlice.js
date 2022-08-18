@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import {
   doc,
   getDoc,
@@ -13,7 +17,9 @@ import {
 import { db } from '../../firebase/clientApp';
 
 const initialState = {
-  data: {},
+  data: {
+    players: [],
+  },
   isLoading: false,
   failedToLoad: false,
 };
@@ -293,8 +299,47 @@ const matchSlice = createSlice({
 });
 
 export const {} = matchSlice.actions;
-export const selectCurrentMatch = (state) => state.match.data;
-export const selectMatchPlayers = (state) => state.match.data.players;
 export const selectMatchIsLoading = (state) => state.match.isLoading;
+export const selectCurrentMatch = (state) => state.match.data;
+
+export const selectMatchPlayers = createSelector(
+  selectCurrentMatch,
+  (match) => {
+    return match.players;
+  }
+);
+
+export const selectMatchPlayersByStatus = createSelector(
+  selectMatchPlayers,
+  (matchPlayers) => {
+    const playerStatus = {
+      playing: [],
+      notPlaying: [],
+      waitlist: [],
+      requested: [],
+      invited: [],
+    };
+
+    for (const player of matchPlayers) {
+      if (player.playerStatus === 'playing') {
+        playing.push(player);
+      }
+      if (player.playerStatus === 'notPlaying') {
+        notPlaying.push(player);
+      }
+      if (player.playerStatus === 'waitlist') {
+        waitlist.push(player);
+      }
+      if (player.playerStatus === 'requested') {
+        requested.push(player);
+      }
+      if (player.playerStatus === 'invited') {
+        invited.push(player);
+      }
+    }
+
+    return playerStatus;
+  }
+);
 
 export default matchSlice.reducer;

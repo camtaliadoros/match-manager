@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentMatch,
   selectMatchPlayers,
+  selectMatchPlayersByStatus,
   updatePlayerMatchStatus,
 } from '../../features/matches/matchSlice';
 import { selectCurrentUser, setUser } from '../../features/users/userSlice';
 
 export default function MatchPlayerStatus() {
   const currentUser = useSelector(selectCurrentUser);
-  const matchPlayers = useSelector(selectMatchPlayers);
+  const matchPlayersData = useSelector(selectMatchPlayers);
   const currentMatch = useSelector(selectCurrentMatch);
+  const matchPlayersStatus = useSelector(selectMatchPlayersByStatus);
 
   const dispatch = useDispatch();
 
@@ -20,65 +22,30 @@ export default function MatchPlayerStatus() {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (matchPlayers) {
-      const playing = matchPlayers.filter(
-        (player) => player.playerStatus === 'playing'
-      );
-      const notPlaying = matchPlayers.filter(
-        (player) => player.playerStatus === 'notPlaying'
-      );
-      const waitlist = matchPlayers.filter(
-        (player) => player.playerStatus === 'waitlist'
-      );
-      const requested = matchPlayers.filter(
-        (player) => player.playerStatus === 'requested'
-      );
-      const invited = matchPlayers.filter(
-        (player) => player.playerStatus === 'invited'
-      );
-      if (
-        playing.includes((player) => {
-          player.playerId === currentUser.id;
-        })
-      ) {
+    if (matchPlayersData) {
+      if (matchPlayersStatus.playing.includes(currentUser.id)) {
         setUserStatus('playing');
         setstatusTitle(`You're in!`);
-      } else if (
-        notPlaying.includes((player) => {
-          player.playerId === currentUser.id;
-        })
-      ) {
+      } else if (matchPlayersStatus.notPlaying.includes(currentUser.id)) {
         setUserStatus('notPlaying');
         setstatusTitle(`You're out!`);
-      } else if (
-        waitlist.includes((player) => {
-          player.playerId === currentUser.id;
-        })
-      ) {
+      } else if (matchPlayersStatus.waitlist.includes(currentUser.id)) {
         setUserStatus('waitlist');
         setstatusTitle('On waitlist');
-      } else if (
-        requested.includes((player) => {
-          player.playerId === currentUser.id;
-        })
-      ) {
+      } else if (matchPlayersStatus.requested.includes(currentUser.id)) {
         setUserStatus('requested');
         setstatusTitle('Request pending');
-      } else if (
-        invited.includes((player) => {
-          player.playerId === currentUser.id;
-        })
-      ) {
+      } else if (matchPlayersStatus.invited.includes(currentUser.id)) {
         setUserStatus('invited');
       }
 
-      if (playing.length >= currentMatch.numOfPlayers) {
+      if (matchPlayersStatus.playing.length >= currentMatch.numOfPlayers) {
         setActionButtonTitle('WL');
       } else {
         setActionButtonTitle('IN');
       }
     }
-  }, [matchPlayers]);
+  }, [matchPlayersData]);
 
   const handleEditClick = () => {
     setIsEditing(true);
