@@ -319,22 +319,9 @@ export const selectMatchPlayersByStatus = createSelector(
       requested: [],
       invited: [],
     };
-
-    for (const player of matchPlayers) {
-      if (player.playerStatus === 'playing') {
-        playing.push(player);
-      }
-      if (player.playerStatus === 'notPlaying') {
-        notPlaying.push(player);
-      }
-      if (player.playerStatus === 'waitlist') {
-        waitlist.push(player);
-      }
-      if (player.playerStatus === 'requested') {
-        requested.push(player);
-      }
-      if (player.playerStatus === 'invited') {
-        invited.push(player);
+    if (matchPlayers) {
+      for (const player of matchPlayers) {
+        playerStatus[player.playerStatus].push(player);
       }
     }
 

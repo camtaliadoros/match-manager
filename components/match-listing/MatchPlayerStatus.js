@@ -3,47 +3,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentMatch,
   selectMatchPlayers,
-  selectMatchPlayersByStatus,
   updatePlayerMatchStatus,
 } from '../../features/matches/matchSlice';
-import { selectCurrentUser, setUser } from '../../features/users/userSlice';
+import { selectCurrentUser } from '../../features/users/userSlice';
 
 export default function MatchPlayerStatus() {
   const currentUser = useSelector(selectCurrentUser);
   const matchPlayersData = useSelector(selectMatchPlayers);
   const currentMatch = useSelector(selectCurrentMatch);
-  const matchPlayersStatus = useSelector(selectMatchPlayersByStatus);
+
+  console.log(matchPlayersData);
 
   const dispatch = useDispatch();
 
   const [userStatus, setUserStatus] = useState();
-  const [statusTitle, setstatusTitle] = useState();
   const [actionButtonTitle, setActionButtonTitle] = useState();
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (matchPlayersData) {
-      if (matchPlayersStatus.playing.includes(currentUser.id)) {
-        setUserStatus('playing');
-        setstatusTitle(`You're in!`);
-      } else if (matchPlayersStatus.notPlaying.includes(currentUser.id)) {
-        setUserStatus('notPlaying');
-        setstatusTitle(`You're out!`);
-      } else if (matchPlayersStatus.waitlist.includes(currentUser.id)) {
-        setUserStatus('waitlist');
-        setstatusTitle('On waitlist');
-      } else if (matchPlayersStatus.requested.includes(currentUser.id)) {
-        setUserStatus('requested');
-        setstatusTitle('Request pending');
-      } else if (matchPlayersStatus.invited.includes(currentUser.id)) {
-        setUserStatus('invited');
-      }
-
-      if (matchPlayersStatus.playing.length >= currentMatch.numOfPlayers) {
-        setActionButtonTitle('WL');
-      } else {
-        setActionButtonTitle('IN');
-      }
+    if (matchPlayersData?.length) {
+      const player = matchPlayersData.find(
+        (p) => p.playerId === currentUser.id
+      );
+      setUserStatus(player.playerStatus);
     }
   }, [matchPlayersData]);
 
@@ -111,7 +93,7 @@ export default function MatchPlayerStatus() {
   } else {
     return (
       <>
-        <p>{statusTitle}</p>
+        <p>{userStatus === 'playing' && `You're in!`}</p>
         <button type='button' onClick={handleEditClick}>
           edit
         </button>
