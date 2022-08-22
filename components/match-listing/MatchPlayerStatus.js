@@ -2,6 +2,7 @@ import { faCircleXmark, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectGroup } from '../../features/group/groupSlice';
 import {
   addPlayer,
   removeMatchPlayer,
@@ -17,6 +18,7 @@ export default function MatchPlayerStatus() {
   const matchPlayersData = useSelector(selectMatchPlayers);
   const currentMatch = useSelector(selectCurrentMatch);
   const matchPlayersByStatus = useSelector(selectMatchPlayersByStatus);
+  const currentGroup = useSelector(selectGroup);
 
   const dispatch = useDispatch();
 

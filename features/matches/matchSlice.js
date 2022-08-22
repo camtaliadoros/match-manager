@@ -147,9 +147,6 @@ export const updatePlayerMatchStatus = createAsyncThunk(
     const matchId = dataToUpdate.matchId;
     const newStatus = dataToUpdate.newStatus;
 
-    if (newStatus === 'requested') {
-    }
-
     const userMatchRef = doc(db, 'user_matches', `${playerId}_${matchId}`);
     await updateDoc(userMatchRef, {
       playerStatus: newStatus,
