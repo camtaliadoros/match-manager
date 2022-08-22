@@ -135,7 +135,7 @@ h4 {
 }
 
 p {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
 }
 
@@ -204,6 +204,8 @@ button {
   font-size: 12px;
   transition: filter 0.5s;
   display: flex;
+  align-items: center;
+  justify-content: center;
 
   &.linkStyle {
     align-self: flex-start;

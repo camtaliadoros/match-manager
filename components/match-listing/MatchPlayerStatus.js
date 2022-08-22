@@ -1,3 +1,5 @@
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -7,7 +9,7 @@ import {
   updatePlayerMatchStatus,
 } from '../../features/matches/matchSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
-
+import classes from './match.module.scss';
 export default function MatchPlayerStatus() {
   const currentUser = useSelector(selectCurrentUser);
   const matchPlayersData = useSelector(selectMatchPlayers);
@@ -93,11 +95,14 @@ export default function MatchPlayerStatus() {
 
   if (userStatus === 'invited' || isEditing === true) {
     return (
-      <>
+      <div className={classes.playerStatusWrapper}>
         <button
           type='button'
           onClick={handleInClick}
           disabled={userStatus === 'playing' || userStatus === 'waitlist'}
+          className={`${classes.playerStatusButton} ${
+            actionButtonTitle === 'WL' ? classes.waitlistBtn : null
+          }`}
         >
           {actionButtonTitle}
         </button>
@@ -105,22 +110,23 @@ export default function MatchPlayerStatus() {
           type='button'
           onClick={handleOutClick}
           disabled={userStatus === 'notPlaying'}
+          className={`${classes.playerStatusButton} ${classes.outBtn}`}
         >
           OUT
         </button>
-      </>
+      </div>
     );
   } else {
     return (
-      <>
+      <div className={classes.playerStatusWrapper}>
         {userStatus === 'playing' && <p>You're in!</p>}
         {userStatus === 'notPlaying' && <p>You're out!</p>}
         {userStatus === 'waitlist' && <p>On waitlist</p>}
         {userStatus === 'requested' && <p>Request pending</p>}
-        <button type='button' onClick={handleEditClick}>
-          edit
+        <button type='button' className='link-style' onClick={handleEditClick}>
+          <FontAwesomeIcon icon={faPencil} className='icon' />
         </button>
-      </>
+      </div>
     );
   }
 }

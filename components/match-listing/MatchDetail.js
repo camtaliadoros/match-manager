@@ -132,18 +132,20 @@ export default function MatchDetail() {
   return (
     <>
       <form onSubmit={handleClick}>
-        {isEditing ? (
-          <input
-            type='text'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder='Match Title'
-            required
-          />
-        ) : (
-          <h2>{title}</h2>
-        )}
-        <MatchPlayerStatus />
+        <div className={classes.matchDetailHeader}>
+          {isEditing ? (
+            <input
+              type='text'
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder='Match Title'
+              required
+            />
+          ) : (
+            <h2>{title}</h2>
+          )}
+          {!isEditing && <MatchPlayerStatus />}
+        </div>
         <div className={classes.matchDataContainer}>
           <div className={classes.matchDataRow}>
             <FontAwesomeIcon icon={faCalendar} className='data-icon' />
