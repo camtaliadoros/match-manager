@@ -11,6 +11,7 @@ import {
   selectCurrentMatch,
   selectMatchIsLoading,
 } from '../../features/matches/matchSlice';
+import NotFound from './../../components/shared/NotFound';
 
 export default function MatchDetailPage() {
   const router = useRouter();
@@ -36,15 +37,18 @@ export default function MatchDetailPage() {
   }
 
   if (!currentMatch.id) {
-    return <p>Match not found</p>;
-  } else {
     return (
       <Layout>
-        <div className='details-wrapper'>
-          <MatchDetail />
-          <MatchPlayerListing />
-        </div>
+        <NotFound type='match' />
       </Layout>
     );
   }
+  return (
+    <Layout>
+      <div className='details-wrapper'>
+        <MatchDetail />
+        <MatchPlayerListing />
+      </div>
+    </Layout>
+  );
 }
