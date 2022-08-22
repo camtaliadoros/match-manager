@@ -145,8 +145,10 @@ export const updatePlayerMatchStatus = createAsyncThunk(
   async (dataToUpdate) => {
     const playerId = dataToUpdate.playerId;
     const matchId = dataToUpdate.matchId;
-    const currentStatus = dataToUpdate.currentStatus;
     const newStatus = dataToUpdate.newStatus;
+
+    if (newStatus === 'requested') {
+    }
 
     const userMatchRef = doc(db, 'user_matches', `${playerId}_${matchId}`);
     await updateDoc(userMatchRef, {
@@ -154,6 +156,23 @@ export const updatePlayerMatchStatus = createAsyncThunk(
     });
 
     return dataToUpdate;
+  }
+);
+
+export const addPlayer = createAsyncThunk(
+  'match/addPlayer',
+  async (playerData) => {
+    await setDoc(
+      doc(db, 'user_matches', `${playerData.playerId}_${playerData.matchId}`),
+      {
+        matchId: playerData.matchId,
+        playerId: playerData.playerId,
+        paymentStatus: playerData.paymentStatus,
+        playerStatus: playerData.playerStatus,
+      }
+    );
+
+    return playerData;
   }
 );
 
@@ -251,27 +270,9 @@ const matchSlice = createSlice({
       state.failedToLoad = true;
     });
     builder.addCase(removeMatchPlayer.fulfilled, (state, action) => {
-      const playerPlaying = state.data.players.playing.findIndex(
-        (player) => player.playerId === action.payload.playerId
-      );
-      if (playerPlaying) {
-        state.data.players.playing.splice(playerPlaying, 1);
-      }
-
-      const playerWaitlist = state.data.players.waitlist.findIndex(
-        (player) => player.playerId === action.payload.playerId
-      );
-      if (playerWaitlist) {
-        state.data.players.waitlist.splice(playerWaitlist, 1);
-      }
-
-      const playerRequested = state.data.players.requested.findIndex(
-        (player) => player.playerId === action.payload.playerId
-      );
-      if (playerRequested) {
-        state.data.players.requested.splice(playerRequested, 1);
-      }
-
+      state.data.players = state.data.players.filter((p) => {
+        return p.playerId !== action.payload.playerId;
+      });
       state.isLoading = false;
       state.failedToLoad = false;
     });
@@ -296,6 +297,19 @@ const matchSlice = createSlice({
       state.failedToLoad = false;
     });
     builder.addCase(updatePlayerMatchStatus.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(addPlayer.fulfilled, (state, action) => {
+      state.data.players.push(action.payload);
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(addPlayer.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(addPlayer.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });

@@ -1,8 +1,10 @@
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  addPlayer,
+  removeMatchPlayer,
   selectCurrentMatch,
   selectMatchPlayers,
   selectMatchPlayersByStatus,
@@ -27,7 +29,11 @@ export default function MatchPlayerStatus() {
       const player = matchPlayersData.find(
         (p) => p.playerId === currentUser.id
       );
-      setUserStatus(player.playerStatus);
+      if (player) {
+        setUserStatus(player.playerStatus);
+      } else {
+        setUserStatus('nonMember');
+      }
     }
   }, [matchPlayersData]);
 
@@ -47,7 +53,6 @@ export default function MatchPlayerStatus() {
     const dataToUpdate = {
       playerId: currentUser.id,
       matchId: currentMatch.id,
-      currentStatus: userStatus,
     };
     if (actionButtonTitle === 'WL') {
       dispatch(
@@ -72,7 +77,6 @@ export default function MatchPlayerStatus() {
       updatePlayerMatchStatus({
         playerId: currentUser.id,
         matchId: currentMatch.id,
-        currentStatus: userStatus,
         newStatus: 'notPlaying',
       })
     );
@@ -85,12 +89,31 @@ export default function MatchPlayerStatus() {
         updatePlayerMatchStatus({
           playerId: matchPlayersByStatus.waitlist[0].playerId,
           matchId: currentMatch.id,
-          currentStatus: 'waitlist',
           newStatus: 'playing',
         })
       );
     }
     setIsEditing(false);
+  };
+
+  const handleRequestClick = () => {
+    dispatch(
+      addPlayer({
+        playerId: currentUser.id,
+        matchId: currentMatch.id,
+        playerStatus: 'requested',
+        paymentStatus: false,
+      })
+    );
+  };
+
+  const handleRemoveClick = () => {
+    dispatch(
+      removeMatchPlayer({
+        matchId: currentMatch.id,
+        playerId: currentUser.id,
+      })
+    );
   };
 
   if (userStatus === 'invited' || isEditing === true) {
@@ -116,6 +139,16 @@ export default function MatchPlayerStatus() {
         </button>
       </div>
     );
+  } else if (userStatus === 'nonMember') {
+    return (
+      <button
+        type='button'
+        onClick={handleRequestClick}
+        disabled={userStatus === 'requested'}
+      >
+        Request to play
+      </button>
+    );
   } else {
     return (
       <div className={classes.playerStatusWrapper}>
@@ -123,9 +156,24 @@ export default function MatchPlayerStatus() {
         {userStatus === 'notPlaying' && <p>You're out!</p>}
         {userStatus === 'waitlist' && <p>On waitlist</p>}
         {userStatus === 'requested' && <p>Request pending</p>}
-        <button type='button' className='link-style' onClick={handleEditClick}>
-          <FontAwesomeIcon icon={faPencil} className='icon' />
-        </button>
+        {userStatus === 'requested' && (
+          <button
+            type='button'
+            className='link-style'
+            onClick={handleRemoveClick}
+          >
+            <FontAwesomeIcon icon={faCircleXmark} className='icon' />
+          </button>
+        )}
+        {userStatus !== 'requested' && (
+          <button
+            type='button'
+            className='link-style'
+            onClick={handleEditClick}
+          >
+            <FontAwesomeIcon icon={faPencil} className='icon' />
+          </button>
+        )}
       </div>
     );
   }
