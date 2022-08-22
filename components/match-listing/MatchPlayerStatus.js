@@ -30,7 +30,7 @@ export default function MatchPlayerStatus() {
   }, [matchPlayersData]);
 
   useEffect(() => {
-    if (matchPlayersByStatus?.playing.length > currentMatch.numOfPlayers) {
+    if (matchPlayersByStatus?.playing.length >= currentMatch.numOfPlayers) {
       setActionButtonTitle('WL');
     } else {
       setActionButtonTitle('IN');
@@ -62,7 +62,6 @@ export default function MatchPlayerStatus() {
         })
       );
     }
-    // setUserStatus('playing');
     setIsEditing(false);
   };
 
@@ -75,7 +74,6 @@ export default function MatchPlayerStatus() {
         newStatus: 'notPlaying',
       })
     );
-    // setUserStatus('notPlaying');
     setIsEditing(false);
   };
 
