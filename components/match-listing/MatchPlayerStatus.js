@@ -74,6 +74,20 @@ export default function MatchPlayerStatus() {
         newStatus: 'notPlaying',
       })
     );
+    if (
+      matchPlayersByStatus?.playing.length <= currentMatch.numOfPlayers &&
+      matchPlayersByStatus?.waitlist.length > 0 &&
+      userStatus === 'playing'
+    ) {
+      dispatch(
+        updatePlayerMatchStatus({
+          playerId: matchPlayersByStatus.waitlist[0].playerId,
+          matchId: currentMatch.id,
+          currentStatus: 'waitlist',
+          newStatus: 'playing',
+        })
+      );
+    }
     setIsEditing(false);
   };
 
@@ -83,7 +97,7 @@ export default function MatchPlayerStatus() {
         <button
           type='button'
           onClick={handleInClick}
-          disabled={userStatus === 'playing'}
+          disabled={userStatus === 'playing' || userStatus === 'waitlist'}
         >
           {actionButtonTitle}
         </button>
