@@ -162,7 +162,10 @@ export default function MatchPlayerStatus() {
             className='link-style'
             onClick={handleRemoveClick}
           >
-            <FontAwesomeIcon icon={faCircleXmark} className='icon' />
+            <FontAwesomeIcon
+              icon={faCircleXmark}
+              className={`icon ${classes.deleteBtn}`}
+            />
           </button>
         )}
         {userStatus !== 'requested' && (
