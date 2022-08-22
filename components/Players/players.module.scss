@@ -72,6 +72,16 @@ input[checked] {
   color: $green75;
 }
 
+.playerStatusButton {
+  height: $spacing-md;
+  width: $spacing-md;
+  display: flex;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+}
+
 // .coreButton {
 //   background-color: $green25;
 //   color: $dark-green;

@@ -79,7 +79,10 @@ export default function MatchPlayerActions({ player }) {
             </button>
           )}
           {playerStatus === 'requested' && (
-            <button onClick={handleAcceptClick}>
+            <button
+              onClick={handleAcceptClick}
+              className={classes.playerStatusButton}
+            >
               <FontAwesomeIcon icon={faCheck} />
             </button>
           )}
