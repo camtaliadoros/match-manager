@@ -45,7 +45,7 @@ export default function GroupDetail() {
     if (currentPath && currentGroup.path !== currentPath) {
       dispatch(getCurrentGroup(currentPath));
     }
-  }, [currentPath][currentGroup.path]);
+  }, [currentPath]);
 
   useEffect(() => {
     if (currentGroup.id) {
@@ -81,7 +81,7 @@ export default function GroupDetail() {
     );
   }
 
-  if (!currentGroup.path) {
+  if (!currentGroup.id) {
     return (
       <Layout>
         <NotFound type='group' />

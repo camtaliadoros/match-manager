@@ -8,6 +8,7 @@ import LoadingState from '../../components/shared/LoadingState';
 import {
   getCurrentMatch,
   getMatchPlayers,
+  selectCurrentMatch,
   selectMatchIsLoading,
 } from '../../features/matches/matchSlice';
 
@@ -17,6 +18,7 @@ export default function MatchDetailPage() {
 
   const matchId = router.query.matchDetail;
   const isLoading = useSelector(selectMatchIsLoading);
+  const currentMatch = useSelector(selectCurrentMatch);
 
   useEffect(() => {
     if (matchId) {
@@ -33,12 +35,16 @@ export default function MatchDetailPage() {
     );
   }
 
-  return (
-    <Layout>
-      <div className='details-wrapper'>
-        <MatchDetail />
-        <MatchPlayerListing />
-      </div>
-    </Layout>
-  );
+  if (!currentMatch.id) {
+    return <p>Match not found</p>;
+  } else {
+    return (
+      <Layout>
+        <div className='details-wrapper'>
+          <MatchDetail />
+          <MatchPlayerListing />
+        </div>
+      </Layout>
+    );
+  }
 }
