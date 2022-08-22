@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentMatch,
+  selectMatchIsLoading,
   selectMatchPlayers,
+  selectMatchPlayersByStatus,
   updatePlayerMatchStatus,
 } from '../../features/matches/matchSlice';
 import { selectCurrentUser } from '../../features/users/userSlice';
@@ -11,8 +13,8 @@ export default function MatchPlayerStatus() {
   const currentUser = useSelector(selectCurrentUser);
   const matchPlayersData = useSelector(selectMatchPlayers);
   const currentMatch = useSelector(selectCurrentMatch);
-
-  console.log(matchPlayersData);
+  const matchPlayersByStatus = useSelector(selectMatchPlayersByStatus);
+  const matchIsLoading = useSelector(selectMatchIsLoading);
 
   const dispatch = useDispatch();
 
@@ -27,7 +29,15 @@ export default function MatchPlayerStatus() {
       );
       setUserStatus(player.playerStatus);
     }
-  }, [matchPlayersData]);
+  }, [matchPlayersData, matchIsLoading]);
+
+  useEffect(() => {
+    if (matchPlayersByStatus?.playing.length > currentMatch.numOfPlayers) {
+      setActionButtonTitle('WL');
+    } else {
+      setActionButtonTitle('IN');
+    }
+  });
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -50,7 +60,7 @@ export default function MatchPlayerStatus() {
       dispatch(
         updatePlayerMatchStatus({
           ...dataToUpdate,
-          newStatus: 'waitlist',
+          newStatus: 'playing',
         })
       );
     }

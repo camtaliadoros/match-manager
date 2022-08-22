@@ -284,6 +284,10 @@ const matchSlice = createSlice({
       state.failedToLoad = true;
     });
     builder.addCase(updatePlayerMatchStatus.fulfilled, (state, action) => {
+      const player = state.data.players.find(
+        (p) => p.playerId === action.payload.playerId
+      );
+      player.playerStatus = action.payload.newStatus;
       state.isLoading = false;
       state.failedToLoad = false;
     });
