@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentMatch,
-  selectMatchIsLoading,
   selectMatchPlayers,
   selectMatchPlayersByStatus,
   updatePlayerMatchStatus,
@@ -14,7 +13,6 @@ export default function MatchPlayerStatus() {
   const matchPlayersData = useSelector(selectMatchPlayers);
   const currentMatch = useSelector(selectCurrentMatch);
   const matchPlayersByStatus = useSelector(selectMatchPlayersByStatus);
-  const matchIsLoading = useSelector(selectMatchIsLoading);
 
   const dispatch = useDispatch();
 
@@ -29,7 +27,7 @@ export default function MatchPlayerStatus() {
       );
       setUserStatus(player.playerStatus);
     }
-  }, [matchPlayersData, matchIsLoading]);
+  }, [matchPlayersData]);
 
   useEffect(() => {
     if (matchPlayersByStatus?.playing.length > currentMatch.numOfPlayers) {
@@ -103,7 +101,10 @@ export default function MatchPlayerStatus() {
   } else {
     return (
       <>
-        <p>{userStatus === 'playing' && `You're in!`}</p>
+        {userStatus === 'playing' && <p>You're in!</p>}
+        {userStatus === 'notPlaying' && <p>You're out!</p>}
+        {userStatus === 'waitlist' && <p>On waitlist</p>}
+        {userStatus === 'requested' && <p>Request pending</p>}
         <button type='button' onClick={handleEditClick}>
           edit
         </button>
