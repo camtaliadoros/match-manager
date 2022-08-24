@@ -173,6 +173,24 @@ export const addPlayer = createAsyncThunk(
   }
 );
 
+export const deleteMatch = createAsyncThunk(
+  'match/deleteMatch',
+  async (matchId) => {
+    await deleteDoc(doc(db, 'matches', matchId));
+
+    const q = query(
+      collection(db, 'user_matches'),
+      where('matchId', '==', matchId)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (currentDoc) => {
+      await deleteDoc(doc(db, 'user_matches', currentDoc.id));
+    });
+
+    return matchId;
+  }
+);
+
 const matchSlice = createSlice({
   name: 'match',
   initialState,
@@ -307,6 +325,19 @@ const matchSlice = createSlice({
       state.failedToLoad = false;
     });
     builder.addCase(addPlayer.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(deleteMatch.fulfilled, (state) => {
+      state.data = initialState.data;
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(deleteMatch.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(deleteMatch.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });

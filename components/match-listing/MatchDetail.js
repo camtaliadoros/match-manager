@@ -26,6 +26,7 @@ import {
 } from '../../features/group/groupSlice';
 import {
   createMatch,
+  deleteMatch,
   inviteCorePlayers,
   selectCurrentMatch,
 } from '../../features/matches/matchSlice';
@@ -134,11 +135,22 @@ export default function MatchDetail() {
     setIsEditing(!isEditing);
   };
 
+  const handleDeleteClick = () => {
+    dispatch(deleteMatch(match.id));
+  };
+
   return (
     <>
-      <button type='button' onClick={handleEditMatchClick}>
-        <FontAwesomeIcon icon={faPencil} />
-      </button>
+      {!isEditing && (
+        <button type='button' onClick={handleEditMatchClick}>
+          Edit Match
+        </button>
+      )}
+      {isEditing && (
+        <button type='button' onClick={handleDeleteClick}>
+          Delete Match
+        </button>
+      )}
       <form onSubmit={handleClick}>
         <div className={classes.matchDetailHeader}>
           {isEditing ? (
