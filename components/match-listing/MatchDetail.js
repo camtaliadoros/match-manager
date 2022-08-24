@@ -7,6 +7,7 @@ import {
   faEye,
   faLocationDot,
   faMoneyBill,
+  faPencil,
   faRepeat,
   faShirt,
   faUserGroup,
@@ -129,8 +130,15 @@ export default function MatchDetail() {
     );
   }, [cost, numOfPlayers]);
 
+  const handleEditMatchClick = () => {
+    setIsEditing(!isEditing);
+  };
+
   return (
     <>
+      <button type='button' onClick={handleEditMatchClick}>
+        <FontAwesomeIcon icon={faPencil} />
+      </button>
       <form onSubmit={handleClick}>
         <div className={classes.matchDetailHeader}>
           {isEditing ? (
