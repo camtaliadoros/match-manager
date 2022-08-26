@@ -206,6 +206,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: $spacing-xsm 0;
 
   &.linkStyle {
     align-self: flex-start;
@@ -223,6 +224,10 @@ button {
 
   &.full-width {
     width: 100%;
+  }
+
+  &.red-btn {
+    background-color: $red;
   }
 
   &:hover {

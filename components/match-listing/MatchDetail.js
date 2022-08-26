@@ -146,11 +146,7 @@ export default function MatchDetail() {
           Edit Match
         </button>
       )}
-      {isEditing && (
-        <button type='button' onClick={handleDeleteClick}>
-          Delete Match
-        </button>
-      )}
+
       <form onSubmit={handleClick}>
         <div className={classes.matchDetailHeader}>
           {isEditing ? (
@@ -281,6 +277,11 @@ export default function MatchDetail() {
         </div>
         {isEditing ? <button>SAVE</button> : null}
       </form>
+      {isEditing && match.id ? (
+        <button type='button' onClick={handleDeleteClick} className='red-btn'>
+          Delete Match
+        </button>
+      ) : null}
     </>
   );
 }
