@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function PasswordComparison({ pwd, match, label, required }) {
+export default function PasswordComparison({ setPwd, match, label, required }) {
   const [password, setPassword] = useState('');
   const [passVal, setPassVal] = useState('');
   const [passMatch, setPassMatch] = useState(false);
@@ -11,7 +11,7 @@ export default function PasswordComparison({ pwd, match, label, required }) {
     setPassAlert(!(passMatch || passVal.length === 0));
 
     if (password) {
-      pwd(password);
+      setPwd(password);
     } else {
       setPassVal('');
     }

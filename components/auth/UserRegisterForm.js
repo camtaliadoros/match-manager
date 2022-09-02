@@ -50,7 +50,7 @@ function UserRegister() {
           required
         />
         <PasswordComparison
-          pwd={setPassword}
+          setPwd={setPassword}
           match={setPassMatch}
           label='Password'
           required={true}
