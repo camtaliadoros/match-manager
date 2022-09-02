@@ -194,7 +194,8 @@ p {
 
 /* Buttons */
 
-button {
+button,
+.button-style {
   background-color: #557c50;
   padding: $spacing-xsm 90px;
   border: 0;

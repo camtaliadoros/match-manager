@@ -4,6 +4,7 @@ import Image from 'next/image';
 import classes from './PublicHome.module.scss';
 import AuthNavigation from '../layout/AuthNavigation';
 import Header from '../layout/Header';
+import { useRouter } from 'next/router';
 
 export default function PublicHome() {
   return (
@@ -14,9 +15,10 @@ export default function PublicHome() {
           <div className={`${classes.onboardingText} light-text`}>
             <h1>Match Manager</h1>
             <h4>Take control of your games.</h4>
-            <button className='mobile-hidden'>
-              <Link href='/login'>SIGN UP NOW</Link>
-            </button>
+
+            <Link href='/login'>
+              <a className='mobile-hidden button-style'>SIGN UP NOW</a>
+            </Link>
           </div>
         </div>
         <div className={classes.features}>
