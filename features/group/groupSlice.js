@@ -1,17 +1,15 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { db } from '../../firebase/clientApp';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   collection,
+  deleteDoc,
   doc,
-  getDoc,
   getDocs,
   query,
-  where,
   setDoc,
   updateDoc,
-  deleteDoc,
+  where,
 } from 'firebase/firestore';
-import { useRouter } from 'next/router';
+import { db } from '../../firebase/clientApp';
 
 export const createGroup = createAsyncThunk(
   'group/createGroup',
