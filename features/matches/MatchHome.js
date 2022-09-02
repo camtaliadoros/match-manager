@@ -1,6 +1,19 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import MatchesListing from '../../components/match-listing/MatchesListing';
+import { selectCurrentUser } from '../users/userSlice';
+import { getUserMatches } from './matchesSlice';
 
 export default function MatchHome() {
+  const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getUserMatches(user.id));
+    }
+  }, [user]);
+
   return (
     <>
       <MatchesListing display={1} type='upcomingMatches' />
