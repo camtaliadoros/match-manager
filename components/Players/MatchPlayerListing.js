@@ -6,13 +6,13 @@ import {
   selectMatchPlayersByStatus,
 } from '../../features/matches/matchSlice';
 import { getPlayersData } from '../../features/users/playersSlice';
-import { selectCurrentUser } from '../../features/users/userSlice';
+import { selectCurrentUserDetails } from '../../features/users/userSlice';
 import MatchPlayerActions from './MatchPlayerActions';
 import classes from './players.module.scss';
 
 export default function MatchPlayerListing() {
   const players = useSelector(selectMatchPlayers);
-  const currentUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(selectCurrentUserDetails);
   const userIsAdmin = useSelector(selectUserIsAdmin);
   const matchPlayersByStatus = useSelector(selectMatchPlayersByStatus);
 
@@ -21,15 +21,11 @@ export default function MatchPlayerListing() {
   const [playersToFetch, setPlayersToFetch] = useState([]);
 
   useEffect(() => {
-    if (players) {
-      const playerIds = players.map((player) => {
-        return player.playerId;
-      });
+    const playerIdsToFetch = players
+      .filter((player) => player.playerId !== currentUser.id)
+      .map((player) => player.id);
 
-      setPlayersToFetch(
-        playerIds.filter((player) => player !== currentUser.id)
-      );
-    }
+    setPlayersToFetch(playerIdsToFetch);
   }, [players]);
 
   useEffect(() => {
@@ -63,8 +59,7 @@ export default function MatchPlayerListing() {
         <div>
           {userIsAdmin ? (
             <>
-              {matchPlayersByStatus.requested &&
-              matchPlayersByStatus.requested.length !== 0 ? (
+              {matchPlayersByStatus.requested?.length ? (
                 <h3 className='title'>Requested</h3>
               ) : null}
               {matchPlayersByStatus.requested

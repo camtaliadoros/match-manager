@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import { auth, db } from '../../firebase/clientApp';
 import {
   doc,
@@ -143,10 +147,24 @@ export const userSlice = createSlice({
 });
 export const { updateUserLoggedIn, updateUserEmail, resetUser, setUser } =
   userSlice.actions;
-export const selectLoggedIn = (state) => state.user.status.isLoggedIn;
-export const selectEmailVerified = (state) => state.user.status.isEmailVerified;
+export const selectCurrentUser = (state) => state.user;
+export const selectCurrentUserDetails = createSelector(
+  selectCurrentUser,
+  (user) => user.data
+);
+
 export const userIsLoading = (state) => state.user.isLoading;
-export const selectCurrentUser = (state) => state.user.data;
 export const userFailedToLoad = (state) => state.user.failedToLoad;
 export const userIfFulfilled = (state) => state.user.isFulfilled;
+
+export const selectLoggedIn = createSelector(
+  selectCurrentUser,
+  (user) => user.status.isLoggedIn
+);
+
+export const selectEmailVerified = createSelector(
+  selectCurrentUser,
+  (user) => user.status.isEmailVerified
+);
+
 export default userSlice.reducer;

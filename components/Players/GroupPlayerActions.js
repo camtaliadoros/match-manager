@@ -22,16 +22,14 @@ export default function GroupPlayerActions({ id, status, adminView }) {
 
   const handleStatusChange = () => {
     const groupId = group.id;
-    if (playerStatus === 'reserve') {
-      dispatch(
-        updatePlayerStatus({ playerId: id, groupId, playerStatus: 'core' })
-      );
-    }
-    if (playerStatus === 'core') {
-      dispatch(
-        updatePlayerStatus({ playerId: id, groupId, playerStatus: 'reserve' })
-      );
-    }
+
+    dispatch(
+      updatePlayerStatus({
+        playerId: id,
+        groupId,
+        playerStatus: playerStatus === 'reserve' ? 'core' : 'reserve',
+      })
+    );
   };
 
   const handleRequestChange = () => {
@@ -39,7 +37,6 @@ export default function GroupPlayerActions({ id, status, adminView }) {
     dispatch(
       updatePlayerStatus({ playerId: id, groupId, playerStatus: 'core' })
     );
-    setPlayerStatus('core');
   };
 
   const handleDelete = () => {
@@ -55,10 +52,9 @@ export default function GroupPlayerActions({ id, status, adminView }) {
     return (
       <div className={classes.playerRow}>
         <PlayerDetails id={id} />
-        <div>
-          {status === 'reserve' ? <p>RESERVE</p> : null}
-          {status === 'admin' ? <p>ADMIN</p> : null}
-        </div>
+        {(status === 'reserve' || status === 'admin') && (
+          <div>{status === 'reserve' ? <p>RESERVE</p> : <p>ADMIN</p>}</div>
+        )}
       </div>
     );
   }

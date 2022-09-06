@@ -3,7 +3,7 @@ import { deleteObject, ref, uploadString } from 'firebase/storage';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectCurrentUser,
+  selectCurrentUserDetails,
   updateUserProfile,
   userIsLoading,
 } from '../../features/users/userSlice';
@@ -15,7 +15,7 @@ import LoadingState from '../shared/LoadingState';
 
 export default function UserProfile() {
   const dispatch = useDispatch();
-  const user = useSelector(selectCurrentUser);
+  const user = useSelector(selectCurrentUserDetails);
   const dataIsLoading = useSelector(userIsLoading);
 
   const currentPhoto = user.photo;

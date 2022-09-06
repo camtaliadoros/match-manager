@@ -11,10 +11,10 @@ import {
   selectMatchPlayersByStatus,
   updatePlayerMatchStatus,
 } from '../../features/matches/matchSlice';
-import { selectCurrentUser } from '../../features/users/userSlice';
+import { selectCurrentUserDetails } from '../../features/users/userSlice';
 import classes from './match.module.scss';
 export default function MatchPlayerStatus() {
-  const currentUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(selectCurrentUserDetails);
   const matchPlayersData = useSelector(selectMatchPlayers);
   const currentMatch = useSelector(selectCurrentMatch);
   const matchPlayersByStatus = useSelector(selectMatchPlayersByStatus);
@@ -118,7 +118,7 @@ export default function MatchPlayerStatus() {
     );
   };
 
-  if (userStatus === 'invited' || isEditing === true) {
+  if (userStatus === 'invited' || isEditing) {
     return (
       <div className={classes.playerStatusWrapper}>
         <button

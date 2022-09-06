@@ -30,18 +30,18 @@ import {
   inviteCorePlayers,
   selectCurrentMatch,
 } from '../../features/matches/matchSlice';
-import { selectCurrentUser } from '../../features/users/userSlice';
+import { selectCurrentUserDetails } from '../../features/users/userSlice';
 import classes from './match.module.scss';
 import MatchPlayerStatus from './MatchPlayerStatus';
 
 export default function MatchDetail() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const groupPath = router.query.groupDetail;
+  const currentPath = router.query.groupDetail;
 
   const match = useSelector(selectCurrentMatch);
   const group = useSelector(selectGroup);
-  const currentUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(selectCurrentUserDetails);
 
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
@@ -55,16 +55,16 @@ export default function MatchDetail() {
   const [costPerPlayer, setCostPerPlayer] = useState('');
 
   useEffect(() => {
-    if (router.asPath === `/${groupPath}/create-match`) {
+    if (router.asPath === `/${currentPath}/create-match`) {
       setIsEditing(true);
     }
   }, [router]);
 
   useEffect(() => {
-    if (!group.path && groupPath) {
-      dispatch(getCurrentGroup(groupPath));
+    if (!group.path && currentPath) {
+      dispatch(getCurrentGroup(currentPath));
     }
-  }, [groupPath]);
+  }, [currentPath]);
 
   useEffect(() => {
     if (match.id) {
@@ -117,8 +117,8 @@ export default function MatchDetail() {
     dispatch(createMatch(matchData));
     dispatch(inviteCorePlayers(playerData));
 
-    if (router.asPath === `/${groupPath}/create-match`) {
-      router.push(`/${groupPath}/${matchData.id}`);
+    if (router.asPath === `/${currentPath}/create-match`) {
+      router.push(`/${currentPath}/${matchData.id}`);
     }
   };
 
@@ -192,7 +192,9 @@ export default function MatchDetail() {
           </div>
           <div className={classes.matchDataRow}>
             <FontAwesomeIcon icon={faUserGroup} className='data-icon' />
-            <Link href={groupPath ? `/${groupPath}` : '/'}>{group.name}</Link>
+            <Link href={currentPath ? `/${currentPath}` : '/'}>
+              {group.name}
+            </Link>
           </div>
           <div className={classes.matchDataRow}>
             <FontAwesomeIcon icon={faEye} className='data-icon' />

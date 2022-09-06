@@ -21,7 +21,7 @@ import {
   getGroupMatches,
   selectSortedMatches,
 } from '../../features/matches/matchesSlice';
-import { selectCurrentUser } from '../../features/users/userSlice';
+import { selectCurrentUserDetails } from '../../features/users/userSlice';
 
 export default function GroupDetail() {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export default function GroupDetail() {
 
   const isLoading = useSelector(groupIsLoading);
   const currentGroup = useSelector(selectGroup);
-  const currentUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(selectCurrentUserDetails);
   const groupMatches = useSelector(selectSortedMatches);
 
   const [groupName, setGroupName] = useState(currentGroup.name);

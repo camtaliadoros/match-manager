@@ -4,24 +4,24 @@ import classes from './styles/userProfile.module.scss';
 import { useState } from 'react';
 
 export default function UserContainer() {
-  const [clicked, setClicked] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   return (
     <div>
       <button
-        onClick={() => setClicked(false)}
-        className={(clicked ? '' : 'active') + ' tab'}
+        onClick={() => setIsActive(false)}
+        className={(isActive ? '' : 'active') + ' tab'}
       >
         Profile
       </button>
       <button
-        onClick={() => setClicked(true)}
-        className={(clicked ? 'active' : '') + ' tab'}
+        onClick={() => setIsActive(true)}
+        className={(isActive ? 'active' : '') + ' tab'}
       >
         Settings
       </button>
       <div className={classes.profileCard}>
-        {clicked ? <UserSettings /> : <UserProfile />}
+        {isActive ? <UserSettings /> : <UserProfile />}
       </div>
     </div>
   );

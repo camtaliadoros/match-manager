@@ -1,16 +1,15 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   removeGroupPlayer,
   selectGroup,
   setGroupPlayer,
-  updatePlayerStatus,
 } from '../../features/group/groupSlice';
-import { selectCurrentUser } from '../../features/users/userSlice';
-import { useRouter } from 'next/router';
+import { selectCurrentUserDetails } from '../../features/users/userSlice';
 
 export default function RequestGroupAdmission({ players }) {
-  const currentUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(selectCurrentUserDetails);
   const group = useSelector(selectGroup);
 
   const dispatch = useDispatch();

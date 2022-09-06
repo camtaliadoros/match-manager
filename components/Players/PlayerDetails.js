@@ -4,12 +4,12 @@ import {
   playersIsLoading,
   selectPlayers,
 } from '../../features/users/playersSlice';
-import { selectCurrentUser } from '../../features/users/userSlice';
+import { selectCurrentUserDetails } from '../../features/users/userSlice';
 import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
 import classes from './players.module.scss';
 
 export default function PlayerDetails({ id }) {
-  const currentUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(selectCurrentUserDetails);
   const playersData = useSelector(selectPlayers);
   const isLoading = useSelector(playersIsLoading);
 

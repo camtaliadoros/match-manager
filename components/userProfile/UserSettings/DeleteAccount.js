@@ -32,9 +32,7 @@ export default function DeleteAccount() {
       .then(() => {
         setAccountDeleted(true);
         dispatch(resetUser());
-        setTimeout(() => {
-          router.push('/'), 5000;
-        });
+        router.push('/');
       })
       .catch((error) => {
         if (error.code === AuthErrorCodes.CREDENTIAL_TOO_OLD_LOGIN_AGAIN) {

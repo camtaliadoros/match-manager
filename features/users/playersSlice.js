@@ -56,8 +56,6 @@ const playersSlice = createSlice({
   },
 });
 
-export const {} = playersSlice.actions;
-
 export const playersIsLoading = (state) => state.players.isLoading;
 export const playersFailedToLoad = (state) => state.players.failedToLoad;
 export const selectPlayers = (state) => state.players.data;

@@ -2,7 +2,7 @@ import { updateEmail } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { auth } from '../../../firebase/clientApp';
 import {
-  selectCurrentUser,
+  selectCurrentUserDetails,
   updateUserEmail,
 } from '../../../features/users/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,7 +18,7 @@ export default function ChangeEmail() {
   const [needsReauth, setNeedsReauth] = useState();
   const [isAuth, setIsAuth] = useState();
 
-  const user = useSelector(selectCurrentUser);
+  const user = useSelector(selectCurrentUserDetails);
   const currentEmail = user.emailAddress;
 
   const dispatch = useDispatch();

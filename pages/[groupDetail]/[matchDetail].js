@@ -6,8 +6,7 @@ import MatchDetail from '../../components/match-listing/MatchDetail';
 import MatchPlayerListing from '../../components/Players/MatchPlayerListing';
 import LoadingState from '../../components/shared/LoadingState';
 import {
-  getCurrentMatch,
-  getMatchPlayers,
+  getMatchDetails,
   selectCurrentMatch,
   selectMatchIsLoading,
 } from '../../features/matches/matchSlice';
@@ -23,8 +22,7 @@ export default function MatchDetailPage() {
 
   useEffect(() => {
     if (matchId) {
-      dispatch(getCurrentMatch(matchId));
-      dispatch(getMatchPlayers(matchId));
+      dispatch(getMatchDetails(matchId));
     }
   }, [router]);
 

@@ -1,17 +1,12 @@
-import GroupPlayerActions from './GroupPlayerActions';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPlayersData } from '../../features/users/playersSlice';
-import { useEffect, useState } from 'react';
-import { selectCurrentUser } from '../../features/users/userSlice';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
-import classes from './players.module.scss';
+import { selectCurrentUserDetails } from '../../features/users/userSlice';
+import GroupPlayerActions from './GroupPlayerActions';
 
 export default function GroupPlayerListing({ players }) {
   const dispatch = useDispatch();
-  const currentUser = useSelector(selectCurrentUser);
-
-  const [isEditing, setIsEditing] = useState(false);
+  const currentUser = useSelector(selectCurrentUserDetails);
 
   const [corePlayers, setCorePlayers] = useState(players.core);
   const [reservePlayers, setReservePlayers] = useState(players.reserve);
@@ -43,15 +38,9 @@ export default function GroupPlayerListing({ players }) {
     }
   }, [playersToFetch.length]);
 
-  const handleClick = () => {
-    setIsEditing(false);
-  };
-
   return (
     <>
-      <div className={classes.titleContainer}>
-        <h3 className='title'>Players</h3>
-      </div>
+      <h3 className='title'>Players</h3>
 
       {adminPlayers.map((playerId, i) => (
         <GroupPlayerActions
@@ -79,23 +68,22 @@ export default function GroupPlayerListing({ players }) {
         />
       ))}
 
-      {isAdmin ? (
+      {isAdmin && pendingPlayers.length && (
         <>
-          {pendingPlayers.length > 0 ? (
-            <div>
-              <h3 className='title'>Requested to join</h3>
-              {pendingPlayers.map((playerId, i) => (
-                <GroupPlayerActions
-                  key={i}
-                  id={playerId}
-                  status='requested'
-                  adminView={isAdmin}
-                />
-              ))}
-            </div>
-          ) : null}
+          <div>
+            <h3 className='title'>Requested to join</h3>
+            {pendingPlayers.map((playerId, i) => (
+              <GroupPlayerActions
+                key={i}
+                id={playerId}
+                status='requested'
+                adminView={isAdmin}
+              />
+            ))}
+          </div>
+          )
         </>
-      ) : null}
+      )}
     </>
   );
 }

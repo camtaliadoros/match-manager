@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MatchesListing from '../../components/match-listing/MatchesListing';
-import { selectCurrentUser } from '../users/userSlice';
+import { selectCurrentUserDetails } from '../users/userSlice';
 import { getUserMatches } from './matchesSlice';
 
 export default function MatchHome() {
   const dispatch = useDispatch();
-  const user = useSelector(selectCurrentUser);
+  const user = useSelector(selectCurrentUserDetails);
 
   useEffect(() => {
     if (user) {

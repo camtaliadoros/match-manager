@@ -24,10 +24,17 @@ const initialState = {
   failedToLoad: false,
 };
 
+export const getMatchDetails = (payload) => {
+  return (dispatch) => {
+    dispatch(getCurrentMatch(payload));
+    dispatch(getMatchPlayers(payload));
+  };
+};
+
 export const createMatch = createAsyncThunk(
   'match/createMatch',
   async (matchData) => {
-    const docRef = await setDoc(doc(db, 'matches', matchData.id), {
+    await setDoc(doc(db, 'matches', matchData.id), {
       id: matchData.id,
       title: matchData.title,
       timestamp: matchData.timestamp,
@@ -344,7 +351,6 @@ const matchSlice = createSlice({
   },
 });
 
-export const {} = matchSlice.actions;
 export const selectMatchIsLoading = (state) => state.match.isLoading;
 export const selectCurrentMatch = (state) => state.match.data;
 
@@ -367,6 +373,7 @@ export const selectMatchPlayersByStatus = createSelector(
     };
     if (matchPlayers) {
       for (const player of matchPlayers) {
+        // add each player to playerStatus object by status
         playerStatus[player.playerStatus].push(player);
       }
     }

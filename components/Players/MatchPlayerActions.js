@@ -10,7 +10,6 @@ import {
   togglePaymentStatus,
   updatePlayerMatchStatus,
 } from '../../features/matches/matchSlice';
-import { selectCurrentUser } from '../../features/users/userSlice';
 import PlayerDetails from './PlayerDetails';
 import classes from './players.module.scss';
 
