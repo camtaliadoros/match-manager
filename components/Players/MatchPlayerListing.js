@@ -21,11 +21,13 @@ export default function MatchPlayerListing() {
   const [playersToFetch, setPlayersToFetch] = useState([]);
 
   useEffect(() => {
-    const playerIdsToFetch = players
-      .filter((player) => player.playerId !== currentUser.id)
-      .map((player) => player.id);
+    if (players) {
+      const playerIdsToFetch = players
+        .filter((player) => player.playerId !== currentUser.id)
+        .map((player) => player.playerId);
 
-    setPlayersToFetch(playerIdsToFetch);
+      setPlayersToFetch(playerIdsToFetch);
+    }
   }, [players]);
 
   useEffect(() => {

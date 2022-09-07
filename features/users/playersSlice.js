@@ -8,18 +8,19 @@ export const getPlayersData = createAsyncThunk(
     const playersData = {};
     let remainingPlayers = playerIds;
 
+    //Iterates through remaining players array and isolates max 10 players
     while (remainingPlayers.length > 0) {
       const playersToFetch = remainingPlayers.slice(0, 10);
-
+      // Fetches data fot 10 players and adds to playersData obj by ID
       const playersRef = collection(db, 'users');
       const q = query(playersRef, where('id', 'in', playersToFetch));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const userId = data.id;
-        playersData[userId] = data;
+        const playerId = data.id;
+        playersData[playerId] = data;
       });
-
+      // Filters players for which data has already been fetched
       remainingPlayers = remainingPlayers.filter((id) => {
         return !playersToFetch.includes(id);
       });

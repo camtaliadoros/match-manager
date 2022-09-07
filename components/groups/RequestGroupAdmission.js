@@ -4,38 +4,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   removeGroupPlayer,
   selectGroup,
-  setGroupPlayer,
+  selectGroupPlayers,
+  selectGroupPlayersByStatus,
+  addGroupPlayer,
 } from '../../features/group/groupSlice';
 import { selectCurrentUserDetails } from '../../features/users/userSlice';
 
-export default function RequestGroupAdmission({ players }) {
+export default function RequestGroupAdmission() {
   const currentUser = useSelector(selectCurrentUserDetails);
   const group = useSelector(selectGroup);
+  const groupPlayers = useSelector(selectGroupPlayers);
+  const groupPlayersByStatus = useSelector(selectGroupPlayersByStatus);
 
   const dispatch = useDispatch();
   const router = useRouter();
   let currentPath = router.query.groupDetail;
 
-  const [isJoined, setIsJoined] = useState();
   const [isRequested, setIsRequested] = useState();
 
-  const allPlayers = players.core.concat(
-    players.reserve,
-    players.admin,
-    players.requested
-  );
-
   useEffect(() => {
-    setIsJoined(allPlayers.includes(currentUser.id));
-    setIsRequested(players.requested.includes(currentUser.id));
-  }, [players.requested, allPlayers]);
+    setIsRequested(groupPlayersByStatus.requested.includes(currentUser.id));
+  }, [groupPlayersByStatus.requested.length]);
 
   const handleClick = () => {
     dispatch(
-      setGroupPlayer({
-        userId: currentUser.id,
+      addGroupPlayer({
+        playerId: currentUser.id,
         groupId: group.id,
-        userStatus: 'requested',
+        playerStatus: 'requested',
       })
     );
   };
@@ -48,13 +44,14 @@ export default function RequestGroupAdmission({ players }) {
 
   return (
     <>
-      {!isJoined ? <button onClick={handleClick}>JOIN GROUP</button> : null}
       {isRequested ? (
         <div>
           <p>You have requested to join this group</p>
           <button onClick={handleCancelClick}>CANCEL REQUEST</button>
         </div>
-      ) : null}
+      ) : (
+        <button onClick={handleClick}>JOIN GROUP</button>
+      )}
     </>
   );
 }

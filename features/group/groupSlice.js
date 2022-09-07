@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import {
   collection,
   deleteDoc,
@@ -21,11 +25,11 @@ export const createGroup = createAsyncThunk(
 
     const adminData = {
       groupId: groupId,
-      userId: newGroup.adminId,
-      userStatus: 'admin',
+      playerId: newGroup.adminId,
+      playerStatus: 'admin',
     };
 
-    const docId = `${adminData.groupId}_${adminData.userId}`;
+    const docId = `${adminData.groupId}_${adminData.playerId}`;
 
     await setDoc(doc(db, 'group_users', docId), adminData);
 
@@ -33,13 +37,14 @@ export const createGroup = createAsyncThunk(
   }
 );
 
-export const setGroupPlayer = createAsyncThunk(
-  'group/setGroupPlayer',
+export const addGroupPlayer = createAsyncThunk(
+  'group/addGroupPlayer',
   async (playerData) => {
     const group = playerData.groupId;
-    const user = playerData.userId;
+    const user = playerData.playerId;
     const docId = `${group}_${user}`;
     await setDoc(doc(db, 'group_users', docId), playerData);
+
     return playerData;
   }
 );
@@ -52,12 +57,7 @@ export const getCurrentGroup = createAsyncThunk(
       name: '',
       path: '',
       matches: [],
-      players: {
-        core: [],
-        reserve: [],
-        admin: [],
-        requested: [],
-      },
+      players: [],
     };
 
     const groupsRef = collection(db, 'groups');
@@ -75,48 +75,17 @@ export const getCurrentGroup = createAsyncThunk(
     };
 
     const groupPlayersRef = collection(db, 'group_users');
-    const queryCore = query(
+    const queryPlayers = query(
       groupPlayersRef,
-      where('groupId', '==', currentGroupState.id),
-      where('userStatus', '==', 'core')
+      where('groupId', '==', currentGroupState.id)
     );
-    const querySnapshotCore = await getDocs(queryCore);
-    querySnapshotCore.forEach((doc) => {
+    const queryPlayersSnapshot = await getDocs(queryPlayers);
+    queryPlayersSnapshot.forEach((doc) => {
       const data = doc.data();
-      currentGroupState.players.core.push(data.userId);
-    });
-
-    const queryReserve = query(
-      groupPlayersRef,
-      where('groupId', '==', currentGroupState.id),
-      where('userStatus', '==', 'reserve')
-    );
-    const querySnapshotReserve = await getDocs(queryReserve);
-    querySnapshotReserve.forEach((doc) => {
-      const data = doc.data();
-      currentGroupState.players.reserve.push(data.userId);
-    });
-
-    const queryAdmin = query(
-      groupPlayersRef,
-      where('groupId', '==', currentGroupState.id),
-      where('userStatus', '==', 'admin')
-    );
-    const querySnapshotAdmin = await getDocs(queryAdmin);
-    querySnapshotAdmin.forEach((doc) => {
-      const data = doc.data();
-      currentGroupState.players.admin.push(data.userId);
-    });
-
-    const queryRequested = query(
-      groupPlayersRef,
-      where('groupId', '==', currentGroupState.id),
-      where('userStatus', '==', 'requested')
-    );
-    const querySnapshotRequested = await getDocs(queryRequested);
-    querySnapshotRequested.forEach((doc) => {
-      const data = doc.data();
-      currentGroupState.players.requested.push(data.userId);
+      currentGroupState.players.push({
+        playerId: data.playerId,
+        playerStatus: data.playerStatus,
+      });
     });
 
     return currentGroupState;
@@ -134,7 +103,7 @@ export const updatePlayerStatus = createAsyncThunk(
 
     const playerRef = doc(db, 'group_users', docId);
     await updateDoc(playerRef, {
-      userStatus: newStatus,
+      playerStatus: newStatus,
     });
 
     return updatedData;
@@ -194,12 +163,7 @@ const initialState = {
     name: '',
     path: '',
     matches: [],
-    players: {
-      core: [],
-      reserve: [],
-      admin: [],
-      requested: [],
-    },
+    players: [],
     isAdmin: false,
   },
   isFulfilled: false,
@@ -255,35 +219,24 @@ export const groupSlice = createSlice({
       state.isLoading = false;
       state.failedToLoad = true;
     });
-    builder.addCase(setGroupPlayer.fulfilled, (state, action) => {
-      const playerStatus = action.payload.userStatus;
-      const uId = action.payload.userId;
-      const playerStatusArr = state.data.players[playerStatus];
-      playerStatusArr.push(uId);
+    builder.addCase(addGroupPlayer.fulfilled, (state, action) => {
+      state.data.players.push(action.payload);
       state.isLoading = false;
       state.failedToLoad = false;
     });
-    builder.addCase(setGroupPlayer.pending, (state) => {
-      // state.isLoading = true;
+    builder.addCase(addGroupPlayer.pending, (state) => {
+      state.isLoading = true;
       state.failedToLoad = false;
     });
-    builder.addCase(setGroupPlayer.rejected, (state) => {
+    builder.addCase(addGroupPlayer.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });
     builder.addCase(updatePlayerStatus.fulfilled, (state, action) => {
-      state.data.players.core = state.data.players.core.filter(
-        (id) => id !== action.payload.playerId
+      const player = state.data.players.find(
+        (player) => player.playerId === action.payload.playerId
       );
-      state.data.players.reserve = state.data.players.reserve.filter(
-        (id) => id !== action.payload.playerId
-      );
-      state.data.players.requested = state.data.players.requested.filter(
-        (id) => id !== action.payload.playerId
-      );
-      state.data.players[action.payload.playerStatus].push(
-        action.payload.playerId
-      );
+      player.playerStatus = action.payload.playerStatus;
       state.isLoading = false;
       state.failedToLoad = false;
     });
@@ -295,18 +248,10 @@ export const groupSlice = createSlice({
       state.failedToLoad = true;
     });
     builder.addCase(removeGroupPlayer.fulfilled, (state, action) => {
-      state.data.players.core = state.data.players.core.filter(
-        (id) => id !== action.payload.playerId
+      state.data.players = state.data.players.filter(
+        (player) => player.playerId !== action.payload.playerId
       );
-      state.data.players.reserve = state.data.players.reserve.filter(
-        (id) => id !== action.payload.playerId
-      );
-      state.data.players.requested = state.data.players.requested.filter(
-        (id) => id !== action.payload.playerId
-      );
-      state.data.players.admin = state.data.players.admin.filter(
-        (id) => id !== action.payload.playerId
-      );
+
       state.isLoading = false;
       state.failedToLoad = false;
     });
@@ -349,9 +294,30 @@ export const groupSlice = createSlice({
 
 export const { resetGroup, setIsAdmin } = groupSlice.actions;
 export const selectGroup = (state) => state.group.data;
+export const selectGroupPlayers = createSelector(
+  selectGroup,
+  (group) => group.players
+);
+export const selectGroupPlayersByStatus = createSelector(
+  selectGroupPlayers,
+  (groupPlayers) => {
+    const playerStatus = {
+      core: [],
+      reserve: [],
+      admin: [],
+      requested: [],
+    };
+    if (groupPlayers) {
+      for (const player of groupPlayers) {
+        playerStatus[player.playerStatus].push(player.playerId);
+      }
+    }
+
+    return playerStatus;
+  }
+);
 export const groupIsLoading = (state) => state.group.isLoading;
 export const groupFailedToLoad = (state) => state.group.failedToLoad;
-export const groupIsFulfilled = (state) => state.group.isFulfilled;
 export const selectUserIsAdmin = (state) => state.group.data.isAdmin;
 
 export default groupSlice.reducer;

@@ -1,36 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectGroupPlayers,
+  selectGroupPlayersByStatus,
+} from '../../features/group/groupSlice';
 import { getPlayersData } from '../../features/users/playersSlice';
 import { selectCurrentUserDetails } from '../../features/users/userSlice';
 import GroupPlayerActions from './GroupPlayerActions';
 
-export default function GroupPlayerListing({ players }) {
+export default function GroupPlayerListing() {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUserDetails);
+  const groupPlayers = useSelector(selectGroupPlayers);
+  const groupPlayersByStatus = useSelector(selectGroupPlayersByStatus);
 
-  const [corePlayers, setCorePlayers] = useState(players.core);
-  const [reservePlayers, setReservePlayers] = useState(players.reserve);
-  const [adminPlayers, setAdminPlayers] = useState(players.admin);
-  const [pendingPlayers, setPendingPlayers] = useState(players.requested);
+  const isAdmin = groupPlayersByStatus.admin.includes(currentUser.id);
 
-  useEffect(() => {
-    setCorePlayers(players.core);
-    setReservePlayers(players.reserve);
-    setAdminPlayers(players.admin);
-    setPendingPlayers(players.requested);
-  }, [players]);
-
-  const isAdmin = adminPlayers.includes(currentUser.id);
-
-  const allPlayers = corePlayers.concat(
-    reservePlayers,
-    adminPlayers,
-    pendingPlayers
-  );
-
-  const playersToFetch = allPlayers.filter(
-    (player) => player !== currentUser.id
-  );
+  const playersToFetch = groupPlayers
+    .filter((player) => player.playerId !== currentUser.id)
+    .map((player) => player.playerId);
 
   useEffect(() => {
     if (playersToFetch.length > 0) {
@@ -42,7 +30,7 @@ export default function GroupPlayerListing({ players }) {
     <>
       <h3 className='title'>Players</h3>
 
-      {adminPlayers.map((playerId, i) => (
+      {groupPlayersByStatus.admin.map((playerId, i) => (
         <GroupPlayerActions
           key={i}
           id={playerId}
@@ -51,7 +39,7 @@ export default function GroupPlayerListing({ players }) {
         />
       ))}
 
-      {corePlayers.map((playerId, i) => (
+      {groupPlayersByStatus.core.map((playerId, i) => (
         <GroupPlayerActions
           key={i}
           id={playerId}
@@ -59,7 +47,7 @@ export default function GroupPlayerListing({ players }) {
           adminView={isAdmin}
         />
       ))}
-      {reservePlayers.map((playerId, i) => (
+      {groupPlayersByStatus.reserve.map((playerId, i) => (
         <GroupPlayerActions
           key={i}
           id={playerId}
@@ -68,7 +56,7 @@ export default function GroupPlayerListing({ players }) {
         />
       ))}
 
-      {isAdmin && pendingPlayers.length && (
+      {isAdmin && groupPlayersByStatus.requested.length && (
         <>
           <div>
             <h3 className='title'>Requested to join</h3>
