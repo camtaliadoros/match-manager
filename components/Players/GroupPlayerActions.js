@@ -1,5 +1,5 @@
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -88,9 +88,13 @@ export default function GroupPlayerActions({ id, status, adminView }) {
               </button>
             </div>
           ) : (
-            <div>
-              <button onClick={handleRequestChange}>CONFIRM</button>
-              <button onClick={handleDelete}>DELETE</button>
+            <div className={classes.actionButtons}>
+              <button onClick={handleRequestChange} className='small-btn'>
+                <FontAwesomeIcon icon={faCheck} className='btn-icon' />
+              </button>
+              <button onClick={handleDelete} className='small-btn red-btn'>
+                <FontAwesomeIcon icon={faXmark} className='btn-icon' />
+              </button>
             </div>
           )}
         </div>

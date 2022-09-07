@@ -227,6 +227,13 @@ button,
     width: 100%;
   }
 
+  &.small-btn {
+    padding: 6px;
+    width: $spacing-md;
+    height: $spacing-md;
+    border: solid 1px;
+  }
+
   &.red-btn {
     background-color: $red;
   }
@@ -444,4 +451,9 @@ form .error-message {
   color: $green50;
   width: $spacing-sm;
   margin-right: $spacing-sm;
+}
+
+.btn-icon {
+  color: $chalk;
+  width: 100%;
 }

@@ -58,17 +58,15 @@ export default function GroupPlayerListing() {
 
       {isAdmin && groupPlayersByStatus.requested.length ? (
         <>
-          <div>
-            <h3 className='title'>Requested to join</h3>
-            {groupPlayersByStatus.requested.map((playerId, i) => (
-              <GroupPlayerActions
-                key={i}
-                id={playerId}
-                status='requested'
-                adminView={isAdmin}
-              />
-            ))}
-          </div>
+          <h3 className='title'>Requested to join</h3>
+          {groupPlayersByStatus.requested.map((playerId, i) => (
+            <GroupPlayerActions
+              key={i}
+              id={playerId}
+              status='requested'
+              adminView={isAdmin}
+            />
+          ))}
         </>
       ) : null}
     </>
