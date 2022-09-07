@@ -56,11 +56,11 @@ export default function GroupPlayerListing() {
         />
       ))}
 
-      {isAdmin && groupPlayersByStatus.requested.length && (
+      {isAdmin && groupPlayersByStatus.requested.length ? (
         <>
           <div>
             <h3 className='title'>Requested to join</h3>
-            {pendingPlayers.map((playerId, i) => (
+            {groupPlayersByStatus.requested.map((playerId, i) => (
               <GroupPlayerActions
                 key={i}
                 id={playerId}
@@ -69,9 +69,8 @@ export default function GroupPlayerListing() {
               />
             ))}
           </div>
-          )
         </>
-      )}
+      ) : null}
     </>
   );
 }
