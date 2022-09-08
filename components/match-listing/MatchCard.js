@@ -1,5 +1,5 @@
 import { selectMatches } from '../../features/matches/matchesSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import classes from './match.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -14,17 +14,26 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
 import { selectGroup } from '../../features/group/groupSlice';
 import Link from 'next/link';
+import { getCurrentMatch } from '../../features/matches/matchSlice';
 
-export default function MatchCard({ matchData }) {
+export default function MatchCard({ matchId }) {
   const matches = useSelector(selectMatches);
   const currentGroup = useSelector(selectGroup);
   const onWaitlist = true;
+
+  const dispatch = useDispatch();
 
   const [matchDate, setMatchDate] = useState('');
   const [matchTime, setMatchTime] = useState('');
   const [matchGroup, setMatchGroup] = useState('');
   const [matchLocation, setMatchLocation] = useState(matchData.location);
   const [groupPath, setGroupPath] = useState();
+
+  useEffect(() => {
+    if (matchId) {
+      dispatch(getCurrentMatch(matchId));
+    }
+  }, [matchId]);
 
   const getGroupName = async (groupId) => {
     if (groupId === currentGroup.id) {
@@ -56,7 +65,7 @@ export default function MatchCard({ matchData }) {
   }, [matches]);
 
   return (
-    <Link href={`./${groupPath}/${matchData.id}`}>
+    <Link href={`./${groupPath}/${matchId}`}>
       <div className='card'>
         {onWaitlist ? (
           <p className={classes.waitlistText}>On Waitlist</p>

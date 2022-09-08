@@ -20,6 +20,7 @@ const initialState = {
     emailAddress: '',
     username: '',
     photo: '',
+    matches: [],
   },
   status: {
     isLoggedIn: false,
@@ -62,6 +63,26 @@ export const createUser = createAsyncThunk(
   async (userData) => {
     await setDoc(doc(db, 'users', userData.id), userData);
     return userData;
+  }
+);
+
+export const getUserMatches = createAsyncThunk(
+  'user/getUserMatches',
+  async (userId) => {
+    const matches = [];
+
+    const userMatchesRef = collection(db, 'user_matches');
+    const whereResult = where('playerId', '==', userId);
+
+    const q = query(userMatchesRef, whereResult);
+
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      matches.push(doc.data());
+    });
+
+    return matches;
   }
 );
 
@@ -143,6 +164,19 @@ export const userSlice = createSlice({
         state.failedToLoad = true;
         state.isFulfilled = false;
       });
+    builder.addCase(getUserMatches.fulfilled, (state, action) => {
+      state.data.matches = action.payload;
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getUserMatches.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getUserMatches.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
   },
 });
 export const { updateUserLoggedIn, updateUserEmail, resetUser, setUser } =
@@ -165,6 +199,42 @@ export const selectLoggedIn = createSelector(
 export const selectEmailVerified = createSelector(
   selectCurrentUser,
   (user) => user.status.isEmailVerified
+);
+
+export const selectUserMatches = (state) => state.user.data.matches;
+
+export const selectMatchesRequests = createSelector(
+  selectUserMatches,
+  (matches) => {
+    const result = matches.filter(
+      (match) => match.playerStatus === 'requested'
+    );
+    return result;
+  }
+);
+
+export const selectMatchesInvited = createSelector(
+  selectUserMatches,
+  (matches) => {
+    const result = matches.filter((match) => match.playerStatus === 'invited');
+    return result;
+  }
+);
+
+export const selectMatchesPlaying = createSelector(
+  selectUserMatches,
+  (matches) => {
+    const result = matches.filter((match) => match.playerStatus === 'playing');
+    return result;
+  }
+);
+
+export const selectMatchesPendingPayment = createSelector(
+  selectUserMatches,
+  (matches) => {
+    const result = matches.filter((match) => match.paymentStatus === false);
+    return result;
+  }
 );
 
 export default userSlice.reducer;

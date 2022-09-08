@@ -143,19 +143,19 @@ export const updateGroupName = createAsyncThunk(
   }
 );
 
-export const getGroupMatches = createAsyncThunk(
-  'group/getGroupMatches',
-  async (groupId) => {
-    const matchesArr = [];
-    const matchesRef = collection(db, 'matches');
-    const q = query(matchesRef, where('groupId', '==', groupId));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      matchesArr.push(doc.data());
-    });
-    return matchesArr;
-  }
-);
+// export const getGroupMatches = createAsyncThunk(
+//   'group/getGroupMatches',
+//   async (groupId) => {
+//     const matchesArr = [];
+//     const matchesRef = collection(db, 'matches');
+//     const q = query(matchesRef, where('groupId', '==', groupId));
+//     const querySnapshot = await getDocs(q);
+//     querySnapshot.forEach((doc) => {
+//       matchesArr.push(doc.data());
+//     });
+//     return matchesArr;
+//   }
+// );
 
 const initialState = {
   data: {
@@ -276,19 +276,19 @@ export const groupSlice = createSlice({
       state.isLoading = false;
       state.failedToLoad = true;
     });
-    builder.addCase(getGroupMatches.fulfilled, (state, action) => {
-      state.data.matches = action.payload;
-      state.isLoading = false;
-      state.failedToLoad = false;
-    });
-    builder.addCase(getGroupMatches, (state) => {
-      state.isLoading = true;
-      state.failedToLoad = false;
-    });
-    builder.addCase(getGroupMatches.rejected, (state) => {
-      state.isLoading = false;
-      state.failedToLoad = true;
-    });
+    // builder.addCase(getGroupMatches.fulfilled, (state, action) => {
+    //   state.data.matches = action.payload;
+    //   state.isLoading = false;
+    //   state.failedToLoad = false;
+    // });
+    // builder.addCase(getGroupMatches, (state) => {
+    //   state.isLoading = true;
+    //   state.failedToLoad = false;
+    // });
+    // builder.addCase(getGroupMatches.rejected, (state) => {
+    //   state.isLoading = false;
+    //   state.failedToLoad = true;
+    // });
   },
 });
 
