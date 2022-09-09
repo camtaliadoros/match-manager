@@ -37,13 +37,11 @@ export default function MatchesListing({ display, type, matches }) {
       </div>
 
       {/* </Link> */}
-      {matches.length > 0 ? (
+      {matches?.length ? (
         display === '1' ? (
-          <MatchCard matchId={matches[0]} />
+          <MatchCard matchData={matches[0]} />
         ) : (
-          matches.map((match, i) => (
-            <MatchCard matchId={match.matchId} key={i} />
-          ))
+          matches.map((match, i) => <MatchCard matchData={match} key={i} />)
         )
       ) : (
         <p>No upcoming Matches</p>

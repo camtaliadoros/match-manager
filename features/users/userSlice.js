@@ -206,9 +206,9 @@ export const selectUserMatches = (state) => state.user.data.matches;
 export const selectMatchesRequests = createSelector(
   selectUserMatches,
   (matches) => {
-    const result = matches.filter(
-      (match) => match.playerStatus === 'requested'
-    );
+    const result = matches
+      .filter((match) => match.playerStatus === 'requested')
+      .map((match) => match.matchId);
     return result;
   }
 );
@@ -216,7 +216,9 @@ export const selectMatchesRequests = createSelector(
 export const selectMatchesInvited = createSelector(
   selectUserMatches,
   (matches) => {
-    const result = matches.filter((match) => match.playerStatus === 'invited');
+    const result = matches
+      .filter((match) => match.playerStatus === 'invited')
+      .map((match) => match.matchId);
     return result;
   }
 );
@@ -224,7 +226,9 @@ export const selectMatchesInvited = createSelector(
 export const selectMatchesPlaying = createSelector(
   selectUserMatches,
   (matches) => {
-    const result = matches.filter((match) => match.playerStatus === 'playing');
+    const result = matches
+      .filter((match) => match.playerStatus === 'playing')
+      .map((match) => match.matchId);
     return result;
   }
 );
@@ -232,7 +236,9 @@ export const selectMatchesPlaying = createSelector(
 export const selectMatchesPendingPayment = createSelector(
   selectUserMatches,
   (matches) => {
-    const result = matches.filter((match) => match.paymentStatus === false);
+    const result = matches
+      .filter((match) => match.paymentStatus === false)
+      .map((match) => match.matchId);
     return result;
   }
 );

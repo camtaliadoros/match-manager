@@ -1,39 +1,30 @@
-import { selectMatches } from '../../features/matches/matchesSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import classes from './match.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendar,
   faClock,
-  faUserGroup,
   faLocationDot,
+  faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import moment from 'moment';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase/clientApp';
-import { selectGroup } from '../../features/group/groupSlice';
 import Link from 'next/link';
-import { getCurrentMatch } from '../../features/matches/matchSlice';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectGroup } from '../../features/group/groupSlice';
+import { selectMatches } from '../../features/matches/matchesSlice';
+import { db } from '../../firebase/clientApp';
+import classes from './match.module.scss';
 
-export default function MatchCard({ matchId }) {
+export default function MatchCard({ matchData }) {
   const matches = useSelector(selectMatches);
   const currentGroup = useSelector(selectGroup);
   const onWaitlist = true;
-
-  const dispatch = useDispatch();
 
   const [matchDate, setMatchDate] = useState('');
   const [matchTime, setMatchTime] = useState('');
   const [matchGroup, setMatchGroup] = useState('');
   const [matchLocation, setMatchLocation] = useState(matchData.location);
   const [groupPath, setGroupPath] = useState();
-
-  useEffect(() => {
-    if (matchId) {
-      dispatch(getCurrentMatch(matchId));
-    }
-  }, [matchId]);
 
   const getGroupName = async (groupId) => {
     if (groupId === currentGroup.id) {
@@ -65,7 +56,7 @@ export default function MatchCard({ matchId }) {
   }, [matches]);
 
   return (
-    <Link href={`./${groupPath}/${matchId}`}>
+    <Link href={`./${groupPath}/${matchData.id}`}>
       <div className='card'>
         {onWaitlist ? (
           <p className={classes.waitlistText}>On Waitlist</p>
