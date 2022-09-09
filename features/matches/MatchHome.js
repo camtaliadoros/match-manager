@@ -66,7 +66,7 @@ export default function MatchHome() {
   }, [matchesData]);
 
   return (
-    <>
+    <div className='details-wrapper'>
       <MatchesListing
         display={1}
         type='upcomingMatches'
@@ -87,6 +87,6 @@ export default function MatchHome() {
         type='matchRequests'
         matches={matchRequestData}
       />
-    </>
+    </div>
   );
 }

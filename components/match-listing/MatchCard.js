@@ -20,6 +20,7 @@ export default function MatchCard({ matchData }) {
   const currentGroup = useSelector(selectGroup);
   const onWaitlist = true;
 
+  const [matchTitle, setMatchTitle] = useState('');
   const [matchDate, setMatchDate] = useState('');
   const [matchTime, setMatchTime] = useState('');
   const [matchGroup, setMatchGroup] = useState('');
@@ -53,14 +54,16 @@ export default function MatchCard({ matchData }) {
     setMatchDate(date);
     setMatchTime(time);
     setMatchLocation(matchData.location);
+    setMatchTitle(matchData.title);
   }, [matches]);
 
   return (
     <Link href={`./${groupPath}/${matchData.id}`}>
       <div className='card'>
-        {onWaitlist ? (
-          <p className={classes.waitlistText}>On Waitlist</p>
-        ) : null}
+        <div className={classes.matchCardHeader}>
+          <h3>{matchTitle}</h3>
+          {onWaitlist && <p className={classes.waitlistText}>On Waitlist</p>}
+        </div>
         <div className={classes.matchDataWrapper}>
           <div className={classes.matchData}>
             <div className={classes.iconContainer}>

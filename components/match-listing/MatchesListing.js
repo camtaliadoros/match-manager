@@ -30,7 +30,7 @@ export default function MatchesListing({ display, type, matches }) {
     <div className={classes.listingWrapper}>
       {/* <Link href=`./${path}`> */}
       <div className={classes.matchListingTitle}>
-        <a className='title'>{title}</a>
+        <h3 className='title'>{title}</h3>
         {display === '1' ? (
           <FontAwesomeIcon icon={faAngleRight} className='next-icon' />
         ) : null}

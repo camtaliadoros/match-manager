@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: $spacing-md;
   // max-width: 360px;
 }
 
@@ -19,13 +20,10 @@
   &:hover svg {
     transform: translate(18px);
   }
-}
 
-.waitlistText {
-  color: $black;
-  font-style: italic;
-  font-weight: 400;
-  margin: 0 0 $spacing-xsm 0;
+  h3 {
+    margin: 0;
+  }
 }
 
 .matchDataWrapper {
@@ -58,6 +56,25 @@
 .matchDataContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.matchCardHeader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+
+  h3 {
+    margin: 0;
+  }
+
+  p {
+    color: $black;
+    font-style: italic;
+    font-weight: 400;
+    margin: 0;
+  }
 }
 
 .matchDataRow {
