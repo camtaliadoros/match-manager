@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   getCurrentGroup,
   selectGroup,
+  selectGroupPlayersByStatus,
   setIsAdmin,
 } from '../../features/group/groupSlice';
 import {
@@ -41,6 +42,7 @@ export default function MatchDetail() {
 
   const match = useSelector(selectCurrentMatch);
   const group = useSelector(selectGroup);
+  const groupPlayersByStatus = useSelector(selectGroupPlayersByStatus);
   const currentUser = useSelector(selectCurrentUserDetails);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -86,7 +88,7 @@ export default function MatchDetail() {
 
   useEffect(() => {
     if (group.id && currentUser.id) {
-      const groupAdmins = group.players.admin;
+      const groupAdmins = groupPlayersByStatus.admin;
       dispatch(setIsAdmin(groupAdmins.includes(currentUser.id)));
     }
   }, [group.id, currentUser.id]);
