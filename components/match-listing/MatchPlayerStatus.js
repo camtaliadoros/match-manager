@@ -13,12 +13,12 @@ import {
 } from '../../features/matches/matchSlice';
 import { selectCurrentUserDetails } from '../../features/users/userSlice';
 import classes from './match.module.scss';
+
 export default function MatchPlayerStatus() {
   const currentUser = useSelector(selectCurrentUserDetails);
   const matchPlayersData = useSelector(selectMatchPlayers);
   const currentMatch = useSelector(selectCurrentMatch);
   const matchPlayersByStatus = useSelector(selectMatchPlayersByStatus);
-  const currentGroup = useSelector(selectGroup);
 
   const dispatch = useDispatch();
 

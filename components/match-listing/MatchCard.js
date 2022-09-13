@@ -12,14 +12,19 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectGroup } from '../../features/group/groupSlice';
 import { selectMatches } from '../../features/matches/matchesSlice';
-import { selectUserMatches } from '../../features/users/userSlice';
+import {
+  selectCurrentUserDetails,
+  selectUserMatches,
+} from '../../features/users/userSlice';
 import { db } from '../../firebase/clientApp';
 import classes from './match.module.scss';
+import MatchPlayerStatus from './MatchPlayerStatus';
 
 export default function MatchCard({ matchData }) {
   const matches = useSelector(selectMatches);
   const currentGroup = useSelector(selectGroup);
   const userMatches = useSelector(selectUserMatches);
+  const currentUser = useSelector(selectCurrentUserDetails);
 
   const [matchTitle, setMatchTitle] = useState('');
   const [matchDate, setMatchDate] = useState('');
@@ -67,46 +72,49 @@ export default function MatchCard({ matchData }) {
   }, [userMatches]);
 
   return (
-    <Link href={`./${groupPath}/${matchData.id}`}>
-      <div className='card'>
-        <div className={classes.matchCardHeader}>
-          <h3>{matchTitle}</h3>
+    <>
+      <Link href={`./${groupPath}/${matchData.id}`}>
+        <div className='card'>
+          <div className={classes.matchCardHeader}>
+            <h3>{matchTitle}</h3>
 
-          <p className={classes.waitlistText}>
-            {playerStatus === 'waitlist'
-              ? 'On Waitlist'
-              : playerStatus === 'requested'
-              ? 'Pending approval'
-              : null}
-          </p>
+            <p className={classes.waitlistText}>
+              {playerStatus === 'waitlist'
+                ? 'On Waitlist'
+                : playerStatus === 'requested'
+                ? 'Pending approval'
+                : null}
+            </p>
+          </div>
+          <div className={classes.matchDataWrapper}>
+            <div className={classes.matchData}>
+              <div className={classes.iconContainer}>
+                <FontAwesomeIcon icon={faCalendar} className='icon' />
+              </div>
+              <p>{matchDate}</p>
+            </div>
+            <div className={classes.matchData}>
+              <div className={classes.iconContainer}>
+                <FontAwesomeIcon icon={faClock} className='icon' />
+              </div>
+              <p>{matchTime}</p>
+            </div>
+            <div className={classes.matchData}>
+              <div className={classes.iconContainer}>
+                <FontAwesomeIcon icon={faUserGroup} className='icon' />
+              </div>
+              <p>{matchGroup}</p>
+            </div>
+            <div className={classes.matchData}>
+              <div className={classes.iconContainer}>
+                <FontAwesomeIcon icon={faLocationDot} className='icon' />
+              </div>
+              <p>{matchLocation}</p>
+            </div>
+          </div>
         </div>
-        <div className={classes.matchDataWrapper}>
-          <div className={classes.matchData}>
-            <div className={classes.iconContainer}>
-              <FontAwesomeIcon icon={faCalendar} className='icon' />
-            </div>
-            <p>{matchDate}</p>
-          </div>
-          <div className={classes.matchData}>
-            <div className={classes.iconContainer}>
-              <FontAwesomeIcon icon={faClock} className='icon' />
-            </div>
-            <p>{matchTime}</p>
-          </div>
-          <div className={classes.matchData}>
-            <div className={classes.iconContainer}>
-              <FontAwesomeIcon icon={faUserGroup} className='icon' />
-            </div>
-            <p>{matchGroup}</p>
-          </div>
-          <div className={classes.matchData}>
-            <div className={classes.iconContainer}>
-              <FontAwesomeIcon icon={faLocationDot} className='icon' />
-            </div>
-            <p>{matchLocation}</p>
-          </div>
-        </div>
-      </div>
-    </Link>
+      </Link>
+      {playerStatus === 'invited' && <MatchPlayerStatus />}
+    </>
   );
 }
