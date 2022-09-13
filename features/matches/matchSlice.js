@@ -31,8 +31,15 @@ export const getMatchDetails = (payload) => {
   };
 };
 
-export const createMatch = createAsyncThunk(
-  'match/createMatch',
+export const createMatch = (payload) => {
+  return (dispatch) => {
+    dispatch(setMatchDetails(payload.matchData));
+    dispatch(inviteCorePlayers(payload.playersData));
+  };
+};
+
+export const setMatchDetails = createAsyncThunk(
+  'match/setMatchDetails',
   async (matchData) => {
     await setDoc(doc(db, 'matches', matchData.id), {
       id: matchData.id,
@@ -55,28 +62,32 @@ export const inviteCorePlayers = createAsyncThunk(
   async (playerData) => {
     const matchId = playerData.matchId;
 
-    const admin = playerData.groupPlayers.admin;
-    const core = playerData.groupPlayers.core;
+    const adminPlayers = playerData.groupPlayers.filter(
+      (player) => player.playerStatus === 'admin'
+    );
+    const corePlayers = playerData.groupPlayers.filter(
+      (player) => player.playerStatus === 'core'
+    );
 
-    admin.forEach(async (player) => {
-      await setDoc(doc(db, 'user_matches', `${player}_${matchId}`), {
-        playerId: player,
-        matchId: matchId,
+    adminPlayers.forEach(async (player) => {
+      await setDoc(doc(db, 'user_matches', `${player.playerId}_${matchId}`), {
+        playerId: player.playerId,
+        matchId,
         playerStatus: 'playing',
         paymentStatus: false,
       });
     });
 
-    core.forEach(async (player) => {
-      await setDoc(doc(db, 'user_matches', `${player}_${matchId}`), {
-        playerId: player,
+    corePlayers.forEach(async (player) => {
+      await setDoc(doc(db, 'user_matches', `${player.playerId}_${matchId}`), {
+        playerId: player.playerId,
         matchId: matchId,
         playerStatus: 'invited',
         paymentStatus: false,
       });
     });
 
-    return playerData.groupPlayers;
+    return { adminPlayers, corePlayers };
   }
 );
 
@@ -203,16 +214,16 @@ const matchSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(createMatch.fulfilled, (state, action) => {
+    builder.addCase(setMatchDetails.fulfilled, (state, action) => {
       state.data = { ...state.data, ...action.payload };
       state.isLoading = false;
       state.failedToLoad = false;
     });
-    builder.addCase(createMatch.pending, (state) => {
+    builder.addCase(setMatchDetails.pending, (state) => {
       state.isLoading = true;
       state.failedToLoad = false;
     });
-    builder.addCase(createMatch.rejected, (state) => {
+    builder.addCase(setMatchDetails.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });
@@ -234,16 +245,18 @@ const matchSlice = createSlice({
         ...state.data,
         players: [],
       };
-      action.payload.admin.forEach((player) => {
+
+      action.payload.adminPlayers.forEach((player) => {
         state.data.players.push({
-          playerId: player,
+          playerId: player.playerId,
           playerStatus: 'playing',
           paymentStatus: false,
         });
       });
-      action.payload.core.forEach((player) => {
+
+      action.payload.corePlayers.forEach((player) => {
         state.data.players.push({
-          playerId: player,
+          playerId: player.playerId,
           playerStatus: 'invited',
           paymentStatus: false,
         });

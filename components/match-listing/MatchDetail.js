@@ -7,7 +7,6 @@ import {
   faEye,
   faLocationDot,
   faMoneyBill,
-  faPencil,
   faRepeat,
   faShirt,
   faUserGroup,
@@ -23,12 +22,12 @@ import {
   getCurrentGroup,
   selectGroup,
   selectGroupPlayersByStatus,
+  selectUserIsAdmin,
   setIsAdmin,
 } from '../../features/group/groupSlice';
 import {
   createMatch,
   deleteMatch,
-  inviteCorePlayers,
   selectCurrentMatch,
 } from '../../features/matches/matchSlice';
 import { selectCurrentUserDetails } from '../../features/users/userSlice';
@@ -44,6 +43,7 @@ export default function MatchDetail() {
   const group = useSelector(selectGroup);
   const groupPlayersByStatus = useSelector(selectGroupPlayersByStatus);
   const currentUser = useSelector(selectCurrentUserDetails);
+  const userIsAdmin = useSelector(selectUserIsAdmin);
 
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
@@ -111,13 +111,12 @@ export default function MatchDetail() {
       cost,
     };
 
-    const playerData = {
+    const playersData = {
       matchId,
       groupPlayers: group.players,
     };
 
-    dispatch(createMatch(matchData));
-    dispatch(inviteCorePlayers(playerData));
+    dispatch(createMatch({ matchData, playersData }));
 
     if (router.asPath === `/${currentPath}/create-match`) {
       router.push(`/${currentPath}/${matchData.id}`);
@@ -143,11 +142,11 @@ export default function MatchDetail() {
 
   return (
     <>
-      {!isEditing && (
+      {userIsAdmin && !isEditing ? (
         <button type='button' onClick={handleEditMatchClick}>
           Edit Match
         </button>
-      )}
+      ) : null}
 
       <form onSubmit={handleClick}>
         <div className={classes.matchDetailHeader}>
