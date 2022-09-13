@@ -187,9 +187,15 @@ export const selectCurrentUserDetails = createSelector(
   (user) => user.data
 );
 
-export const userIsLoading = (state) => state.user.isLoading;
-export const userFailedToLoad = (state) => state.user.failedToLoad;
-export const userIfFulfilled = (state) => state.user.isFulfilled;
+export const userIsLoading = createSelector(
+  selectCurrentUser,
+  (user) => user.isLoading
+);
+
+export const userFailedToLoad = createSelector(
+  selectCurrentUser,
+  (user) => user.failedToLoad
+);
 
 export const selectLoggedIn = createSelector(
   selectCurrentUser,
@@ -201,7 +207,12 @@ export const selectEmailVerified = createSelector(
   (user) => user.status.isEmailVerified
 );
 
-export const selectUserMatches = (state) => state.user.data.matches;
+export const selectUserMatches = createSelector(
+  selectCurrentUserDetails,
+  (data) => {
+    return data.matches;
+  }
+);
 
 export const selectMatchesRequests = createSelector(
   selectUserMatches,
@@ -238,6 +249,16 @@ export const selectMatchesPendingPayment = createSelector(
   (matches) => {
     const result = matches
       .filter((match) => match.paymentStatus === false)
+      .map((match) => match.matchId);
+    return result;
+  }
+);
+
+export const selectMatchesOnWaitlist = createSelector(
+  selectUserMatches,
+  (matches) => {
+    const result = matches
+      .filter((match) => match.playerStatus === 'waitlist')
       .map((match) => match.matchId);
     return result;
   }

@@ -12,13 +12,14 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectGroup } from '../../features/group/groupSlice';
 import { selectMatches } from '../../features/matches/matchesSlice';
+import { selectUserMatches } from '../../features/users/userSlice';
 import { db } from '../../firebase/clientApp';
 import classes from './match.module.scss';
 
 export default function MatchCard({ matchData }) {
   const matches = useSelector(selectMatches);
   const currentGroup = useSelector(selectGroup);
-  const onWaitlist = true;
+  const userMatches = useSelector(selectUserMatches);
 
   const [matchTitle, setMatchTitle] = useState('');
   const [matchDate, setMatchDate] = useState('');
@@ -26,6 +27,7 @@ export default function MatchCard({ matchData }) {
   const [matchGroup, setMatchGroup] = useState('');
   const [matchLocation, setMatchLocation] = useState(matchData.location);
   const [groupPath, setGroupPath] = useState();
+  const [playerStatus, setPlayerStatus] = useState();
 
   const getGroupName = async (groupId) => {
     if (groupId === currentGroup.id) {
@@ -57,12 +59,26 @@ export default function MatchCard({ matchData }) {
     setMatchTitle(matchData.title);
   }, [matches]);
 
+  useEffect(() => {
+    const userMatchData = userMatches.find(
+      (match) => match.matchId === matchData.id
+    );
+    setPlayerStatus(userMatchData.playerStatus);
+  }, [userMatches]);
+
   return (
     <Link href={`./${groupPath}/${matchData.id}`}>
       <div className='card'>
         <div className={classes.matchCardHeader}>
           <h3>{matchTitle}</h3>
-          {onWaitlist && <p className={classes.waitlistText}>On Waitlist</p>}
+
+          <p className={classes.waitlistText}>
+            {playerStatus === 'waitlist'
+              ? 'On Waitlist'
+              : playerStatus === 'requested'
+              ? 'Pending approval'
+              : null}
+          </p>
         </div>
         <div className={classes.matchDataWrapper}>
           <div className={classes.matchData}>

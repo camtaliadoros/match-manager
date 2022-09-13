@@ -29,14 +29,14 @@ export const getMatchesById = createAsyncThunk(
     //Iterates through remaining matches array and isolates max 10 matches
     while (remainingMatches.length > 0) {
       const matchesToFetch = remainingMatches.slice(0, 10);
-      // Fetches data fot 10 players and adds to playersData obj by ID
+      // Fetches data fot 10 matches and adds to matches arr
       const matchesRef = collection(db, 'matches');
       const q = query(matchesRef, where('id', 'in', matchesToFetch));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         matches.push(doc.data());
       });
-      // Filters players for which data has already been fetched
+      // Filters matches for which data has already been fetched
       remainingMatches = remainingMatches.filter((id) => {
         return !matchesToFetch.includes(id);
       });
