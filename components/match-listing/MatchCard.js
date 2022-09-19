@@ -65,10 +65,12 @@ export default function MatchCard({ matchData }) {
   }, [matches]);
 
   useEffect(() => {
-    const userMatchData = userMatches.find(
-      (match) => match.matchId === matchData.id
-    );
-    setPlayerStatus(userMatchData.playerStatus);
+    if (userMatches.length) {
+      const userMatchData = userMatches.find(
+        (match) => match.matchId === matchData.id
+      );
+      setPlayerStatus(userMatchData.playerStatus);
+    }
   }, [userMatches]);
 
   return (
