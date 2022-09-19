@@ -2,6 +2,8 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classes from './match.module.scss';
 import MatchCard from './MatchCard';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export default function MatchesListing({ display, type, matches }) {
   const typeMap = {
@@ -23,22 +25,24 @@ export default function MatchesListing({ display, type, matches }) {
     },
   };
 
+  const router = useRouter();
+
   const title = typeMap[type].title;
+  const currentPath = router.pathname;
   const path = typeMap[type].link;
 
   return (
     <div className={classes.listingWrapper}>
-      {/* <Link href=`./${path}`> */}
-      <div className={classes.matchListingTitle}>
-        <h3 className='title'>{title}</h3>
-        {display === '1' ? (
-          <FontAwesomeIcon icon={faAngleRight} className='next-icon' />
-        ) : null}
-      </div>
-
-      {/* </Link> */}
+      <Link href={`./${currentPath}/${path}`}>
+        <div className={classes.matchListingTitle}>
+          <h3 className='title'>{title}</h3>
+          {display === 1 ? (
+            <FontAwesomeIcon icon={faAngleRight} className='next-icon' />
+          ) : null}
+        </div>
+      </Link>
       {matches?.length ? (
-        display === '1' ? (
+        display === 1 ? (
           <MatchCard matchData={matches[0]} />
         ) : (
           matches.map((match, i) => <MatchCard matchData={match} key={i} />)
