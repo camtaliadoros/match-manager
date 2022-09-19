@@ -248,7 +248,10 @@ export const selectMatchesPendingPayment = createSelector(
   selectUserMatches,
   (matches) => {
     const result = matches
-      .filter((match) => match.paymentStatus === false)
+      .filter(
+        (match) =>
+          match.paymentStatus === false && match.playerStatus === 'playing'
+      )
       .map((match) => match.matchId);
     return result;
   }

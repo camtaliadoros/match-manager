@@ -116,7 +116,6 @@ export default function MatchCard({ matchData }) {
           </div>
         </div>
       </Link>
-      {playerStatus === 'invited' && <MatchPlayerStatus />}
     </>
   );
 }
