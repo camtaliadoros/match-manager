@@ -133,8 +133,8 @@ export default function GroupDetail() {
         {!isGroupParticipant && <RequestGroupAdmission />}
         <div className='matchcard-wrapper'>
           <MatchesListing
-            type='upcomingMatches'
-            display='1'
+            type='upcoming-matches'
+            display={1}
             matches={groupMatches}
           />
 

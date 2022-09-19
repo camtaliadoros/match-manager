@@ -69,22 +69,22 @@ export default function MatchHome() {
     <div className='details-wrapper'>
       <MatchesListing
         display={1}
-        type='upcomingMatches'
+        type='upcoming-matches'
         matches={upcomingMatchData}
       />
       <MatchesListing
         display={1}
-        type='matchInvites'
+        type='match-invites'
         matches={matchInviteData}
       />
       <MatchesListing
         display={1}
-        type='pendingPayment'
+        type='pending-payment'
         matches={pendingPaymentMatchData}
       />
       <MatchesListing
         display={1}
-        type='matchRequests'
+        type='match-requests'
         matches={matchRequestData}
       />
     </div>

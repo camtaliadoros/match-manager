@@ -7,19 +7,19 @@ import { useRouter } from 'next/router';
 
 export default function MatchesListing({ display, type, matches }) {
   const typeMap = {
-    upcomingMatches: {
+    'upcoming-matches': {
       title: 'Upcoming Matches',
       link: '/upcoming-matches',
     },
-    matchInvites: {
+    'match-invites': {
       title: 'Match Invites',
       link: '/match-invites',
     },
-    pendingPayment: {
+    'pending-payment': {
       title: 'Pending Payment',
       link: '/pending-payment',
     },
-    matchRequests: {
+    'match-requests': {
       title: 'Match Requests',
       link: 'match-requests',
     },
@@ -27,13 +27,13 @@ export default function MatchesListing({ display, type, matches }) {
 
   const router = useRouter();
 
-  const title = typeMap[type].title;
+  const title = typeMap[type]?.title;
   const currentPath = router.pathname;
-  const path = typeMap[type].link;
+  const path = typeMap[type]?.link;
 
   return (
     <div className={classes.listingWrapper}>
-      <Link href={`./${currentPath}/${path}`}>
+      <Link href={`${currentPath}/${path}`}>
         <div className={classes.matchListingTitle}>
           <h3 className='title'>{title}</h3>
           {display === 1 ? (
