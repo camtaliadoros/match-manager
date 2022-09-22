@@ -3,7 +3,7 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
 
 export const getGroupMatches = createAsyncThunk(
