@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import {
   getMatchesById,
   selectMatches,
+  selectSortedMatches,
 } from '../../features/matches/matchesSlice';
 
 export default function MatchesListingPage() {
@@ -23,7 +24,7 @@ export default function MatchesListingPage() {
   const user = useSelector(selectCurrentUserDetails);
   const listingType = router.query.matchesListing;
   const allUserMatches = useSelector(selectUserMatches);
-  const matchesData = useSelector(selectMatches);
+  const matchesData = useSelector(selectSortedMatches);
 
   const upcomingMatches = useSelector(selectMatchesPlaying);
   const matchInvites = useSelector(selectMatchesInvited);
@@ -51,7 +52,7 @@ export default function MatchesListingPage() {
       matchesToFetch = matchRequests;
     }
 
-    matchesToFetch.length && dispatch(getMatchesById(matchesToFetch));
+    matchesToFetch?.length && dispatch(getMatchesById(matchesToFetch));
   }, [
     upcomingMatches.length,
     matchInvites.length,
