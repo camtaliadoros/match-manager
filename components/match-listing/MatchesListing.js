@@ -9,15 +9,15 @@ export default function MatchesListing({ display, type, matches }) {
   const typeMap = {
     'upcoming-matches': {
       title: 'Upcoming Matches',
-      link: '/upcoming-matches',
+      link: 'upcoming-matches',
     },
     'match-invites': {
       title: 'Match Invites',
-      link: '/match-invites',
+      link: 'match-invites',
     },
     'pending-payment': {
       title: 'Pending Payment',
-      link: '/pending-payment',
+      link: 'pending-payment',
     },
     'match-requests': {
       title: 'Match Requests',

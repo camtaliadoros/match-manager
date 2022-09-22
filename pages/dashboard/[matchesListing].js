@@ -62,7 +62,13 @@ export default function MatchesListingPage() {
 
   return (
     <Layout>
-      <MatchesListing display='all' type={listingType} matches={matchesData} />
+      <div className='details-wrapper'>
+        <MatchesListing
+          display='all'
+          type={listingType}
+          matches={matchesData}
+        />
+      </div>
     </Layout>
   );
 }
