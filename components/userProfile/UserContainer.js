@@ -7,7 +7,7 @@ export default function UserContainer() {
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <div>
+    <div className={`${classes.profileContainer} details-wrapper`}>
       <button
         onClick={() => setIsActive(false)}
         className={(isActive ? '' : 'active') + ' tab'}
