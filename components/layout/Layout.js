@@ -8,6 +8,12 @@ import {
 } from '../../features/users/userSlice';
 import VerificationAlert from '../auth/VerificationAlert';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFutbol,
+  faUserGroup,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 
 function Layout(props) {
   const isEmailVerified = useSelector(selectEmailVerified);
@@ -23,9 +29,15 @@ function Layout(props) {
       )}
 
       <footer className='bottom-nav'>
-        <AuthNavigation />
-        <Link href='/profile'>Profile</Link>
-        <Link href='/dashboard'>Dashboard</Link>
+        <Link href='/dashboard'>
+          <FontAwesomeIcon icon={faFutbol} />
+        </Link>
+        <Link href='/dashboard'>
+          <FontAwesomeIcon icon={faUserGroup} />
+        </Link>
+        <Link href='/profile'>
+          <FontAwesomeIcon icon={faUser} />
+        </Link>
       </footer>
     </div>
   );

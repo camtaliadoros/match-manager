@@ -20,12 +20,10 @@ export default function Header({ classes }) {
           </nav>
         </div>
       </header>
-      <div className={classes.navBar}>
+      <div className={`${classes.navBar} mobile-hidden`}>
         <div>
-          <Link href='/dashboard'>
-            <FontAwesomeIcon icon={faFutbol} />
-            Matches
-          </Link>
+          <FontAwesomeIcon icon={faFutbol} />
+          <Link href='/dashboard'>Matches</Link>
         </div>
         <div>
           <FontAwesomeIcon icon={faUserGroup} />

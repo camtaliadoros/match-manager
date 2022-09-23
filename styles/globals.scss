@@ -90,6 +90,11 @@ footer {
   z-index: 1;
   width: 100%;
   padding: $spacing-xsm;
+
+  svg {
+    color: $chalk;
+    height: $font-lg;
+  }
 }
 
 input {
