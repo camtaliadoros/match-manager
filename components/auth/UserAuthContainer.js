@@ -17,7 +17,7 @@ export default function UserAuthContainer() {
 
   if (!isLoggedIn) {
     return (
-      <>
+      <div className='details-wrapper'>
         <div className={classes.buttonWrapper}>
           <Link href='/'>
             {/* Swap for font awesome */}
@@ -61,7 +61,7 @@ export default function UserAuthContainer() {
         ) : (
           <UserRegisterForm />
         )}
-      </>
+      </div>
     );
   } else {
     return (
