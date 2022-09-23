@@ -45,3 +45,30 @@
     color: $dark-green;
   }
 }
+
+.navBar {
+  display: flex;
+  flex-direction: column;
+  margin: 48px 0 0 20px;
+  padding-top: $spacing-md;
+  width: 240px;
+  position: absolute;
+  top: 56px;
+
+  div {
+    display: flex;
+  }
+
+  svg {
+    color: $dark-green;
+    width: $font-lg;
+    margin-right: $spacing-sm;
+  }
+
+  a {
+    color: $dark-green;
+    font-weight: 700;
+    font-size: $font-md;
+    margin: $spacing-xsm 0;
+  }
+}
