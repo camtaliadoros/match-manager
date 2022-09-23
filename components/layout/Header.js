@@ -5,9 +5,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import {
+  selectEmailVerified,
+  selectLoggedIn,
+} from '../../features/users/userSlice';
 import AuthNavigation from './AuthNavigation';
+import classes from './Layout.module.scss';
 
-export default function Header({ classes }) {
+export default function Header() {
+  const isLoggedIn = useSelector(selectLoggedIn);
+  const isEmailVerified = useSelector(selectEmailVerified);
+
   return (
     <>
       <header className={classes.header}>
@@ -18,20 +27,22 @@ export default function Header({ classes }) {
           <AuthNavigation authClass={classes.navLinks} />
         </nav>
       </header>
-      <div className={`${classes.navBar} mobile-hidden`}>
-        <div>
-          <FontAwesomeIcon icon={faFutbol} />
-          <Link href='/dashboard'>Matches</Link>
+      {isLoggedIn && isEmailVerified ? (
+        <div className={`${classes.navBar} mobile-hidden`}>
+          <div>
+            <FontAwesomeIcon icon={faFutbol} />
+            <Link href='/dashboard'>Matches</Link>
+          </div>
+          <div>
+            <FontAwesomeIcon icon={faUserGroup} />
+            <Link href='/dashboard'>Groups</Link>
+          </div>
+          <div>
+            <FontAwesomeIcon icon={faUser} />
+            <Link href='/profile'>Profile</Link>
+          </div>
         </div>
-        <div>
-          <FontAwesomeIcon icon={faUserGroup} />
-          <Link href='/dashboard'>Groups</Link>
-        </div>
-        <div>
-          <FontAwesomeIcon icon={faUser} />
-          <Link href='/profile'>Profile</Link>
-        </div>
-      </div>
+      ) : null}
     </>
   );
 }
