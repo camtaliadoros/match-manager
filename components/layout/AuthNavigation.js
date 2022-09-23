@@ -21,7 +21,9 @@ export default function AuthNavigation({ authClass }) {
 
   return (
     <div className={authClass}>
-      {isLoggedIn && isEmailVerified ? <Link href='/'>Dashboard</Link> : null}
+      {isLoggedIn && isEmailVerified ? (
+        <Link href='/dashboard'>Dashboard</Link>
+      ) : null}
       {isLoggedIn ? (
         <button className='link-style' onClick={handleSignOut}>
           SIGN OUT
