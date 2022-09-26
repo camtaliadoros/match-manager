@@ -1,6 +1,6 @@
 import {
-  faPencil,
   faCirclePlus,
+  faPencil,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,12 +18,10 @@ import {
   getCurrentGroup,
   groupIsLoading,
   selectGroup,
-  selectGroupPlayers,
   selectGroupPlayersByStatus,
   updateGroupName,
 } from '../../features/group/groupSlice';
 import {
-  selectMatches,
   getGroupMatches,
   selectSortedMatches,
 } from '../../features/matches/matchesSlice';
@@ -87,11 +85,18 @@ export default function GroupDetail() {
 
   const handleSaveClick = () => {
     const groupId = currentGroup.id;
-    setNewPath(newGroupName.toLowerCase().replace(' ', '-'));
-    dispatch(updateGroupName({ newGroupName, newPath, groupId }));
+    const updatedPath = newGroupName.toLowerCase().replaceAll(' ', '-');
+    dispatch(updateGroupName({ newGroupName, updatedPath, groupId }));
     setIsEditingName(false);
-    router.replace(newPath, undefined, { shallow: true });
+    setNewPath(updatedPath);
   };
+
+  useEffect(() => {
+    if (newGroupName) {
+      router.replace(newPath, undefined, { shallow: true });
+    }
+    setnewGroupName('');
+  }, [currentGroup.name]);
 
   if (isLoading) {
     return (

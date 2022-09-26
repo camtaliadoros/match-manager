@@ -128,7 +128,7 @@ export const updateGroupName = createAsyncThunk(
   async (groupToUpdate) => {
     const groupId = groupToUpdate.groupId;
     const newName = groupToUpdate.newGroupName;
-    const newPath = groupToUpdate.newPath;
+    const newPath = groupToUpdate.updatedPath;
 
     const groupRef = doc(db, 'groups', groupId);
     await updateDoc(groupRef, {
