@@ -1,13 +1,5 @@
 @import 'styles/variables';
 
-.listingWrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-bottom: $spacing-md;
-  // max-width: 360px;
-}
-
 .matchListingTitle {
   display: flex;
   align-items: center;

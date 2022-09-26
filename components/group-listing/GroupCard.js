@@ -13,8 +13,8 @@ export default function GroupCard({ groupId }) {
   }, [groupsData]);
 
   return (
-    <div>
-      <h3>{groupName}</h3>
+    <div className='card'>
+      <h4>{groupName}</h4>
     </div>
   );
 }
