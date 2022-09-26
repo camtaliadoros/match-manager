@@ -1,4 +1,8 @@
-import { faPencil, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPencil,
+  faCirclePlus,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -42,6 +46,7 @@ export default function GroupDetail() {
   const [isGroupParticipant, setIsGroupParticipant] = useState();
   const [isEditingName, setIsEditingName] = useState(false);
   const [newGroupName, setnewGroupName] = useState('');
+  const [newPath, setNewPath] = useState();
 
   const groupParticipants = [
     ...groupPlayersByStatus.core,
@@ -76,6 +81,18 @@ export default function GroupDetail() {
     router.push(`/${currentPath}/create-match`);
   };
 
+  const handleEditClick = () => {
+    setIsEditingName(!isEditingName);
+  };
+
+  const handleSaveClick = () => {
+    const groupId = currentGroup.id;
+    setNewPath(newGroupName.toLowerCase().replace(' ', '-'));
+    dispatch(updateGroupName({ newGroupName, newPath, groupId }));
+    setIsEditingName(false);
+    router.replace(newPath, undefined, { shallow: true });
+  };
+
   if (isLoading) {
     return (
       <Layout>
@@ -92,37 +109,32 @@ export default function GroupDetail() {
     );
   }
 
-  const handleEditClick = () => {
-    setIsEditingName(!isEditingName);
-  };
-
-  const handleSaveClick = () => {
-    const groupId = currentGroup.id;
-    const newPath = newGroupName.toLowerCase().replace(' ', '-');
-    dispatch(updateGroupName({ newGroupName, newPath, groupId }));
-    setIsEditingName(false);
-    router.replace(newPath, undefined, { shallow: true });
-  };
-
   return (
     <Layout>
       <div className='details-wrapper'>
         <div className='flex-row'>
           {isEditingName ? (
-            <input
-              type='text'
-              value={newGroupName}
-              onChange={(e) => setnewGroupName(e.target.value)}
-              placeholder={groupName}
-              required
-            />
+            <form className='one-line'>
+              <input
+                type='text'
+                value={newGroupName}
+                onChange={(e) => setnewGroupName(e.target.value)}
+                placeholder={groupName}
+                required
+              />
+              <button onClick={handleSaveClick} disabled={!newGroupName}>
+                SAVE
+              </button>
+            </form>
           ) : (
             <h2 className='title'>{groupName}</h2>
           )}
 
           {isAdmin ? (
             isEditingName ? (
-              <button onClick={handleSaveClick}>SAVE</button>
+              <button className='link-style' onClick={handleEditClick}>
+                <FontAwesomeIcon icon={faXmark} className='icon' />
+              </button>
             ) : (
               <button className='link-style' onClick={handleEditClick}>
                 <FontAwesomeIcon icon={faPencil} className='icon' />
