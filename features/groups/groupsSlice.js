@@ -20,7 +20,7 @@ export const getGroupsById = createAsyncThunk(
       // Fetches data fot 10 groups and adds to groups arr
       const groupsRef = collection(db, 'groups');
       const q = query(groupsRef, where('id', 'in', groupsToFetch));
-      console.log(groupsToFetch);
+
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         groups.push(doc.data());

@@ -65,6 +65,14 @@ header p {
   max-width: 540px;
 }
 
+.listing-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: $spacing-md;
+  // max-width: 360px;
+}
+
 .flex-row {
   display: flex;
   width: 100%;

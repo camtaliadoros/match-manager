@@ -9,7 +9,6 @@ export default function GroupCard({ groupId }) {
 
   useEffect(() => {
     const currentGroup = groupsData.find((group) => group.id === groupId);
-
     setGroupName(currentGroup?.name);
   }, [groupsData]);
 

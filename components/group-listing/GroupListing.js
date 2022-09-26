@@ -42,17 +42,17 @@ export default function GroupListing() {
     return <LoadingState />;
   } else {
     return (
-      <>
-        <h3>My Groups</h3>
+      <div className='details-wrapper'>
+        <h3 className='title'>My Groups</h3>
         {participantGroups.map((groupId, i) => (
           <GroupCard key={i} groupId={groupId} />
         ))}
 
-        <h3>Groups I Manage</h3>
+        <h3 className='title'>Groups I Manage</h3>
         {adminGroups.map((groupId, i) => (
           <GroupCard key={i} groupId={groupId} />
         ))}
-      </>
+      </div>
     );
   }
 }

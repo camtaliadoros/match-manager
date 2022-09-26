@@ -32,7 +32,7 @@ export default function MatchesListing({ display, type, matches }) {
   const path = typeMap[type]?.link;
 
   return (
-    <div className={classes.listingWrapper}>
+    <div className='listing-wrapper'>
       <Link href={`${currentPath}/${path}`}>
         <div className={classes.matchListingTitle}>
           <h3 className='title'>{title}</h3>
