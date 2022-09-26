@@ -114,7 +114,7 @@ export default function GroupDetail() {
       <div className='details-wrapper'>
         <div className='flex-row'>
           {isEditingName ? (
-            <form className='one-line'>
+            <form className='one-line' onSubmit={handleSaveClick}>
               <input
                 type='text'
                 value={newGroupName}
@@ -122,9 +122,7 @@ export default function GroupDetail() {
                 placeholder={groupName}
                 required
               />
-              <button onClick={handleSaveClick} disabled={!newGroupName}>
-                SAVE
-              </button>
+              <button>SAVE</button>
             </form>
           ) : (
             <h2 className='title'>{groupName}</h2>
