@@ -35,7 +35,7 @@ export default function Header() {
           </div>
           <div>
             <FontAwesomeIcon icon={faUserGroup} />
-            <Link href='/dashboard'>Groups</Link>
+            <Link href='/dashboard/my-groups'>Groups</Link>
           </div>
           <div>
             <FontAwesomeIcon icon={faUser} />

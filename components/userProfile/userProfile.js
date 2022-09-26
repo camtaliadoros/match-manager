@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentUserDetails,
   updateUserProfile,
-  userIsLoading,
+  selectUserIsLoading,
 } from '../../features/users/userSlice';
 import { db, storage } from '../../firebase/clientApp';
 import { getImageExtension } from '../../utilities/helpers';
@@ -16,7 +16,7 @@ import LoadingState from '../shared/LoadingState';
 export default function UserProfile() {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUserDetails);
-  const dataIsLoading = useSelector(userIsLoading);
+  const dataIsLoading = useSelector(selectUserIsLoading);
 
   const currentPhoto = user.photo;
   const uid = user.id;

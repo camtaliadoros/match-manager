@@ -4,6 +4,7 @@ import matchesReducer from '../features/matches/matchesSlice';
 import matchReducer from '../features/matches/matchSlice';
 import playersReducer from '../features/users/playersSlice';
 import userReducer from '../features/users/userSlice';
+import groupsReducer from '../features/groups/groupsSlice';
 
 export default configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
     group: groupReducer,
     players: playersReducer,
     match: matchReducer,
+    groups: groupsReducer,
   },
 });

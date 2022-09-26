@@ -21,6 +21,7 @@ const initialState = {
     username: '',
     photo: '',
     matches: [],
+    groups: [],
   },
   status: {
     isLoggedIn: false,
@@ -83,6 +84,24 @@ export const getUserMatches = createAsyncThunk(
     });
 
     return matches;
+  }
+);
+
+export const getUserGroups = createAsyncThunk(
+  'user/getUserGroups',
+  async (userId) => {
+    const results = [];
+
+    const q = query(
+      collection(db, 'group_users'),
+      where('playerId', '==', userId)
+    );
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      results.push(doc.data());
+    });
+    return results;
   }
 );
 
@@ -177,6 +196,19 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.failedToLoad = true;
     });
+    builder.addCase(getUserGroups.fulfilled, (state, action) => {
+      state.data.groups = action.payload;
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getUserGroups.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(getUserGroups.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
   },
 });
 export const { updateUserLoggedIn, updateUserEmail, resetUser, setUser } =
@@ -187,7 +219,7 @@ export const selectCurrentUserDetails = createSelector(
   (user) => user.data
 );
 
-export const userIsLoading = createSelector(
+export const selectUserIsLoading = createSelector(
   selectCurrentUser,
   (user) => user.isLoading
 );
@@ -264,6 +296,52 @@ export const selectMatchesOnWaitlist = createSelector(
       .filter((match) => match.playerStatus === 'waitlist')
       .map((match) => match.matchId);
     return result;
+  }
+);
+
+export const selectUserGroups = createSelector(
+  selectCurrentUserDetails,
+  (userData) => {
+    return userData.groups;
+  }
+);
+
+export const selectUserGroupsIds = createSelector(
+  selectUserGroups,
+  (groups) => {
+    return groups?.map((group) => group.groupId);
+  }
+);
+
+export const selectUserGroupsParticipant = createSelector(
+  selectUserGroups,
+  (groups) => {
+    if (groups) {
+      const result = groups
+        .filter((group) => {
+          return (
+            group.playerStatus === 'core' || group.playerStatus === 'reserve'
+          );
+        })
+        .map((groupData) => groupData.groupId);
+
+      return result;
+    }
+  }
+);
+
+export const selectUserGroupsManager = createSelector(
+  selectUserGroups,
+  (groups) => {
+    if (groups) {
+      const result = groups
+        .filter((group) => {
+          return group.playerStatus === 'admin';
+        })
+        .map((groupData) => groupData.groupId);
+
+      return result;
+    }
   }
 );
 
