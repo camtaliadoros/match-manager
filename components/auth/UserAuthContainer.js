@@ -13,7 +13,6 @@ export default function UserAuthContainer() {
   const [form, setForm] = useState('login');
 
   const isLoggedIn = useSelector(selectLoggedIn);
-  const isEmailVerified = useSelector(selectEmailVerified);
 
   if (!isLoggedIn) {
     return (
