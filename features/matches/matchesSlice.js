@@ -3,8 +3,18 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
+import moment from 'moment';
 
 export const getGroupMatches = createAsyncThunk(
   'matches/getGroupMatches',
@@ -33,8 +43,25 @@ export const getMatchesById = createAsyncThunk(
       const matchesRef = collection(db, 'matches');
       const q = query(matchesRef, where('id', 'in', matchesToFetch));
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        matches.push(doc.data());
+      querySnapshot.forEach(async (result) => {
+        const matchData = result.data();
+
+        const dateNow = Date.now();
+        if (dateNow > matchData.timestamp) {
+          console.log(matchData.isRecurring);
+          if (matchData.isRecurring) {
+            const newDate = moment(matchData.timestamp).add(7, 'd').format('x');
+            console.log(newDate);
+            await updateDoc(doc(db, 'matches', matchData.id), {
+              timestamp: newDate,
+            });
+            matches.push(matchData);
+          } else {
+            await deleteDoc(doc(db, 'matches', matchData.id));
+          }
+        } else {
+          matches.push(matchData);
+        }
       });
       // Filters matches for which data has already been fetched
       remainingMatches = remainingMatches.filter((id) => {
