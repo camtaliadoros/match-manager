@@ -29,6 +29,7 @@ import {
   createMatch,
   deleteMatch,
   selectCurrentMatch,
+  updateMatch,
 } from '../../features/matches/matchSlice';
 import { selectCurrentUserDetails } from '../../features/users/userSlice';
 import classes from './match.module.scss';
@@ -96,11 +97,10 @@ export default function MatchDetail() {
   const handleClick = (e) => {
     e.preventDefault();
 
-    const matchId = uuidv4();
     const timestamp = Date.parse(`${date} ${time}`);
 
     const matchData = {
-      id: matchId,
+      id: match.id || uuidv4(),
       title,
       timestamp,
       groupId: group.id,
@@ -111,12 +111,16 @@ export default function MatchDetail() {
       cost,
     };
 
-    const playersData = {
-      matchId,
-      groupPlayers: group.players,
-    };
+    if (router.asPath === `/${currentPath}/create-match`) {
+      const playersData = {
+        matchId: matchData.id,
+        groupPlayers: group.players,
+      };
 
-    dispatch(createMatch({ matchData, playersData }));
+      dispatch(createMatch({ matchData, playersData }));
+    } else {
+      dispatch(updateMatch(matchData));
+    }
 
     if (router.asPath === `/${currentPath}/create-match`) {
       router.push(`/${currentPath}/${matchData.id}`);

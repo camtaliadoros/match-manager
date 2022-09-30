@@ -209,6 +209,17 @@ export const deleteMatch = createAsyncThunk(
   }
 );
 
+export const updateMatch = createAsyncThunk(
+  'match/updateMatch',
+  async (matchData) => {
+    const matchId = matchData.id;
+
+    await updateDoc(doc(db, 'matches', matchId), matchData);
+
+    return matchData;
+  }
+);
+
 const matchSlice = createSlice({
   name: 'match',
   initialState,
@@ -358,6 +369,19 @@ const matchSlice = createSlice({
       state.failedToLoad = false;
     });
     builder.addCase(deleteMatch.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(updateMatch.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(updateMatch.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(updateMatch.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });
