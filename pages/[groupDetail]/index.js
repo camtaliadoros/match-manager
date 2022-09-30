@@ -15,6 +15,7 @@ import GroupPlayerListing from '../../components/Players/GroupPlayerListing';
 import LoadingState from '../../components/shared/LoadingState';
 import NotFound from '../../components/shared/NotFound';
 import {
+  deleteGroup,
   getCurrentGroup,
   groupIsLoading,
   selectGroup,
@@ -98,6 +99,11 @@ export default function GroupDetail() {
     setnewGroupName('');
   }, [currentGroup.name]);
 
+  const handleDeleteClick = () => {
+    const groupId = currentGroup.id;
+    dispatch(deleteGroup({ groupId, groupMatches }));
+  };
+
   if (isLoading) {
     return (
       <Layout>
@@ -163,6 +169,11 @@ export default function GroupDetail() {
 
         <GroupPlayerListing />
         <GroupShare />
+        {isAdmin && (
+          <button type='button' onClick={handleDeleteClick} className='red-btn'>
+            Delete Group
+          </button>
+        )}
       </div>
     </Layout>
   );
