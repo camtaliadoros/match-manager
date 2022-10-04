@@ -5,17 +5,16 @@ import {
 } from '@reduxjs/toolkit';
 import {
   collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  updateDoc,
-  deleteDoc,
   doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
   writeBatch,
 } from 'firebase/firestore';
-import { db } from '../../firebase/clientApp';
 import moment from 'moment';
+import { db } from '../../firebase/clientApp';
+import { matchBatchDelete } from '../../utilities/helpers';
 
 export const getGroupMatches = createAsyncThunk(
   'matches/getGroupMatches',
@@ -58,24 +57,7 @@ export const getMatchesById = createAsyncThunk(
             });
             matches.push({ ...matchData, timestamp: newDate });
           } else {
-            const batch = writeBatch(db);
-
-            // delete match
-            batch.delete(doc(db, 'matches', matchData.id));
-
-            // find match players
-            const qPlayers = query(
-              collection(db, 'user_matches'),
-              where('matchId', '==', matchData.id)
-            );
-            queryPlayersSnapshot = await getDocs(qPlayers);
-            queryPlayersSnapshot.forEach((result) => {
-              const playerId = result.playerId;
-              const docRef = playerId + '_' + matchData.id;
-              batch.delete(doc(db, 'user_matches', docRef));
-            });
-
-            await batch.commit();
+            matchBatchDelete(matchData.id);
           }
         } else {
           matches.push(matchData);
