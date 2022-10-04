@@ -12,66 +12,42 @@ import {
   setDoc,
   updateDoc,
   where,
+  writeBatch,
   WriteBatch,
 } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
+import { matchBatchDelete } from '../../utilities/helpers';
 
-// export const deleteGroup = createAsyncThunk(
-//   'group/deleteGroup',
-//   async ({ groupId, groupMatches }) => {
-//     const result = [];
-//     //delete group that matches groupId
-//     // await deleteDoc(doc(db, 'groups', groupId));
+export const deleteGroup = createAsyncThunk(
+  'group/deleteGroup',
+  async ({ groupId, groupMatches }) => {
+    const batch = writeBatch(db);
 
-//     // delete group_users that contain group id
-//     const q = query(
-//       collection(db, 'group_users'),
-//       where('groupId', '==', groupId)
-//     );
-//     const querySnapshot = await getDocs(q);
-//     querySnapshot.forEach(async (result) => {
-//       const playerId = result.data().playerId;
-//       const docRef = doc(db, 'group_users', groupId + '_' + playerId);
-//       await deleteDoc(docRef);
-//     });
-//     console.log('group users deleted');
+    // delete group that matches groupId
+    batch.delete(doc(db, 'groups', groupId));
 
-//     // const batch = new WriteBatch();
-//     // batch.delete(doc(db, 'groups_users', where('groupId', '==', groupId)));
-//     // await batch.commit();
-//     // find ids for matches that belong to group
-//     const matchesIds = groupMatches.map((match) => match.id);
-//     // delete matches that that belong to group
-//     matchesIds.forEach(async (matchId) => {
-//       await deleteDoc(db, 'matches', matchId);
-//     });
-//     console.log('matches deleted');
+    // delete group_users that contain group id
+    const qGroupPlayers = query(
+      collection(db, 'group_users'),
+      where('groupId', '==', groupId)
+    );
+    const queryGroupPlayersSnapshot = await getDocs(qGroupPlayers);
+    queryGroupPlayersSnapshot.forEach((result) => {
+      const playerId = result.data().playerId;
+      batch.delete(doc(db, 'group_users', groupId + '_' + playerId));
+    });
 
-//     // delete users that contain match ids
+    //find ids for matches that belong to group
+    const matchesIds = groupMatches.map((match) => match.id);
+    // delete matches & players that that belong to group
+    matchesIds.forEach((matchId) => {
+      matchBatchDelete(matchId);
+    });
+    batch.commit();
 
-//     let remainingMatches = matchesIds;
-
-//     //Iterates through remaining matches array and isolates max 10 matches
-//     // while (remainingMatches.length > 0) {
-//     //   const matchesToDelete = remainingMatches.slice(0, 10);
-//     //   // Fetches data fot 10 matches and adds to matches arr
-//     //   const qMatchUsers = query(
-//     //     collection(db, 'user_matches'),
-//     //     where('id', 'in', matchesToDelete)
-//     //   );
-//     //   const queryMatchUsersSnapshot = await getDocs(qMatchUsers);
-//     //   queryMatchUsersSnapshot.forEach(async (playerDoc) => {
-//     //     await deleteDoc(db, 'user_matches', playerDoc.data().playerId);
-//     //   });
-//     //   // Filters matches for which data has already been fetched
-//     //   remainingMatches = remainingMatches.filter((id) => {
-//     //     return !matchesToDelete.includes(id);
-//     //   });
-
-//     // }
-//     console.log('match users deleted');
-//   }
-// );
+    return initialState;
+  }
+);
 
 export const createGroup = createAsyncThunk(
   'group/createGroup',
@@ -334,19 +310,6 @@ export const groupSlice = createSlice({
       state.isLoading = false;
       state.failedToLoad = true;
     });
-    // builder.addCase(getGroupMatches.fulfilled, (state, action) => {
-    //   state.data.matches = action.payload;
-    //   state.isLoading = false;
-    //   state.failedToLoad = false;
-    // });
-    // builder.addCase(getGroupMatches, (state) => {
-    //   state.isLoading = true;
-    //   state.failedToLoad = false;
-    // });
-    // builder.addCase(getGroupMatches.rejected, (state) => {
-    //   state.isLoading = false;
-    //   state.failedToLoad = true;
-    // });
   },
 });
 
