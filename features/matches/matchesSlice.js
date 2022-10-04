@@ -12,6 +12,7 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  writeBatch,
 } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
 import moment from 'moment';
@@ -57,7 +58,24 @@ export const getMatchesById = createAsyncThunk(
             });
             matches.push({ ...matchData, timestamp: newDate });
           } else {
-            await deleteDoc(doc(db, 'matches', matchData.id));
+            const batch = writeBatch(db);
+
+            // delete match
+            batch.delete(doc(db, 'matches', matchData.id));
+
+            // find match players
+            const qPlayers = query(
+              collection(db, 'user_matches'),
+              where('matchId', '==', matchData.id)
+            );
+            queryPlayersSnapshot = await getDocs(qPlayers);
+            queryPlayersSnapshot.forEach((result) => {
+              const playerId = result.playerId;
+              const docRef = playerId + '_' + matchData.id;
+              batch.delete(doc(db, 'user_matches', docRef));
+            });
+
+            await batch.commit();
           }
         } else {
           matches.push(matchData);
