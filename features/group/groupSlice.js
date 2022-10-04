@@ -18,6 +18,20 @@ import {
 import { db } from '../../firebase/clientApp';
 import { matchBatchDelete } from '../../utilities/helpers';
 
+const initialState = {
+  data: {
+    id: '',
+    name: '',
+    path: '',
+    matches: [],
+    players: [],
+    isAdmin: false,
+  },
+  isFulfilled: false,
+  isLoading: false,
+  failedToLoad: false,
+};
+
 export const deleteGroup = createAsyncThunk(
   'group/deleteGroup',
   async ({ groupId, groupMatches }) => {
@@ -44,8 +58,6 @@ export const deleteGroup = createAsyncThunk(
       matchBatchDelete(matchId);
     });
     batch.commit();
-
-    return initialState;
   }
 );
 
@@ -191,20 +203,6 @@ export const updateGroupName = createAsyncThunk(
 //   }
 // );
 
-const initialState = {
-  data: {
-    id: '',
-    name: '',
-    path: '',
-    matches: [],
-    players: [],
-    isAdmin: false,
-  },
-  isFulfilled: false,
-  isLoading: false,
-  failedToLoad: false,
-};
-
 export const groupSlice = createSlice({
   name: 'group',
   initialState,
@@ -307,6 +305,19 @@ export const groupSlice = createSlice({
       state.failedToLoad = false;
     });
     builder.addCase(updateGroupName.rejected, (state) => {
+      state.isLoading = false;
+      state.failedToLoad = true;
+    });
+    builder.addCase(deleteGroup.fulfilled, (state) => {
+      state.data = initialState.data;
+      state.isLoading = false;
+      state.failedToLoad = false;
+    });
+    builder.addCase(deleteGroup.pending, (state) => {
+      state.isLoading = true;
+      state.failedToLoad = false;
+    });
+    builder.addCase(deleteGroup.rejected, (state) => {
       state.isLoading = false;
       state.failedToLoad = true;
     });
