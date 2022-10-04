@@ -28,7 +28,7 @@ export default function MatchesListing({ display, type, matches }) {
   const router = useRouter();
 
   const title = typeMap[type]?.title;
-  const currentPath = router.pathname;
+  const currentPath = router.asPath;
   const path = typeMap[type]?.link;
 
   return (
