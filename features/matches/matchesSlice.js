@@ -5,16 +5,16 @@ import {
 } from '@reduxjs/toolkit';
 import {
   collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  updateDoc,
-  deleteDoc,
   doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+  writeBatch,
 } from 'firebase/firestore';
-import { db } from '../../firebase/clientApp';
 import moment from 'moment';
+import { db } from '../../firebase/clientApp';
+import { matchBatchDelete } from '../../utilities/helpers';
 
 export const getGroupMatches = createAsyncThunk(
   'matches/getGroupMatches',
@@ -58,7 +58,7 @@ export const getMatchesById = createAsyncThunk(
               timestamp: newDate,
             });
           } else {
-            await deleteDoc(doc(db, 'matches', matchData.id));
+            matchBatchDelete(matchData.id);
           }
         } else {
           matches.push(matchData);

@@ -13,8 +13,10 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
+  writeBatch,
 } from 'firebase/firestore';
 import { db } from '../../firebase/clientApp';
+import { matchBatchDelete } from '../../utilities/helpers';
 
 const initialState = {
   data: {
@@ -194,16 +196,7 @@ export const addPlayer = createAsyncThunk(
 export const deleteMatch = createAsyncThunk(
   'match/deleteMatch',
   async (matchId) => {
-    await deleteDoc(doc(db, 'matches', matchId));
-
-    const q = query(
-      collection(db, 'user_matches'),
-      where('matchId', '==', matchId)
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (currentDoc) => {
-      await deleteDoc(doc(db, 'user_matches', currentDoc.id));
-    });
+    matchBatchDelete(matchId);
 
     return matchId;
   }
