@@ -51,11 +51,11 @@ export const getMatchesById = createAsyncThunk(
           console.log(matchData.isRecurring);
           if (matchData.isRecurring) {
             const newDate = moment(matchData.timestamp).add(7, 'd').format('x');
-            console.log(newDate);
+
             await updateDoc(doc(db, 'matches', matchData.id), {
               timestamp: newDate,
             });
-            matches.push(matchData);
+            matches.push({ ...matchData, timestamp: newDate });
           } else {
             await deleteDoc(doc(db, 'matches', matchData.id));
           }
