@@ -49,13 +49,17 @@ export default function MatchDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
+  const [dateInput, setDateInput] = useState('');
   const [location, setLocation] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [time, setTime] = useState('');
+  const [timeInput, setTimeInput] = useState('');
   const [isRecurring, setIsRecurring] = useState(false);
   const [numOfPlayers, setNumOfPlayers] = useState('');
   const [cost, setCost] = useState('');
   const [costPerPlayer, setCostPerPlayer] = useState('');
+  const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [errorMesssage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (router.asPath === `/${currentPath}/create-match`) {
@@ -77,7 +81,9 @@ export default function MatchDetail() {
       const matchTime = moment.unix(match.timestamp / 1000).format('h:mm a');
 
       setDate(matchDate);
+      setDateInput(moment.unix(match.timestamp / 1000).format('Y-M-D'));
       setTime(matchTime);
+      setTimeInput(moment.unix(match.timestamp / 1000).format('HH:mm'));
       setTitle(match.title);
       setLocation(match.location);
       setIsPublic(match.isPublic);
@@ -97,33 +103,38 @@ export default function MatchDetail() {
   const handleClick = (e) => {
     e.preventDefault();
 
-    const timestamp = Date.parse(`${date} ${time}`);
+    const timestamp = Date.parse(`${dateInput} ${timeInput}`);
+    const today = Date.now();
 
-    const matchData = {
-      id: match.id || uuidv4(),
-      title,
-      timestamp,
-      groupId: group.id,
-      location,
-      isPublic,
-      isRecurring,
-      numOfPlayers,
-      cost,
-    };
-
-    if (router.asPath === `/${currentPath}/create-match`) {
-      const playersData = {
-        matchId: matchData.id,
-        groupPlayers: group.players,
+    if (timestamp < today) {
+      setErrorMessage('Seems like your date is in the past');
+    } else {
+      const matchData = {
+        id: match.id || uuidv4(),
+        title,
+        timestamp,
+        groupId: group.id,
+        location,
+        isPublic,
+        isRecurring,
+        numOfPlayers,
+        cost,
       };
 
-      dispatch(createMatch({ matchData, playersData }));
-    } else {
-      dispatch(updateMatch(matchData));
-    }
+      if (router.asPath === `/${currentPath}/create-match`) {
+        const playersData = {
+          matchId: matchData.id,
+          groupPlayers: group.players,
+        };
 
-    if (router.asPath === `/${currentPath}/create-match`) {
-      router.push(`/${currentPath}/${matchData.id}`);
+        dispatch(createMatch({ matchData, playersData }));
+      } else {
+        dispatch(updateMatch(matchData));
+      }
+
+      if (router.asPath === `/${currentPath}/create-match`) {
+        router.push(`/${currentPath}/${matchData.id}`);
+      }
     }
   };
 
@@ -174,8 +185,9 @@ export default function MatchDetail() {
               {isEditing ? (
                 <input
                   type='date'
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  value={dateInput}
+                  onChange={(e) => setDateInput(e.target.value)}
+                  min={new Date().toISOString().split('T')[0]}
                   required
                 />
               ) : (
@@ -225,8 +237,8 @@ export default function MatchDetail() {
                 <input
                   type='time'
                   placeholder='Time'
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
+                  value={timeInput}
+                  onChange={(e) => setTimeInput(e.target.value)}
                   required
                 />
               ) : (
@@ -284,11 +296,19 @@ export default function MatchDetail() {
             </div>
           </div>
           {isEditing ? <button>SAVE</button> : null}
+          {errorMesssage && <p className='error-message'>{errorMesssage}</p>}
         </form>
         {isEditing && match.id ? (
-          <button type='button' onClick={handleDeleteClick} className='red-btn'>
-            Delete Match
-          </button>
+          <>
+            <p>{errorMesssage}</p>
+            <button
+              type='button'
+              onClick={handleDeleteClick}
+              className='red-btn'
+            >
+              Delete Match
+            </button>
+          </>
         ) : null}
       </>
     );

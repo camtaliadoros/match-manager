@@ -47,15 +47,16 @@ export const getMatchesById = createAsyncThunk(
         const matchData = result.data();
 
         const dateNow = Date.now();
+
+        // Checks if match date is past
         if (dateNow > matchData.timestamp) {
-          console.log(matchData.isRecurring);
           if (matchData.isRecurring) {
             const newDate = moment(matchData.timestamp).add(7, 'd').format('x');
 
+            matches.push({ ...matchData, timestamp: newDate });
             await updateDoc(doc(db, 'matches', matchData.id), {
               timestamp: newDate,
             });
-            matches.push({ ...matchData, timestamp: newDate });
           } else {
             await deleteDoc(doc(db, 'matches', matchData.id));
           }
