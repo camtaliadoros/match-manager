@@ -69,7 +69,7 @@ export default function CreateGroupForm() {
   };
 
   return (
-    <>
+    <div className='details-wrapper'>
       <h2>Create Group</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -89,6 +89,6 @@ export default function CreateGroupForm() {
         )}
       </form>
       <p className='error-message'>{errorMessage}</p>
-    </>
+    </div>
   );
 }
