@@ -20,7 +20,9 @@ export default function PublicHome() {
             <h4>Take control of your games.</h4>
 
             <Link href='/login'>
-              <a className='mobile-hidden button-style'>SIGN UP NOW</a>
+              <a className='button-style' id='mobile-hidden'>
+                SIGN UP NOW
+              </a>
             </Link>
           </div>
         </div>

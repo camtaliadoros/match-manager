@@ -19,7 +19,7 @@ export default function SideAppNavigation() {
   return (
     <>
       {isLoggedIn && isEmailVerified ? (
-        <div className={`${classes.navBar} mobile-hidden`}>
+        <div className={classes.navBar} id='mobile-hidden'>
           <div>
             <FontAwesomeIcon icon={faFutbol} />
             <Link href='/dashboard'>Matches</Link>

@@ -8,7 +8,7 @@ export default function Header(props) {
         <Link href='/'>
           <a className='logo'>FA</a>
         </Link>
-        <nav className='mobile-hidden'>{props.children}</nav>
+        <nav>{props.children}</nav>
       </header>
     </>
   );
