@@ -9,7 +9,10 @@ import { useRouter } from 'next/router';
 export default function PublicHome() {
   return (
     <div className='outter-wrapper'>
-      <Header classes={classes} />
+      <Header classes={classes}>
+        <AuthNavigation />
+      </Header>
+
       <main className={classes.main}>
         <div className={classes.heroScreen}>
           <div className={`${classes.onboardingText} light-text`}>

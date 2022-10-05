@@ -4,14 +4,14 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import {
   selectEmailVerified,
-  selectLoggedIn,
+  selectUserIsLoggedIn,
 } from '../../features/users/userSlice';
 import { auth } from '../../firebase/clientApp';
 
-export default function AuthNavigation({ authClass }) {
+export default function AuthNavigation() {
   const router = useRouter();
 
-  const isLoggedIn = useSelector(selectLoggedIn);
+  const isLoggedIn = useSelector(selectUserIsLoggedIn);
   const isEmailVerified = useSelector(selectEmailVerified);
 
   const handleSignOut = async () => {
@@ -20,7 +20,7 @@ export default function AuthNavigation({ authClass }) {
   };
 
   return (
-    <div className={authClass}>
+    <div>
       {isLoggedIn && isEmailVerified ? (
         <Link href='/dashboard'>Dashboard</Link>
       ) : null}

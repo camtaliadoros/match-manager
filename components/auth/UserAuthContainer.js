@@ -6,13 +6,13 @@ import UserRegisterForm from './UserRegisterForm';
 import { useSelector } from 'react-redux';
 import {
   selectEmailVerified,
-  selectLoggedIn,
+  selectUserIsLoggedIn,
 } from '../../features/users/userSlice';
 
 export default function UserAuthContainer() {
   const [form, setForm] = useState('login');
 
-  const isLoggedIn = useSelector(selectLoggedIn);
+  const isLoggedIn = useSelector(selectUserIsLoggedIn);
 
   if (!isLoggedIn) {
     return (

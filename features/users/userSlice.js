@@ -229,7 +229,7 @@ export const userFailedToLoad = createSelector(
   (user) => user.failedToLoad
 );
 
-export const selectLoggedIn = createSelector(
+export const selectUserIsLoggedIn = createSelector(
   selectCurrentUser,
   (user) => user.status.isLoggedIn
 );
