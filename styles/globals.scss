@@ -32,8 +32,8 @@ header {
 }
 
 header p {
-  font-weight: 800;
-  font-size: 36px;
+  font-weight: 700;
+  font-size: 18px;
 }
 
 .outter-wrapper {
@@ -451,6 +451,7 @@ form .error-message {
 .icon {
   color: $dark-green;
   width: 24px;
+  margin: $spacing-sm;
 }
 
 .next-icon {
