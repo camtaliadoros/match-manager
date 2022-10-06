@@ -44,11 +44,13 @@ export default function GroupListing() {
     return (
       <div className='details-wrapper'>
         <h3 className='title'>My Groups</h3>
+        {!participantGroups.length && <p>You're not a member of any groups</p>}
         {participantGroups.map((groupId, i) => (
           <GroupCard key={i} groupId={groupId} />
         ))}
 
         <h3 className='title'>Groups I Manage</h3>
+        {!adminGroups.length && <p>You're not a manager of any groups</p>}
         {adminGroups.map((groupId, i) => (
           <GroupCard key={i} groupId={groupId} />
         ))}
