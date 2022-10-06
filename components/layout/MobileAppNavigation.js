@@ -10,13 +10,19 @@ export default function MobileAppNavigation() {
   return (
     <footer className='bottom-nav'>
       <Link href='/dashboard'>
-        <FontAwesomeIcon icon={faFutbol} />
+        <a>
+          <FontAwesomeIcon icon={faFutbol} />
+        </a>
       </Link>
-      <Link href='/dashboard'>
-        <FontAwesomeIcon icon={faUserGroup} />
+      <Link href='/dashboard/my-groups'>
+        <a>
+          <FontAwesomeIcon icon={faUserGroup} />
+        </a>
       </Link>
       <Link href='/profile'>
-        <FontAwesomeIcon icon={faUser} />
+        <a>
+          <FontAwesomeIcon icon={faUser} />
+        </a>
       </Link>
     </footer>
   );
