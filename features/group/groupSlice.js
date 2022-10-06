@@ -239,7 +239,7 @@ export const groupSlice = createSlice({
         ...state.data,
         ...action.payload.groupData,
       };
-      state.data.players.admin = [action.payload.adminId];
+
       state.isLoading = false;
       state.failedToLoad = false;
     });

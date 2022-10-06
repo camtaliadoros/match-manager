@@ -20,7 +20,7 @@ export default function AuthNavigation() {
   };
 
   return (
-    <div>
+    <nav className='row'>
       {isLoggedIn && isEmailVerified ? (
         <Link href='/dashboard'>Dashboard</Link>
       ) : null}
@@ -31,6 +31,6 @@ export default function AuthNavigation() {
       ) : (
         <Link href='/login'>REGISTER / LOG IN</Link>
       )}
-    </div>
+    </nav>
   );
 }
