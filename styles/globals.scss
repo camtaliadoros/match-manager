@@ -264,6 +264,7 @@ button,
       display: flex;
       align-items: center;
       height: 1.4em;
+      margin-right: 3px;
     }
   }
 
@@ -450,8 +451,13 @@ form .error-message {
 
 .icon {
   color: $dark-green;
+  width: 18px;
+}
+
+.icon-big {
+  color: $dark-green;
   width: 24px;
-  margin: $spacing-sm;
+  margin: 6px;
 }
 
 .next-icon {

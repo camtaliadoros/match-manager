@@ -8,7 +8,7 @@ export default function TopAppNavigation() {
     <Link href='/dashboard/create-group'>
       <div className='row link-style'>
         <a>Create Group</a>
-        <FontAwesomeIcon icon={faCirclePlus} className='icon link-style' />
+        <FontAwesomeIcon icon={faCirclePlus} className='icon-big link-style' />
       </div>
     </Link>
   );
