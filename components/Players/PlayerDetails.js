@@ -8,7 +8,7 @@ import { selectCurrentUserDetails } from '../../features/users/userSlice';
 import ProfilePhoto from '../shared/profilePhoto/ProfilePhoto';
 import classes from './players.module.scss';
 
-export default function PlayerDetails({ id }) {
+export default function PlayerDetails({ playerId }) {
   const currentUser = useSelector(selectCurrentUserDetails);
   const playersData = useSelector(selectPlayers);
   const isLoading = useSelector(playersIsLoading);
@@ -17,18 +17,18 @@ export default function PlayerDetails({ id }) {
   const [playerPhoto, setPlayerPhoto] = useState();
 
   useEffect(() => {
-    if (id === currentUser.id) {
+    if (playerId === currentUser.id) {
       setPlayerUsername(currentUser.username);
       setPlayerPhoto(currentUser.photo);
     } else {
-      if (playersData[id]) {
-        const player = playersData[id];
+      if (playersData[playerId]) {
+        const player = playersData[playerId];
 
         setPlayerUsername(player.username);
         setPlayerPhoto(player.photo);
       }
     }
-  }, [id, isLoading]);
+  }, [isLoading]);
 
   return (
     <div className={classes.playerProfileWrapper}>
@@ -38,7 +38,7 @@ export default function PlayerDetails({ id }) {
       <p>
         {playerUsername}
         <span className={classes.highlight}>
-          {id === currentUser.id ? ' - YOU' : null}
+          {playerId === currentUser.id ? ' - YOU' : null}
         </span>
       </p>
     </div>

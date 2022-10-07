@@ -12,69 +12,87 @@ import AddAdmin from '../groups/AddAdmin';
 import PlayerDetails from './PlayerDetails';
 import classes from './players.module.scss';
 
-export default function GroupPlayerActions({ id, status, adminView }) {
-  const group = useSelector(selectGroup);
-
+export default function GroupPlayerActions({
+  playerId,
+  playerStatus,
+  adminView,
+}) {
   const dispatch = useDispatch();
 
-  const [playerStatus, setPlayerStatus] = useState(status);
+  const group = useSelector(selectGroup);
+
   const [needsNewAdmin, setNeedsNewAdmin] = useState(false);
 
   const handleStatusChange = () => {
-    const groupId = group.id;
-
     dispatch(
       updatePlayerStatus({
-        playerId: id,
-        groupId,
+        groupId: group.id,
+        playerId,
         playerStatus: playerStatus === 'reserve' ? 'core' : 'reserve',
       })
     );
   };
 
-  const handleRequestChange = () => {
-    const groupId = group.id;
-    dispatch(
-      updatePlayerStatus({ playerId: id, groupId, playerStatus: 'core' })
-    );
-  };
-
   const handleDelete = () => {
     const groupId = group.id;
-    if (status === 'admin') {
+    if (playerStatus === 'admin') {
       setNeedsNewAdmin(true);
     } else {
-      dispatch(removeGroupPlayer({ playerId: id, groupId }));
+      dispatch(removeGroupPlayer({ playerId, groupId }));
     }
   };
 
-  if (!adminView) {
-    return (
-      <div className={classes.playerRow}>
-        <PlayerDetails id={id} />
-        {(status === 'reserve' || status === 'admin') && (
-          <div>{status === 'reserve' ? <p>RESERVE</p> : <p>ADMIN</p>}</div>
-        )}
-      </div>
-    );
-  }
+  const handleRequestChange = () => {
+    const groupId = group.id;
+    dispatch(updatePlayerStatus({ playerId, groupId, playerStatus: 'core' }));
+  };
+
+  // const group = useSelector(selectGroup);
+  // const dispatch = useDispatch();
+  // const [needsNewAdmin, setNeedsNewAdmin] = useState(false);
+  // const handleStatusChange = () => {
+  //   const groupId = group.id;
+  //   const newStatus = status === 'reserve' ? 'core' : 'reserve';
+  //   dispatch(
+  //     updatePlayerStatus({
+  //       playerId,
+  //       groupId,
+  //       playerStatus: newStatus,
+  //     })
+  //   );
+  // };
+  // const handleRequestChange = () => {
+  //   const groupId = group.id;
+  //   dispatch(updatePlayerStatus({ playerId, groupId, playerStatus: 'core' }));
+  // };
+  // const handleDelete = () => {
+  //   const groupId = group.id;
+  //   if (status === 'admin') {
+  //     setNeedsNewAdmin(true);
+  //   } else {
+  //     dispatch(removeGroupPlayer({ playerId, groupId }));
+  //   }
+  // };
 
   if (adminView) {
     return (
       <div className={classes.playerRow}>
-        <PlayerDetails id={id} />
+        <PlayerDetails playerId={playerId} />
         <div>
-          {status !== 'requested' ? (
+          {playerStatus !== 'requested' ? (
             <div className={classes.actionButtons}>
-              {status !== 'admin' ? (
+              {playerStatus !== 'admin' ? (
                 <div className={classes.actionContainer}>
-                  <label htmlFor='status-change' className='checkbox'>
-                    <input
-                      type='checkbox'
-                      id='status-change'
-                      checked={playerStatus === 'reserve'}
-                      onChange={handleStatusChange}
-                    />
+                  <input
+                    id={`status-chage-${playerId}`}
+                    type='checkbox'
+                    checked={playerStatus === 'reserve'}
+                    onChange={handleStatusChange}
+                  />
+                  <label
+                    htmlFor={`status-chage-${playerId}`}
+                    className='checkbox'
+                  >
                     <div className='checkbox-box'>
                       <FontAwesomeIcon icon={faCheck} />
                     </div>
@@ -82,7 +100,6 @@ export default function GroupPlayerActions({ id, status, adminView }) {
                   </label>
                 </div>
               ) : null}
-
               <button className='link-style' onClick={handleDelete}>
                 <FontAwesomeIcon icon={faCircleXmark} />
               </button>
@@ -99,8 +116,19 @@ export default function GroupPlayerActions({ id, status, adminView }) {
           )}
         </div>
         {needsNewAdmin ? (
-          <AddAdmin needsNewAdmin={setNeedsNewAdmin} currentPlayer={id} />
+          <AddAdmin needsNewAdmin={setNeedsNewAdmin} currentPlayer={playerId} />
         ) : null}
+      </div>
+    );
+  } else {
+    return (
+      <div className={classes.playerRow}>
+        <PlayerDetails playerId={playerId} />
+        {(playerStatus === 'reserve' || playerStatus === 'admin') && (
+          <div>
+            {playerStatus === 'reserve' ? <p>RESERVE</p> : <p>ADMIN</p>}
+          </div>
+        )}
       </div>
     );
   }

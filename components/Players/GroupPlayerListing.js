@@ -30,38 +30,47 @@ export default function GroupPlayerListing() {
     <>
       <h3 className='title'>Players</h3>
 
-      {groupPlayersByStatus.admin.map((playerId, i) => (
+      {groupPlayers.map((player) => (
         <GroupPlayerActions
-          key={i}
+          key={player.playerId}
+          playerId={player.playerId}
+          playerStatus={player.playerStatus}
+          adminView={isAdmin}
+        />
+      ))}
+
+      {/* {groupPlayersByStatus.admin.map((playerId) => (
+        <GroupPlayerActions
+          key={playerId}
           id={playerId}
           status='admin'
           adminView={isAdmin}
         />
       ))}
 
-      {groupPlayersByStatus.core.map((playerId, i) => (
+      {groupPlayersByStatus.core.map((playerId) => (
         <GroupPlayerActions
-          key={i}
+          key={playerId}
           id={playerId}
           status='core'
           adminView={isAdmin}
         />
       ))}
-      {groupPlayersByStatus.reserve.map((playerId, i) => (
+      {groupPlayersByStatus.reserve.map((playerId) => (
         <GroupPlayerActions
-          key={i}
+          key={playerId}
           id={playerId}
           status='reserve'
           adminView={isAdmin}
         />
-      ))}
+      ))} */}
 
       {isAdmin && groupPlayersByStatus.requested.length ? (
         <>
           <h3 className='title'>Requested to join</h3>
-          {groupPlayersByStatus.requested.map((playerId, i) => (
+          {groupPlayersByStatus.requested.map((playerId) => (
             <GroupPlayerActions
-              key={i}
+              key={playerId}
               id={playerId}
               status='requested'
               adminView={isAdmin}
