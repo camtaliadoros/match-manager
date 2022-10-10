@@ -216,7 +216,11 @@ export const updateMatch = createAsyncThunk(
 const matchSlice = createSlice({
   name: 'match',
   initialState,
-  reducers: {},
+  reducers: {
+    resetMatch() {
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(setMatchDetails.fulfilled, (state, action) => {
       state.data = { ...state.data, ...action.payload };
@@ -411,5 +415,7 @@ export const selectMatchPlayersByStatus = createSelector(
     return playerStatus;
   }
 );
+
+export const { resetMatch } = matchSlice.actions;
 
 export default matchSlice.reducer;

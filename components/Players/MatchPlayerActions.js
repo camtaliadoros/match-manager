@@ -55,7 +55,7 @@ export default function MatchPlayerActions({ player }) {
   if (!isAdmin) {
     return (
       <div className={classes.playerRow}>
-        <PlayerDetails id={id} />
+        <PlayerDetails playerId={id} />
       </div>
     );
   }
@@ -63,7 +63,7 @@ export default function MatchPlayerActions({ player }) {
   if (isAdmin) {
     return (
       <div className={classes.playerRow}>
-        <PlayerDetails id={id} />
+        <PlayerDetails playerId={id} />
         <div className={classes.actionButtons}>
           {playerStatus !== 'requested' && (
             <button onClick={handleTogglePaymentClick} className='link-style'>

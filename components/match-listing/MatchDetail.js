@@ -28,6 +28,7 @@ import {
 import {
   createMatch,
   deleteMatch,
+  resetMatch,
   selectCurrentMatch,
   updateMatch,
 } from '../../features/matches/matchSlice';
@@ -39,6 +40,12 @@ export default function MatchDetail() {
   const dispatch = useDispatch();
   const router = useRouter();
   const currentPath = router.query.groupDetail;
+
+  useEffect(() => {
+    if (router.route === '/[groupDetail]/create-match') {
+      dispatch(resetMatch());
+    }
+  }, []);
 
   const match = useSelector(selectCurrentMatch);
   const group = useSelector(selectGroup);
@@ -58,7 +65,6 @@ export default function MatchDetail() {
   const [numOfPlayers, setNumOfPlayers] = useState('');
   const [cost, setCost] = useState('');
   const [costPerPlayer, setCostPerPlayer] = useState('');
-  const [submitDisabled, setSubmitDisabled] = useState(false);
   const [errorMesssage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -74,7 +80,7 @@ export default function MatchDetail() {
   }, [currentPath]);
 
   useEffect(() => {
-    if (match.id) {
+    if (match.id && router.route !== '/[groupDetail]/create-match') {
       const matchDate = moment
         .unix(match.timestamp / 1000)
         .format('dddd, MMMM Do');
@@ -100,7 +106,7 @@ export default function MatchDetail() {
     }
   }, [group.id, currentUser.id]);
 
-  const handleClick = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const timestamp = Date.parse(`${dateInput} ${timeInput}`);
@@ -131,6 +137,17 @@ export default function MatchDetail() {
       } else {
         dispatch(updateMatch(matchData));
       }
+
+      setDate('');
+      setDateInput('');
+      setTime('');
+      setTimeInput(moment.unix(match.timestamp / 1000).format(''));
+      setTitle('');
+      setLocation('');
+      setIsPublic('');
+      setIsRecurring('');
+      setNumOfPlayers('');
+      setCost('');
 
       if (router.asPath === `/${currentPath}/create-match`) {
         router.push(`/${currentPath}/${matchData.id}`);
@@ -164,7 +181,7 @@ export default function MatchDetail() {
           </button>
         ) : null}
 
-        <form onSubmit={handleClick}>
+        <form onSubmit={handleSubmit}>
           <div className={classes.matchDetailHeader}>
             {isEditing ? (
               <input
