@@ -396,10 +396,15 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
 
-    svg {
-      display: none;
-    }
+  .check-icon-hidden {
+    display: none;
+  }
+
+  .check-icon {
+    display: initial;
+    color: $dark-green;
   }
 
   input {
@@ -495,4 +500,8 @@ form .error-message {
 .row {
   display: flex;
   align-items: center;
+}
+
+.hidden {
+  display: none;
 }

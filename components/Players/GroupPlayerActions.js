@@ -22,6 +22,9 @@ export default function GroupPlayerActions({
   const group = useSelector(selectGroup);
 
   const [needsNewAdmin, setNeedsNewAdmin] = useState(false);
+  const [isReservedTicked, setIsReservedTicked] = useState(
+    playerStatus === 'reserve'
+  );
 
   const handleStatusChange = () => {
     dispatch(
@@ -31,6 +34,7 @@ export default function GroupPlayerActions({
         playerStatus: playerStatus === 'reserve' ? 'core' : 'reserve',
       })
     );
+    setIsReservedTicked(!isReservedTicked);
   };
 
   const handleDelete = () => {
@@ -88,13 +92,19 @@ export default function GroupPlayerActions({
                     type='checkbox'
                     checked={playerStatus === 'reserve'}
                     onChange={handleStatusChange}
+                    className='hidden'
                   />
                   <label
                     htmlFor={`status-chage-${playerId}`}
                     className='checkbox'
                   >
                     <div className='checkbox-box'>
-                      <FontAwesomeIcon icon={faCheck} />
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        className={
+                          isReservedTicked ? 'check-icon' : 'check-icon-hidden'
+                        }
+                      />
                     </div>
                     <p className={classes.playerStatus}>RESERVE</p>
                   </label>
